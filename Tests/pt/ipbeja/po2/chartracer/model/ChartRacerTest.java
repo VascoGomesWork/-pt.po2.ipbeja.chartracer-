@@ -35,6 +35,8 @@ class ChartRacerTest {
 
             fileData = Files.readAllLines(Paths.get(fileName));
             assertEquals(fileData, chartRacer.readFile(fileName));
+            //chartRacer.readFile2(fileName);
+            //assertEquals(fileData, chartRacer.readFile2(fileName));
 
         } catch (IOException e) {
             e.printStackTrace();
