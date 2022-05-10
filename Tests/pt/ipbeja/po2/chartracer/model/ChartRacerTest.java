@@ -36,9 +36,9 @@ class ChartRacerTest {
             List<String> fileData = Files.readAllLines(Paths.get(fileName));
             assertEquals(chartRacer.makeNewList(fileData), chartRacer.readFile(fileName));
 
-            for (int i = 0; i < fileData.size(); i++) {
+            /*for (int i = 0; i < fileData.size(); i++) {
                 System.out.println(fileData.get(i));
-            }
+            }*/
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,6 +48,20 @@ class ChartRacerTest {
     @Test
     void teste2() {
 
-        //TreeSet
+        //Interface Comparable <T>
+        List<String> fileData = chartRacer.readFile(fileName);
+
+        List dataYearList = chartRacer.getDataYear(fileData, "1500");
+        System.out.println("Data Year = " + dataYearList);
+
+        //check if array list is ordered in 1500
+        //Orders the data using Comparable Interface
+        assertEquals(dataYearList, chartRacer.orderData(fileData));
+
+        //check if array list is ordered in 2018
+        //Orders the data using Comparable Interface
+        dataYearList = chartRacer.getDataYear(fileData, "2018");
+        assertEquals(dataYearList, chartRacer.orderData(fileData));
+
     }
 }
