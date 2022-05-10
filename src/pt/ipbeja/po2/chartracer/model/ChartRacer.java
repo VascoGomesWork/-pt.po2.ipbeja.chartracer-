@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,44 +24,37 @@ public class ChartRacer {
      */
     public List<String> readFile(String fileName) {
         try {
-            return Files.readAllLines(Paths.get(fileName));
+            return makeNewList(Files.readAllLines(Paths.get(fileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public List<String> readFile2(String fileName){
 
-        List<String> stringData = new ArrayList<>();
-        //TODO - Get the Length of the file
-        char[] fileData = new char[999999999];
-        try {
-            FileReader fileReader = new FileReader(fileName);
-            try {
+    /**
+     * Resume : Function that makes a newList
+     * @param citiesList
+     * @return
+     */
+    public List<String> makeNewList(List<String> citiesList) {
 
-                //reads all data to a char array
-                fileReader.read(fileData);
+        //Removes the first lines until the first number 12 appears in the file
+        citiesList.subList(0, citiesList.indexOf("12")).clear();
+        //Removes all numbers 12 and spaces
+        citiesList.removeAll(Collections.singleton("12"));
+        citiesList.removeAll(Collections.singleton(" "));
 
-                for (char dataFile : fileData) {
-                    stringData.add(makeString(dataFile));
-                    //System.out.println(dataFile);
-                }
-                //System.out.println(stringData);
+        String newCitiesDataString = "";
+        List<String> newCitiesList = new ArrayList<>();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+        //makes new string to join every line of the file
+        for (String string : citiesList) {
+            newCitiesDataString += string;
+            if(string.equals("\n")){
+                newCitiesList.add(newCitiesDataString);
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
-
-        return null;
-    }
-
-    private String makeString(char dataFile) {
-        this.dataString += dataFile;
-        return this.dataString;
+        return newCitiesList;
     }
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,13 +31,14 @@ class ChartRacerTest {
     @Test
     void teste1() {
         //Ler um ficheiro de dados e verificar que está bem lido (os dados lidos são os esperados);
-        List<String> fileData = null;
         try {
 
-            fileData = Files.readAllLines(Paths.get(fileName));
-            assertEquals(fileData, chartRacer.readFile(fileName));
-            //chartRacer.readFile2(fileName);
-            //assertEquals(fileData, chartRacer.readFile2(fileName));
+            List<String> fileData = Files.readAllLines(Paths.get(fileName));
+            assertEquals(chartRacer.makeNewList(fileData), chartRacer.readFile(fileName));
+
+            for (int i = 0; i < fileData.size(); i++) {
+                System.out.println(fileData.get(i));
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,5 +48,6 @@ class ChartRacerTest {
     @Test
     void teste2() {
 
+        //TreeSet
     }
 }
