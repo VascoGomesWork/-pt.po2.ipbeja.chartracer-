@@ -1,11 +1,12 @@
 package pt.ipbeja.po2.chartracer.gui;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
  * @author Vasco Gomes 19921
- * @date 02/03/2022
+ * @date 09/05/2022
  */
 public class ChartRacerStart extends Application {
 
@@ -16,5 +17,13 @@ public class ChartRacerStart extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        //TODO - Execute Program with Java 17 not Java 8
+        ChartRacerBoard board = new ChartRacerBoard();
+        Scene scene = new Scene(board);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos Nº19921");
+        primaryStage.setMinHeight(200);
+        primaryStage.setMinWidth(400);
+        primaryStage.show();
     }
 }

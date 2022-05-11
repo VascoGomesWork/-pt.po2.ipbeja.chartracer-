@@ -76,7 +76,6 @@ class ChartRacerTest {
     @Test
     void teste3() {
         List ordered5ElementsDataYearList = null;
-        List checkOrder5First = null;
         List<String> checkOrder5FirstFromFile = null;
 
         try {
