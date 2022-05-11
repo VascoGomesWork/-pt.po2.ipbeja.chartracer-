@@ -12,6 +12,6 @@ public class TextChartRacer extends Text {
         super(x, y, text);
     }
 
-    
+
 
 }
