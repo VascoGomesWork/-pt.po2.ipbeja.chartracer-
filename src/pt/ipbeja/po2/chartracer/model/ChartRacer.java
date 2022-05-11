@@ -25,15 +25,12 @@ public class ChartRacer {
      */
     public ChartRacer(View view) {
         this.view = view;
-        //this.dataString = dataString;
     }
 
     /**
      * Resume : Dummy Constructor for Tests Purposes
      */
-    public ChartRacer() {
-        //this.dataString = dataString;
-    }
+    public ChartRacer() {}
 
     /**
      * Resume : Method to Read Cities Data from the File
@@ -189,7 +186,7 @@ public class ChartRacer {
         return specificYearList;
     }
 
-    public void getDataDrawGhraphic(List<String> specificYearData) {
+    public void getDataToDrawGhraphic(List<String> specificYearData) {
         view.drawGraphic(specificYearData);
     }
 }

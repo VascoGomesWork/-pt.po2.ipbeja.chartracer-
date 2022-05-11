@@ -17,13 +17,15 @@ public class ChartRacerStart extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        int minHeight = 200;
+        int minWidth = 400;
         //TODO - Execute Program with Java 17 not Java 8
-        ChartRacerBoard board = new ChartRacerBoard();
+        ChartRacerBoard board = new ChartRacerBoard(minWidth);
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos Nº19921");
-        primaryStage.setMinHeight(200);
-        primaryStage.setMinWidth(400);
+        primaryStage.setMinHeight(minHeight);
+        primaryStage.setMinWidth(minWidth);
         primaryStage.show();
     }
 }
