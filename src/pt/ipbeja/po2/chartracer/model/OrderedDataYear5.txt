@@ -1,0 +1,5 @@
+2018,Karachi,Pakistan,18185,South Asia
+2018,New York,United States,18713,North America
+2018,Dhaka,Bangladesh,19633,South Asia
+2018,Cairo,Egypt,19850,Middle East
+2018,Osaka,Japan,20409,East Asia

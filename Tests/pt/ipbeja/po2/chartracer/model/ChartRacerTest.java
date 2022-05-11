@@ -33,10 +33,6 @@ class ChartRacerTest {
             List<String> fileData = Files.readAllLines(Paths.get(fileName));
             assertEquals(chartRacer.removeUnwantedDataFromList(fileData), chartRacer.readFile(fileName));
 
-            /*for (int i = 0; i < fileData.size(); i++) {
-                System.out.println(fileData.get(i));
-            }*/
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,7 +45,7 @@ class ChartRacerTest {
         List<String> fileData = chartRacer.readFile(fileName);
 
         //Gets the array of the Year 1500
-        // Todo - Order DataYearList by number of people in city
+        //Order DataYearList by number of people in city
         int year = 1500;
         List unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
         //System.out.println("Data Year = " + unorderedDataYearList);
@@ -71,6 +67,44 @@ class ChartRacerTest {
             System.out.println("Ordered List By Habitants Number in 2018 = " + orderedDataYearList);
             unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
             assertEquals(orderedDataYearList, chartRacer.orderByPopulation(fileData, year));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void teste3() {
+        List ordered5ElementsDataYearList = null;
+        List checkOrder5First = null;
+        List<String> checkOrder5FirstFromFile = null;
+
+        try {
+            int year = 1500;
+            //Reads in 1500
+            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year).subList(0, 5);
+            System.out.println("5 Items from 1500 Ordered Data year List = " + ordered5ElementsDataYearList);
+
+            //Puts orderDataYearList inside a file
+            Files.write(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt"), ordered5ElementsDataYearList);
+
+            //Extracts the information from the file
+            checkOrder5FirstFromFile = chartRacer.readFile("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt");
+            assertEquals(ordered5ElementsDataYearList, checkOrder5FirstFromFile);
+
+            //Changes the Year to 2018
+
+            year = 2018;
+            //Reads in 2018
+            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year).subList(0, 5);
+            System.out.println("5 Items from 2018 Ordered Data year List = " + ordered5ElementsDataYearList);
+
+            //Puts orderDataYearList inside a file
+            Files.write(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt"), ordered5ElementsDataYearList);
+
+            //Extracts the information from the file
+            checkOrder5FirstFromFile = chartRacer.readFile("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt");
+            assertEquals(ordered5ElementsDataYearList, checkOrder5FirstFromFile);
 
         } catch (IOException e) {
             e.printStackTrace();

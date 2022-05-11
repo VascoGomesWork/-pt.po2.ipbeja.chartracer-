@@ -26,7 +26,7 @@ public class ChartRacer {
      */
     public List<String> readFile(String fileName) {
         try {
-            return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
+                return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,10 +41,12 @@ public class ChartRacer {
      */
     public List<String> removeUnwantedDataFromList(List<String> citiesList) {
         //Removes the first lines until the first number 12 appears in the file
-        citiesList.subList(0, citiesList.indexOf("12")).clear();
-        //Removes all numbers 12 and spaces
-        citiesList.removeAll(Collections.singleton("12"));
-        citiesList.removeAll(Collections.singleton(" "));
+        if(citiesList.contains("12")) {
+            citiesList.subList(0, citiesList.indexOf("12")).clear();
+            //Removes all numbers 12 and spaces
+            citiesList.removeAll(Collections.singleton("12"));
+            citiesList.removeAll(Collections.singleton(" "));
+        }
         return citiesList;
     }
 

@@ -1,0 +1,5 @@
+1500,Fez,Morocco,130,Middle East
+1500,Cuttack,India,140,South Asia
+1500,Nanjing,China,147,East Asia
+1500,Guangzhou,China,150,East Asia
+1500,Paris,France,185,Europe
