@@ -54,12 +54,12 @@ public class ChartRacer {
      * @param year
      * @return
      */
-    public List<CitiesData> orderByPopulation(List<String> fileData, int year) {
+    public List<String> orderByPopulation(List<String> fileData, int year) {
         //https://www.youtube.com/watch?v=wboqZ2dPDtQ
         CitiesData citiesData;
         List<String> specificYearUnorderedData = getSpecificYearData(fileData, year+"");
         List<CitiesData> specificYearOrderedData = new ArrayList<>();
-        List<CitiesData> finalSpecificYearOrderedData = new ArrayList<>();
+        List<String> finalSpecificYearOrderedData = new ArrayList<>();
 
         for (int i = 0; i < specificYearUnorderedData.size(); i++) {
             if(specificYearUnorderedData.get(i).contains(",")) {
@@ -68,24 +68,19 @@ public class ChartRacer {
                 System.out.println();
                 //Adds to the ordered List what comes from Comparable
                 specificYearOrderedData.add(citiesData);
-
-
-
-                //System.out.println("Teste = " + specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
             }
         }
-
         //Sorts the List by Population Number
         Collections.sort(specificYearOrderedData);
 
-        //TODO - Fix Ordered Data
+        //Get String inside of an ordered finalList
         for (int i = 0; i < specificYearOrderedData.size(); i++) {
-            System.out.println(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
-            //finalSpecificYearOrderedData.add(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
+            //System.out.println(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
+            finalSpecificYearOrderedData.add(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
         }
 
-        System.out.println("Ordered List = " + specificYearOrderedData);
-        return specificYearOrderedData;
+        System.out.println("Ordered List ChartRacer Class = " + finalSpecificYearOrderedData);
+        return finalSpecificYearOrderedData;
     }
 
     /**
@@ -94,7 +89,7 @@ public class ChartRacer {
      * @return
      */
     private String getYear(String dataString) {
-        System.out.println("Year = " + dataString.substring(0, dataString.indexOf(',')));
+        //System.out.println("Year = " + dataString.substring(0, dataString.indexOf(',')));
         return dataString.substring(0, dataString.indexOf(','));
     }
 
@@ -107,7 +102,7 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",");
         int endIndex = dataString.indexOf(",", beginIndex + 1);
         this.cityEndIndex = endIndex;
-        System.out.println("City = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        //System.out.println("City = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -121,7 +116,7 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",", this.cityEndIndex);
         int endIndex = dataString.indexOf(",", beginIndex + 1);
         this.countryEndIndex = endIndex;
-        System.out.println("Country = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        //System.out.println("Country = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -135,7 +130,7 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",", this.countryEndIndex);
         int endIndex = dataString.lastIndexOf(',');
         this.populationEndIndex = endIndex;
-        System.out.println("Population = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        //System.out.println("Population = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -148,7 +143,7 @@ public class ChartRacer {
         //Uses globally defined variable populationEndIndex saved before as starting point
         int beginIndex = dataString.indexOf(",", this.populationEndIndex);
         int endIndex = dataString.length();
-        System.out.println("Region = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        //System.out.println("Region = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -170,7 +165,7 @@ public class ChartRacer {
                 }
             }
             catch (Exception e){
-                break;
+                //break;
             }
         }
         return specificYearList;

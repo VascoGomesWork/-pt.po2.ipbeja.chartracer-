@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,20 +52,25 @@ class ChartRacerTest {
         // Todo - Order DataYearList by number of people in city
         int year = 1500;
         List unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
-        System.out.println("Data Year = " + unorderedDataYearList);
+        //System.out.println("Data Year = " + unorderedDataYearList);
         List orderedDataYearList = null;
         try {
-            orderedDataYearList = Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt"));
+            //Reads in 1500
+            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year);
 
-            System.out.println("Ordered List By Habitants Number = " + orderedDataYearList);
+            System.out.println("Ordered List By Habitants Number in 1500 = " + orderedDataYearList);
             //check if array list is ordered in 1500 with orderDa
             //Orders the data using Comparable Interface
             assertEquals(orderedDataYearList, chartRacer.orderByPopulation(fileData, year));
 
             //check if array list is ordered in 2018
-            //Orders the data using Comparable Interface
+            //Orders the data using Comparable Interface.
+            //Reads in 2018
+            year = 2018;
+            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year);
+            System.out.println("Ordered List By Habitants Number in 2018 = " + orderedDataYearList);
             unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
-            assertEquals(unorderedDataYearList, chartRacer.orderByPopulation(fileData, year));
+            assertEquals(orderedDataYearList, chartRacer.orderByPopulation(fileData, year));
 
         } catch (IOException e) {
             e.printStackTrace();

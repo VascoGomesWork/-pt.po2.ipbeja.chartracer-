@@ -21,15 +21,31 @@ public class CitiesData implements Comparable<CitiesData>{
         this.region = region;
     }
 
-    private int getCityPopulation() {
+    public int getYear() {
+        return year;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public int getCityPopulation() {
         return this.populationByCity;
     }
 
     @Override
     public int compareTo(CitiesData o) {
         if(this.getCityPopulation() == o.getCityPopulation()) return 0;
-        else if(this.getCityPopulation() > o.getCityPopulation()) return -1;
-        else return 1;
+        else if(this.getCityPopulation() > o.getCityPopulation()) return 1;
+        else return -1;
     }
 
     public String convertToString(CitiesData citiesData) {

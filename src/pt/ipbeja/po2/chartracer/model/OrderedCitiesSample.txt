@@ -10,3 +10,16 @@
 1500,Cairo,Egypt,400,Middle East
 1500,Vijayanagar,India,500,South Asia
 1500,Beijing,China,672,East Asia
+
+2018,Karachi,Pakistan,18185,South Asia
+2018,New York,United States,18713,North America
+2018,Dhaka,Bangladesh,19633,South Asia
+2018,Cairo,Egypt,19850,Middle East
+2018,Osaka,Japan,20409,East Asia
+2018,Mexico City,Mexico,21520,Latin America
+2018,SÃ£o Paulo,Brazil,21698,Latin America
+2018,Mumbai,India,22120,South Asia
+2018,Beijing,China,22674,East Asia
+2018,Shanghai,China,25779,East Asia
+2018,Delhi,India,27890,South Asia
+2018,Tokyo,Japan,38194,East Asia
