@@ -14,7 +14,9 @@ import java.util.List;
 public class ChartRacer {
 
     String dataString = "";
-
+    private int cityEndIndex;
+    private int countryEndIndex;
+    private int populationEndIndex;
 
 
     /**
@@ -24,7 +26,7 @@ public class ChartRacer {
      */
     public List<String> readFile(String fileName) {
         try {
-            return makeNewList(Files.readAllLines(Paths.get(fileName)));
+            return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,48 +39,140 @@ public class ChartRacer {
      * @param citiesList
      * @return
      */
-    public List<String> makeNewList(List<String> citiesList) {
-
+    public List<String> removeUnwantedDataFromList(List<String> citiesList) {
         //Removes the first lines until the first number 12 appears in the file
         citiesList.subList(0, citiesList.indexOf("12")).clear();
         //Removes all numbers 12 and spaces
         citiesList.removeAll(Collections.singleton("12"));
         citiesList.removeAll(Collections.singleton(" "));
-
-        /*String newCitiesDataString = "";
-        List<String> newCitiesList = new ArrayList<>();
-
-        //makes new string to join every line of the file
-        /*for (String string : citiesList) {
-            newCitiesDataString += string;
-            if(string.equals("\n")){
-                newCitiesList.add(newCitiesDataString);
-            }
-        }*/
         return citiesList;
     }
 
-    public List<String> orderData(List<String> fileData) {
-        OrderCitiesData orderCitiesData = new OrderCitiesData();
-        orderCitiesData.compareTo(fileData);
-        return new ArrayList<>();
+    /**
+     * Resume : Orders List By Population Number with Comparable Interface implemented in OrderCitiesData Class
+     * @param fileData
+     * @param year
+     * @return
+     */
+    public List<CitiesData> orderByPopulation(List<String> fileData, int year) {
+        //https://www.youtube.com/watch?v=wboqZ2dPDtQ
+        CitiesData citiesData;
+        List<String> specificYearUnorderedData = getSpecificYearData(fileData, year+"");
+        List<CitiesData> specificYearOrderedData = new ArrayList<>();
+        List<CitiesData> finalSpecificYearOrderedData = new ArrayList<>();
+
+        for (int i = 0; i < specificYearUnorderedData.size(); i++) {
+            if(specificYearUnorderedData.get(i).contains(",")) {
+                String data = specificYearUnorderedData.get(i);
+                citiesData = new CitiesData(getYear(data), getCity(data), getCountry(data), getPopulationByCity(data), getRegion(data));
+                System.out.println();
+                //Adds to the ordered List what comes from Comparable
+                specificYearOrderedData.add(citiesData);
+
+
+
+                //System.out.println("Teste = " + specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
+            }
+        }
+
+        //Sorts the List by Population Number
+        Collections.sort(specificYearOrderedData);
+
+        //TODO - Fix Ordered Data
+        for (int i = 0; i < specificYearOrderedData.size(); i++) {
+            System.out.println(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
+            //finalSpecificYearOrderedData.add(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
+        }
+
+        System.out.println("Ordered List = " + specificYearOrderedData);
+        return specificYearOrderedData;
     }
 
-    public List<String> getDataYear(List<String> fileData, String year) {
+    /**
+     * Resume : Function that Gets the Year from List Item
+     * @param dataString
+     * @return
+     */
+    private String getYear(String dataString) {
+        System.out.println("Year = " + dataString.substring(0, dataString.indexOf(',')));
+        return dataString.substring(0, dataString.indexOf(','));
+    }
 
-        List<String> newYearList = new ArrayList<>();
+    /**
+     * Resume : Function that Gets the City from List Item
+     * @param dataString
+     * @return
+     */
+    private String getCity(String dataString) {
+        int beginIndex = dataString.indexOf(",");
+        int endIndex = dataString.indexOf(",", beginIndex + 1);
+        this.cityEndIndex = endIndex;
+        System.out.println("City = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        return dataString.substring(beginIndex, endIndex).replace(",", "");
+    }
+
+    /**
+     * Resume : Function that Gets the Country from List Item
+     * @param dataString
+     * @return
+     */
+    private String getCountry(String dataString) {
+        //Uses globally defined variable cityEndIndex saved before as starting point
+        int beginIndex = dataString.indexOf(",", this.cityEndIndex);
+        int endIndex = dataString.indexOf(",", beginIndex + 1);
+        this.countryEndIndex = endIndex;
+        System.out.println("Country = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        return dataString.substring(beginIndex, endIndex).replace(",", "");
+    }
+
+    /**
+     * Resume : Function that Gets the Population from List Item
+     * @param dataString
+     * @return
+     */
+    private String getPopulationByCity(String dataString) {
+        //Uses globally defined variable countryEndIndex saved before as starting point
+        int beginIndex = dataString.indexOf(",", this.countryEndIndex);
+        int endIndex = dataString.lastIndexOf(',');
+        this.populationEndIndex = endIndex;
+        System.out.println("Population = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        return dataString.substring(beginIndex, endIndex).replace(",", "");
+    }
+
+    /**
+     * Resume : Function that Gets the Region from List Item
+     * @param dataString
+     * @return
+     */
+    private String getRegion(String dataString) {
+        //Uses globally defined variable populationEndIndex saved before as starting point
+        int beginIndex = dataString.indexOf(",", this.populationEndIndex);
+        int endIndex = dataString.length();
+        System.out.println("Region = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
+        return dataString.substring(beginIndex, endIndex).replace(",", "");
+    }
+
+    /**
+     * Resume : Gets The Data relative to the Specified Year
+     * @param fileData
+     * @param year
+     * @return
+     */
+    public List<String> getSpecificYearData(List<String> fileData, String year) {
+
+        List<String> specificYearList = new ArrayList<>();
 
         for (int i = 0; i < fileData.size(); i++) {
             //Gets the Year of every list entrance from the beginning to the first ',' and checks if it's equal to the year inserted
             try{
                 if(fileData.get(i).substring(0, fileData.get(i).indexOf(',')).equals(year)){
-                    newYearList.add(fileData.get(i));
+                    specificYearList.add(fileData.get(i));
                 }
             }
             catch (Exception e){
                 break;
             }
         }
-        return newYearList;
+        return specificYearList;
     }
 }

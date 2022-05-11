@@ -3,13 +3,9 @@ package pt.ipbeja.po2.chartracer.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +30,7 @@ class ChartRacerTest {
         try {
 
             List<String> fileData = Files.readAllLines(Paths.get(fileName));
-            assertEquals(chartRacer.makeNewList(fileData), chartRacer.readFile(fileName));
+            assertEquals(chartRacer.removeUnwantedDataFromList(fileData), chartRacer.readFile(fileName));
 
             /*for (int i = 0; i < fileData.size(); i++) {
                 System.out.println(fileData.get(i));
@@ -51,17 +47,27 @@ class ChartRacerTest {
         //Interface Comparable <T>
         List<String> fileData = chartRacer.readFile(fileName);
 
-        List dataYearList = chartRacer.getDataYear(fileData, "1500");
-        System.out.println("Data Year = " + dataYearList);
+        //Gets the array of the Year 1500
+        // Todo - Order DataYearList by number of people in city
+        int year = 1500;
+        List unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
+        System.out.println("Data Year = " + unorderedDataYearList);
+        List orderedDataYearList = null;
+        try {
+            orderedDataYearList = Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt"));
 
-        //check if array list is ordered in 1500
-        //Orders the data using Comparable Interface
-        assertEquals(dataYearList, chartRacer.orderData(fileData));
+            System.out.println("Ordered List By Habitants Number = " + orderedDataYearList);
+            //check if array list is ordered in 1500 with orderDa
+            //Orders the data using Comparable Interface
+            assertEquals(orderedDataYearList, chartRacer.orderByPopulation(fileData, year));
 
-        //check if array list is ordered in 2018
-        //Orders the data using Comparable Interface
-        dataYearList = chartRacer.getDataYear(fileData, "2018");
-        assertEquals(dataYearList, chartRacer.orderData(fileData));
+            //check if array list is ordered in 2018
+            //Orders the data using Comparable Interface
+            unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
+            assertEquals(unorderedDataYearList, chartRacer.orderByPopulation(fileData, year));
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
