@@ -1,5 +1,7 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -31,16 +33,19 @@ public class ChartRacerBoard extends Pane implements View {
     }
 
     /**
-     * Resume : Function that asks for a Year
+     * Resume : Function that asks for a Year on a Specific File
      * @return
      * @param userChoosenFile
      */
     private String askYearFile(String userChoosenFile) {
 
-
         //Gets the File that the user Choose and Shows the Years Inside It for the User to Choose it
         List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
         System.out.println("All Years List View Side = " + allYearsList);
+        //TODO - Fix This
+        ComboBox<String> comboBox = new ComboBox<String>((ObservableList<String>) allYearsList);
+
+        comboBox.show();
 
         return "";
     }
@@ -114,6 +119,7 @@ public class ChartRacerBoard extends Pane implements View {
         System.out.println("View Side 1500 List = " + specificYearData);
 
         //TODO - Make Variable Indexes so it's easier to displace items in pane
+        // Do For to Loop Through List Elements
 
         //Sets Up Text About the Chart
         this.getChildren().add(new Text(50, 50,"Graphic that Represents the Demographic Population in Various Cities of the World"));
