@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * @author Vasco Gomes 19921
@@ -186,7 +187,49 @@ public class ChartRacer {
         return specificYearList;
     }
 
+    /**
+     * Resume : Method that Sends Data to the View
+     * @param specificYearData
+     */
     public void getDataToDrawGhraphic(List<String> specificYearData) {
         view.drawGraphic(specificYearData);
+    }
+
+    /**
+     * Resume : Method that returns a List with all the Years on a File
+     * @param userChoosenFile
+     * @return
+     */
+    public List<String> getAllYearsList(String userChoosenFile) {
+
+        List<String> userReadedFile = readFile(userChoosenFile);
+        List<String> allYearsList = new ArrayList<>();
+
+        for (int i = 0; i < userReadedFile.size(); i++) {
+            //Gets all the Years in File Choosen By The User and Puts it in all Year List
+            //Checks if String Length is Greater Than 0
+            if(userReadedFile.get(i).length() > 0) {
+                allYearsList.add(getYear(userReadedFile.get(i)));
+            }
+        }
+        //Calls Method to Remove Repeated Elements from List with TreeSet
+        return removeRepeatedElements(allYearsList);
+    }
+
+    /**
+     * Resume : Remove Repeated Elements from List with TreeSet
+     * @param allYearsList
+     * @return
+     */
+    private List<String> removeRepeatedElements(List<String> allYearsList) {
+
+        //Delete Repeated Years with TreeSet
+        TreeSet<String> allYearsTreeSet = new TreeSet<>(allYearsList);
+        //Clears the List
+        allYearsList.clear();
+        //Adds All Elements of TreeSet on the List Again
+        allYearsList.addAll(allYearsTreeSet);
+
+        return allYearsList;
     }
 }

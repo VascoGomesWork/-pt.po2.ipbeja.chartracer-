@@ -3,11 +3,10 @@ package pt.ipbeja.po2.chartracer.gui;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
 import pt.ipbeja.po2.chartracer.model.View;
 
@@ -24,68 +23,90 @@ public class ChartRacerBoard extends Pane implements View {
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
 
-    public ChartRacerBoard(int minWidth) {
+    public ChartRacerBoard(int minWidth, Stage primaryStage) {
 
         this.minWidth = minWidth;
-        //TODO - Make method with a Menu bar with options
-        createMenuBar(minWidth);
-
-        //TODO - Make method to ask the File
-        String fileName = askUserFile();
-
-        //TODO - Make method to ask the year
-        String year = askYearFile();
-
-        //Method that creates the chart
-        createChart();
+        //Method that draws a Menu Bar with options
+        createMenuBar(primaryStage);
     }
 
     /**
      * Resume : Function that asks for a Year
      * @return
+     * @param userChoosenFile
      */
-    private String askYearFile() {
+    private String askYearFile(String userChoosenFile) {
+
+
+        //Gets the File that the user Choose and Shows the Years Inside It for the User to Choose it
+        List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
+        System.out.println("All Years List View Side = " + allYearsList);
+
         return "";
     }
 
     /**
      * Resume : Function that asks for the file to Read
      * @return
+     * @param primaryStage
      */
-    private String askUserFile() {
+    private String askUserFile(Stage primaryStage) {
         //https://openjfx.io/javadoc/17/javafx.graphics/javafx/stage/FileChooser.html
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Text Files");
+        //Sets Initial Directory to FileChooser
+        fileChooser.setInitialDirectory(new File("src/pt/ipbeja/po2/chartracer/model"));
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")
         );
-        //File selectedFile = fileChooser.showOpenDialog(super.getScene().getWindow());
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
         String filePath = "";
         //If File is Null shows an error
-        /*if(selectedFile == null){
+        if(selectedFile == null){
             System.out.println("ERROR : Did Not Choose any File!!");
         }
         else {
             //Gets the File Path
             filePath = selectedFile.getAbsolutePath();
-        }*/
+        }
         System.out.println("Choosen File = " + filePath);
         return filePath;
     }
 
-    private void createMenuBar(int barWidth) {
+    private void createMenuBar(Stage primaryStage) {
+        //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Graphic Operations");
-        //this.addMenuItem(menu, "Teste");
-        //menuBar.setWidth();
-        MenuItem menuItem = new MenuItem("Draw 1 Year");
+        MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
+        MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
+
+        //Checks If Item 1 has been Pressed
+        //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
+        menuItemDraw1Year.setOnAction(event -> {
+
+            String userChoosenFile = askUserFile(primaryStage);
+
+            //Method that asks User File and asks user year and Draws the Chart
+            createChart(userChoosenFile, askYearFile(userChoosenFile));
+
+        });
+
+        //Adds Items to Menu
+        menu.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears);
+
+        //Adds Menu to Menu Bar
+        menuBar.getMenus().add(menu);
+
+        //Adds Menu Bar To Program
+        this.getChildren().add(menuBar);
     }
 
-    private void createChart() {
+    private void createChart(String file, String year) {
 
-        String fileName = "src/pt/ipbeja/po2/chartracer/model/cities.txt";
+        year = "1500";
 
-        chartRacer.getDataToDrawGhraphic(chartRacer.getSpecificYearData(chartRacer.readFile(fileName), 1500+""));
+        //Gets the Data Relative to the Graphic and Draws it
+        chartRacer.getDataToDrawGhraphic(chartRacer.getSpecificYearData(chartRacer.readFile(file), year));
     }
 
     @Override
