@@ -1,5 +1,6 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -13,5 +14,18 @@ public class RectangleChartRacer extends Rectangle {
     }
 
 
+    public void setColor(String color){
+        //Sets Colors through RGB Values
+        //Sets Background Color
+        System.out.println("Color = " + color);
+        System.out.println("Teste = " + color.substring(color.indexOf(',') + 1, color.lastIndexOf(',')));
+        int r = Integer.parseInt(color.substring(0, color.indexOf(',')));
+        int g = Integer.parseInt(color.substring(color.indexOf(',') + 1, color.lastIndexOf(',')));
+        int b = Integer.parseInt(color.substring(color.lastIndexOf(',') + 1));
+        this.setFill(Color.rgb(r, g, b));
+
+        //Sets Stroke
+        this.setStroke(Color.rgb(0,0,0));
+    }
 
 }

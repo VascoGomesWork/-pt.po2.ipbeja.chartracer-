@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -13,6 +15,7 @@ import pt.ipbeja.po2.chartracer.model.View;
 
 import java.io.File;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Vasco Gomes 19921
@@ -22,6 +25,7 @@ public class ChartRacerBoard extends Pane implements View {
 
     //Creates a HBox
     HBox hBox = new HBox();
+    HBox drawingHBox = new HBox();
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
 
@@ -120,6 +124,9 @@ public class ChartRacerBoard extends Pane implements View {
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
+            //Clears Drawing HBox
+            drawingHBox.getChildren().clear();
+
             //Calls the Function to Choose a File
             String userChoosenFile = askUserFile(primaryStage);
             //Asks the User with year they want to see
@@ -147,8 +154,8 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
         System.out.println("View Side 1500 List = " + specificYearData);
 
-        //TODO - Make Variable Indexes so it's easier to displace items in pane
-        // Do For to Loop Through List Elements
+        //TODO - Add All inside a Hbox
+        // Put Graphic Ordered by Population Number
         int xAxis = 50;
         int yAxis = 50;
         int xChartBar = 150;
@@ -156,7 +163,7 @@ public class ChartRacerBoard extends Pane implements View {
         int width = 150;
         int height = 50;
         int yAxisCityName = 130;
-        int xCityPopulation = 350;
+        int xCityPopulation = 200;
         int yAxisLine = 60;
 
         //Sets Up Text About the Chart
@@ -164,28 +171,53 @@ public class ChartRacerBoard extends Pane implements View {
 
         for (int i = 0; i < specificYearData.size(); i++) {
 
+            chartRacer.getYear(specificYearData.get(i));
+            String city = chartRacer.getCity(specificYearData.get(i));
+            String country = chartRacer.getCountry(specificYearData.get(i));
+            String population = chartRacer.getPopulationByCity(specificYearData.get(i));
+            String region = chartRacer.getRegion(specificYearData.get(i));
+
             //Sets Up Lines to make the Graphic
             this.getChildren().add(new LineChartRacer(150, yAxisLine, 150, 200));
             //specificYearData.get(i)
 
             //Draws City Name
-            this.getChildren().add(new Text(xAxis, yAxisCityName,chartRacer.getCity(specificYearData.get(i))));
+            this.getChildren().add(new Text(xAxis, yAxisCityName,city));
+            //this.getChildren().add(new Text(xAxis, yAxisCityName,city + " -> " + country + " -> " + region));
 
             //Sets Up the Bars of the Graphic
             //Makes Width according the Population Number
-            this.getChildren().add(new RectangleChartRacer(xChartBar, yChartBar, getBarWidthPopulation(chartRacer.getPopulationByCity(specificYearData.get(i))), height));
+            double populationWidth = getBarWidthPopulation(population);
+            RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
+            //Gets color generated automaticly
+            rectangle.setColor(generateRandomColor());
+            this.getChildren().add(rectangle);
 
             //Draws City Population
-            this.getChildren().add(new Text(xCityPopulation, yAxisCityName,chartRacer.getPopulationByCity(specificYearData.get(i))));
+            this.getChildren().add(new Text(populationWidth + xCityPopulation, yAxisCityName,population));
 
             yAxisCityName += 70;
             yChartBar += 70;
             yAxisLine += 82;
         }
+        //puts everithing inside of the Drawing HBox
+        //drawingHBox.getChildren().add(this);
+        //this.getChildren().add(drawingHBox);
+    }
+
+    /**
+     * Resume : Function that Generates a Random Color and returns a String of that Color
+     * @return
+     */
+    private String generateRandomColor() {
+        int r = (int) ((Math.random() * (255 - 0)) + 0);
+        int g = (int) ((Math.random() * (255 - 0)) + 0);
+        int b = (int) ((Math.random() * (255 - 0)) + 0);
+        return r + "," + g + "," + b;
     }
 
     private double getBarWidthPopulation(String populationByCity) {
         System.out.println("Population By City = " + populationByCity);
-        return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3)) / 10;
+        return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3));
     }
 }
