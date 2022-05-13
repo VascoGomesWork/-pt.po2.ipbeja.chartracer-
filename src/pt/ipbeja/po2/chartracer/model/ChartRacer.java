@@ -39,6 +39,7 @@ public class ChartRacer {
      * @return
      */
     public List<String> readFile(String fileName) {
+        //TODO - Check if the File has length > 0 and the file format of year,city,country,population,region
         try {
                 return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
         } catch (IOException e) {
