@@ -20,15 +20,16 @@ import java.util.List;
  */
 public class ChartRacerBoard extends Pane implements View {
 
-    private final int minWidth;
     //Creates a HBox
     HBox hBox = new HBox();
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
 
-    public ChartRacerBoard(int minWidth, Stage primaryStage) {
+    public ChartRacerBoard(Stage primaryStage) {
 
-        this.minWidth = minWidth;
+        //this.minWidth = minWidth;
+        primaryStage.setMinWidth(getMaxWidth());
+        primaryStage.setMinHeight(getMaxHeight());
         //Method that draws a Menu Bar with options
         createMenuBar(primaryStage);
     }
@@ -50,11 +51,13 @@ public class ChartRacerBoard extends Pane implements View {
         Button selectYearBtn = new Button("Select Year");
 
         //Sets the Hbox in Pane
-        hBox.setLayoutX(500);
-        hBox.setLayoutY(500);
+        hBox.setLayoutX(50);
+        hBox.setLayoutY(50);
+
+        TextChartRacer textChartRacer = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
 
         //Adds the Combobox and Button to HBox
-        hBox.getChildren().addAll(comboBox, selectYearBtn);
+        hBox.getChildren().addAll(textChartRacer, comboBox, selectYearBtn);
         //Adds HBox to Pane
         this.getChildren().add(hBox);
 
@@ -148,25 +151,41 @@ public class ChartRacerBoard extends Pane implements View {
         // Do For to Loop Through List Elements
         int xAxis = 50;
         int yAxis = 50;
+        int xChartBar = 150;
+        int yChartBar = 100;
         int width = 150;
         int height = 50;
-        //Sets Up Text About the Chart
-        this.getChildren().add(new Text(50, 50,"Graphic that Represents the Demographic Population in Various Cities of the World"));
+        int yAxisCityName = 130;
+        int xCityPopulation = 350;
+        int yAxisLine = 60;
 
-        //Sets Up Lines to make the Graphic
-        this.getChildren().add(new LineChartRacer(150, 60, 150, 200));
+        //Sets Up Text About the Chart
+        this.getChildren().add(new Text(xAxis, yAxis,"Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(0))));
 
         for (int i = 0; i < specificYearData.size(); i++) {
+
+            //Sets Up Lines to make the Graphic
+            this.getChildren().add(new LineChartRacer(150, yAxisLine, 150, 200));
             //specificYearData.get(i)
+
+            //Draws City Name
+            this.getChildren().add(new Text(xAxis, yAxisCityName,chartRacer.getCity(specificYearData.get(i))));
+
+            //Sets Up the Bars of the Graphic
+            //Makes Width according the Population Number
+            this.getChildren().add(new RectangleChartRacer(xChartBar, yChartBar, getBarWidthPopulation(chartRacer.getPopulationByCity(specificYearData.get(i))), height));
+
+            //Draws City Population
+            this.getChildren().add(new Text(xCityPopulation, yAxisCityName,chartRacer.getPopulationByCity(specificYearData.get(i))));
+
+            yAxisCityName += 70;
+            yChartBar += 70;
+            yAxisLine += 82;
         }
-        
-        //Draws City Name
-        this.getChildren().add(new Text(50, 130,"City Name"));
+    }
 
-        //Sets Up the Bars of the Graphic
-        this.getChildren().add(new RectangleChartRacer(150, 100, 150, 50));
-
-        //Draws City Population
-        this.getChildren().add(new Text(350, 130,"City Population"));
+    private double getBarWidthPopulation(String populationByCity) {
+        System.out.println("Population By City = " + populationByCity);
+        return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3)) / 10;
     }
 }

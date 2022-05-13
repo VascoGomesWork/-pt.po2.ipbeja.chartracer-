@@ -26,7 +26,7 @@ public class ChartRacerStart extends Application {
         int minHeight = 200;
         int minWidth = 400;
         //TODO - Execute Program with Java 17 not Java 8
-        ChartRacerBoard board = new ChartRacerBoard(minWidth, primaryStage);
+        ChartRacerBoard board = new ChartRacerBoard(primaryStage);
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos Nº19921");

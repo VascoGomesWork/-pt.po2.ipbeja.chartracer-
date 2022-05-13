@@ -104,7 +104,7 @@ public class ChartRacer {
      * @param dataString
      * @return
      */
-    private String getYear(String dataString) {
+    public String getYear(String dataString) {
         //System.out.println("Year = " + dataString.substring(0, dataString.indexOf(',')));
         return dataString.substring(0, dataString.indexOf(','));
     }
@@ -114,7 +114,7 @@ public class ChartRacer {
      * @param dataString
      * @return
      */
-    private String getCity(String dataString) {
+    public String getCity(String dataString) {
         int beginIndex = dataString.indexOf(",");
         int endIndex = dataString.indexOf(",", beginIndex + 1);
         this.cityEndIndex = endIndex;
@@ -127,7 +127,7 @@ public class ChartRacer {
      * @param dataString
      * @return
      */
-    private String getCountry(String dataString) {
+    public String getCountry(String dataString) {
         //Uses globally defined variable cityEndIndex saved before as starting point
         int beginIndex = dataString.indexOf(",", this.cityEndIndex);
         int endIndex = dataString.indexOf(",", beginIndex + 1);
@@ -141,7 +141,7 @@ public class ChartRacer {
      * @param dataString
      * @return
      */
-    private String getPopulationByCity(String dataString) {
+    public String getPopulationByCity(String dataString) {
         //Uses globally defined variable countryEndIndex saved before as starting point
         int beginIndex = dataString.indexOf(",", this.countryEndIndex);
         int endIndex = dataString.lastIndexOf(',');
@@ -155,7 +155,7 @@ public class ChartRacer {
      * @param dataString
      * @return
      */
-    private String getRegion(String dataString) {
+    public String getRegion(String dataString) {
         //Uses globally defined variable populationEndIndex saved before as starting point
         int beginIndex = dataString.indexOf(",", this.populationEndIndex);
         int endIndex = dataString.length();
