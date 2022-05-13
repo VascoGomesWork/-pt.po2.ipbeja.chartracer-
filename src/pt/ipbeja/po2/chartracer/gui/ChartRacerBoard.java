@@ -117,10 +117,12 @@ public class ChartRacerBoard extends Pane implements View {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Graphic Operations");
+        Menu menu1 = new Menu("Clear All");
+        Menu menu2 = new Menu("Exit");
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
         MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
 
-        //Checks If Item 1 has been Pressed
+        //On Click if Item 1 in the Menu
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
@@ -136,7 +138,7 @@ public class ChartRacerBoard extends Pane implements View {
         //Adds Items to Menu
         menu.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears);
         //Adds Menu to Menu Bar
-        menuBar.getMenus().add(menu);
+        menuBar.getMenus().addAll(menu, menu1, menu2);
         //Adds Menu Bar To Program
         this.getChildren().add(menuBar);
     }
@@ -210,12 +212,17 @@ public class ChartRacerBoard extends Pane implements View {
      * @return
      */
     private String generateRandomColor() {
-        int r = (int) ((Math.random() * (255 - 0)) + 0);
-        int g = (int) ((Math.random() * (255 - 0)) + 0);
-        int b = (int) ((Math.random() * (255 - 0)) + 0);
+        int r = (int) ((Math.random() * (255)) + 0);
+        int g = (int) ((Math.random() * (255)) + 0);
+        int b = (int) ((Math.random() * (255)) + 0);
         return r + "," + g + "," + b;
     }
 
+    /**
+     * Resume : Gets the With of the Bar Through the Population in the List
+     * @param populationByCity
+     * @return
+     */
     private double getBarWidthPopulation(String populationByCity) {
         System.out.println("Population By City = " + populationByCity);
         return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3));
