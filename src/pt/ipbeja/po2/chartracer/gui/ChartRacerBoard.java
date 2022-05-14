@@ -31,9 +31,8 @@ public class ChartRacerBoard extends Pane implements View {
 
     public ChartRacerBoard(Stage primaryStage) {
 
-        //this.minWidth = minWidth;
-        primaryStage.setMinWidth(getMaxWidth());
-        primaryStage.setMinHeight(getMaxHeight());
+        //Properties that Maximizes Primary Stage
+        primaryStage.setMaximized(true);
         //Method that draws a Menu Bar with options
         createMenuBar(primaryStage);
     }
@@ -116,9 +115,9 @@ public class ChartRacerBoard extends Pane implements View {
     private void createMenuBar(Stage primaryStage) {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
         MenuBar menuBar = new MenuBar();
-        Menu menu = new Menu("Graphic Operations");
-        Menu menu1 = new Menu("Clear All");
-        Menu menu2 = new Menu("Exit");
+        Menu menuGraphicOperations = new Menu("Graphic Operations");
+        Menu menuClearAll = new Menu("Clear All");
+        Menu menuExit = new Menu("Exit");
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
         MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
 
@@ -126,7 +125,7 @@ public class ChartRacerBoard extends Pane implements View {
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
-            //Clears Drawing HBox
+            // Clears Pane
             drawingHBox.getChildren().clear();
 
             //Calls the Function to Choose a File
@@ -135,10 +134,23 @@ public class ChartRacerBoard extends Pane implements View {
             askYearFile(userChoosenFile);
         });
 
+        //TODO - How to Set a Menu Clickable
+        //On Click of Menu Option "Clear All"
+        menuClearAll.setOnAction(event -> {
+            // Clears Pane
+            //this.getChildren().clear();
+            System.out.println("Clear All");
+        });
+
+        menuExit.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are You Sure You Want to Exit?", new ButtonType("Yes"), new ButtonType("No"));
+            alert.showAndWait();
+        });
+
         //Adds Items to Menu
-        menu.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears);
+        menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears);
         //Adds Menu to Menu Bar
-        menuBar.getMenus().addAll(menu, menu1, menu2);
+        menuBar.getMenus().addAll(menuGraphicOperations, menuClearAll, menuExit);
         //Adds Menu Bar To Program
         this.getChildren().add(menuBar);
     }
