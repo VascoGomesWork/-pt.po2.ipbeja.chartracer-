@@ -125,7 +125,7 @@ public class ChartRacerBoard extends Pane implements View {
         MenuItem menuItemClearAll = new MenuItem("Clear All");
         MenuItem menuItemExit = new MenuItem("Exit");
 
-        //On Click if Item 1 in the Menu
+        //OnClick of Menu Item "Draw 1 Year"
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
@@ -143,7 +143,15 @@ public class ChartRacerBoard extends Pane implements View {
             askYearFile(userChoosenFile);
         });
 
-        //On Click of Menu Option "Clear All"
+        //OnClick of Menu Item "Draw All Years"
+        menuItemDrawAllYears.setOnAction(event -> {
+
+            //Loops through all the Years and Draws the Graphic with animations
+            drawAllYears(chartRacer.readFile(askUserFile(primaryStage)));
+
+        });
+
+        //OnClick of Menu Item "Clear All"
         menuItemClearAll.setOnAction(event -> {
             // Clears HBox and Drawing Box
             hBox.getChildren().clear();
@@ -154,6 +162,7 @@ public class ChartRacerBoard extends Pane implements View {
 
         });
 
+        //OnClick of Menu Item "Exit"
         menuItemExit.setOnAction(event -> {
             //Buttons in Alert Type
             //https://stackoverflow.com/questions/43031602/how-to-set-a-method-to-a-javafx-alert-button
@@ -191,71 +200,23 @@ public class ChartRacerBoard extends Pane implements View {
     @Override
     public void drawGraphic(List<String> specificYearData) {
 
-        //TODO - Put Graphic Ordered by Population Number
-        int xChartBar = 150;
-        int yChartBar = 100;
-        int width = 150;
-        int height = 50;
-        int yAxisCityName = 130;
-        int xCityPopulation = 200;
-        int yAxisLine = 60;
-
-        //Sets Up Text About the Chart
-        drawingPane.addObjectsDrawingPane(new Text(xAxis, yAxis,"Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(0))));
-
-        for (int i = 0; i < specificYearData.size(); i++) {
-
-            chartRacer.getYear(specificYearData.get(i));
-            String city = chartRacer.getCity(specificYearData.get(i));
-            String country = chartRacer.getCountry(specificYearData.get(i));
-            String population = chartRacer.getPopulationByCity(specificYearData.get(i));
-            String region = chartRacer.getRegion(specificYearData.get(i));
-
-            //Sets Up Lines to make the Graphic
-            drawingPane.addObjectsDrawingPane(new LineChartRacer(150, yAxisLine, 150, 200));
-
-            //Draws City Name
-            drawingPane.addObjectsDrawingPane(new TextChartRacer(xAxis, yAxisCityName,city));
-
-            //Sets Up the Bars of the Graphic
-            //Makes Width according the Population Number
-            double populationWidth = getBarWidthPopulation(population);
-            RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-            //Gets color generated automaticly
-            rectangle.setColor(generateRandomColor());
-            drawingPane.addObjectsDrawingPane(rectangle);
-
-            drawingPane.addObjectsDrawingPane(new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName,population));
-
-            yAxisCityName += 70;
-            yChartBar += 70;
-            yAxisLine += 82;
-        }
-        //Adds the Drawing Box to Pane
-        this.getChildren().add(drawingPane);
+        //Gets the Function to Draw the Graphic
+        this.getChildren().add(drawingPane.drawGraphic(specificYearData));
 
         //Creates new HBox Object
         hBox = new HBox();
     }
 
     /**
-     * Resume : Function that Generates a Random Color and returns a String of that Color
-     * @return
+     * Resume : Loops through all the Years and Draws the Graphic with animations
      */
-    private String generateRandomColor() {
-        int r = (int) ((Math.random() * (255)) + 0);
-        int g = (int) ((Math.random() * (255)) + 0);
-        int b = (int) ((Math.random() * (255)) + 0);
-        return r + "," + g + "," + b;
+    private void drawAllYears(List<String> allYearsList) {
+
+        System.out.println("All Year List View Side = " + allYearsList);
+        /*for (int i = 0; i < allYearsList.size(); i++) {
+            //TODO - Need to Get List Order Every Year
+        }*/
+
     }
 
-    /**
-     * Resume : Gets the With of the Bar Through the Population in the List
-     * @param populationByCity
-     * @return
-     */
-    private double getBarWidthPopulation(String populationByCity) {
-        System.out.println("Population By City = " + populationByCity);
-        return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3));
-    }
 }
