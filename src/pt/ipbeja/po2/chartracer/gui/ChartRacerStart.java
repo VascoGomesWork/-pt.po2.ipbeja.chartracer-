@@ -26,6 +26,7 @@ public class ChartRacerStart extends Application {
         int minHeight = 200;
         int minWidth = 400;
         //TODO - Execute Program with Java 17 not Java 8
+        //TODO - Reduce Method With more than 30 ;
         ChartRacerBoard board = new ChartRacerBoard(primaryStage);
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);

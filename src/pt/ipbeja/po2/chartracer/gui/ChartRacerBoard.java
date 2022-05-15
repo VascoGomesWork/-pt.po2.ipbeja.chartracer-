@@ -1,12 +1,11 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,7 +14,7 @@ import pt.ipbeja.po2.chartracer.model.View;
 
 import java.io.File;
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 /**
  * @author Vasco Gomes 19921
@@ -25,7 +24,9 @@ public class ChartRacerBoard extends Pane implements View {
 
     //Creates a HBox
     HBox hBox = new HBox();
-    HBox drawingHBox = new HBox();
+    private int xAxis = 50;
+    private int yAxis = 50;
+    DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
 
@@ -49,13 +50,13 @@ public class ChartRacerBoard extends Pane implements View {
 
         //Creates a Combobox with the Observable List Created from the Years List
         ComboBox<String> comboBox = new ComboBox(convertListToObservableList(allYearsList));
-
+        //TODO - Set Default Year in Combobox
         //Creates a Button
         Button selectYearBtn = new Button("Select Year");
 
         //Sets the Hbox in Pane
-        hBox.setLayoutX(50);
-        hBox.setLayoutY(50);
+        hBox.setLayoutX(200);
+        hBox.setLayoutY(60);
 
         TextChartRacer textChartRacer = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
 
@@ -114,19 +115,27 @@ public class ChartRacerBoard extends Pane implements View {
 
     private void createMenuBar(Stage primaryStage) {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
+        //https://stackoverflow.com/questions/10315774/javafx-2-0-activating-a-menu-like-a-menuitem
         MenuBar menuBar = new MenuBar();
         Menu menuGraphicOperations = new Menu("Graphic Operations");
-        Menu menuClearAll = new Menu("Clear All");
-        Menu menuExit = new Menu("Exit");
+        Menu menuProgramOperations = new Menu("Program Operations");
+
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
         MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
+        MenuItem menuItemClearAll = new MenuItem("Clear All");
+        MenuItem menuItemExit = new MenuItem("Exit");
 
         //On Click if Item 1 in the Menu
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
-            // Clears Pane
-            drawingHBox.getChildren().clear();
+            hBox.getChildren().clear();
+
+            //Clears the Drawing Box
+            drawingPane.clear();
+
+            //Resets the Drawing Box
+            drawingPane = new DrawingPane(xAxis, yAxis);
 
             //Calls the Function to Choose a File
             String userChoosenFile = askUserFile(primaryStage);
@@ -134,23 +143,38 @@ public class ChartRacerBoard extends Pane implements View {
             askYearFile(userChoosenFile);
         });
 
-        //TODO - How to Set a Menu Clickable
         //On Click of Menu Option "Clear All"
-        menuClearAll.setOnAction(event -> {
-            // Clears Pane
-            //this.getChildren().clear();
-            System.out.println("Clear All");
+        menuItemClearAll.setOnAction(event -> {
+            // Clears HBox and Drawing Box
+            hBox.getChildren().clear();
+            drawingPane.clear();
+
+            //Makes DrawingPane new Object
+            drawingPane = new DrawingPane(xAxis, yAxis);
+
         });
 
-        menuExit.setOnAction(event -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are You Sure You Want to Exit?", new ButtonType("Yes"), new ButtonType("No"));
-            alert.showAndWait();
+        menuItemExit.setOnAction(event -> {
+            //Buttons in Alert Type
+            //https://stackoverflow.com/questions/43031602/how-to-set-a-method-to-a-javafx-alert-button
+            //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonType.html
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are You Sure You Want to Exit?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> btnResult = alert.showAndWait();
+
+            if(btnResult.isPresent() && btnResult.get() == ButtonType.YES){
+                //How to Terminate an Application
+                //https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
+                Platform.exit();
+            }
         });
 
-        //Adds Items to Menu
-        menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears);
+        //Adds Items to Graphic Operations Menu
+        menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears, menuItemClearAll);
+        //Adds Items to Program Operation Menu
+        menuProgramOperations.getItems().addAll(menuItemExit);
         //Adds Menu to Menu Bar
-        menuBar.getMenus().addAll(menuGraphicOperations, menuClearAll, menuExit);
+        menuBar.getMenus().addAll(menuGraphicOperations, menuProgramOperations);
         //Adds Menu Bar To Program
         this.getChildren().add(menuBar);
     }
@@ -166,12 +190,8 @@ public class ChartRacerBoard extends Pane implements View {
 
     @Override
     public void drawGraphic(List<String> specificYearData) {
-        System.out.println("View Side 1500 List = " + specificYearData);
 
-        //TODO - Add All inside a Hbox
-        // Put Graphic Ordered by Population Number
-        int xAxis = 50;
-        int yAxis = 50;
+        //TODO - Put Graphic Ordered by Population Number
         int xChartBar = 150;
         int yChartBar = 100;
         int width = 150;
@@ -181,7 +201,7 @@ public class ChartRacerBoard extends Pane implements View {
         int yAxisLine = 60;
 
         //Sets Up Text About the Chart
-        this.getChildren().add(new Text(xAxis, yAxis,"Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(0))));
+        drawingPane.addObjectsDrawingPane(new Text(xAxis, yAxis,"Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(0))));
 
         for (int i = 0; i < specificYearData.size(); i++) {
 
@@ -192,12 +212,10 @@ public class ChartRacerBoard extends Pane implements View {
             String region = chartRacer.getRegion(specificYearData.get(i));
 
             //Sets Up Lines to make the Graphic
-            this.getChildren().add(new LineChartRacer(150, yAxisLine, 150, 200));
-            //specificYearData.get(i)
+            drawingPane.addObjectsDrawingPane(new LineChartRacer(150, yAxisLine, 150, 200));
 
             //Draws City Name
-            this.getChildren().add(new Text(xAxis, yAxisCityName,city));
-            //this.getChildren().add(new Text(xAxis, yAxisCityName,city + " -> " + country + " -> " + region));
+            drawingPane.addObjectsDrawingPane(new TextChartRacer(xAxis, yAxisCityName,city));
 
             //Sets Up the Bars of the Graphic
             //Makes Width according the Population Number
@@ -205,18 +223,19 @@ public class ChartRacerBoard extends Pane implements View {
             RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
             //Gets color generated automaticly
             rectangle.setColor(generateRandomColor());
-            this.getChildren().add(rectangle);
+            drawingPane.addObjectsDrawingPane(rectangle);
 
-            //Draws City Population
-            this.getChildren().add(new Text(populationWidth + xCityPopulation, yAxisCityName,population));
+            drawingPane.addObjectsDrawingPane(new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName,population));
 
             yAxisCityName += 70;
             yChartBar += 70;
             yAxisLine += 82;
         }
-        //puts everithing inside of the Drawing HBox
-        //drawingHBox.getChildren().add(this);
-        //this.getChildren().add(drawingHBox);
+        //Adds the Drawing Box to Pane
+        this.getChildren().add(drawingPane);
+
+        //Creates new HBox Object
+        hBox = new HBox();
     }
 
     /**
