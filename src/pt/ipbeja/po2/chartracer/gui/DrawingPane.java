@@ -95,7 +95,6 @@ public class DrawingPane extends Pane {
      * @return
      */
     private double getBarWidthPopulation(String populationByCity) {
-        System.out.println("Population By City = " + populationByCity);
         return Integer.parseInt(populationByCity.substring(populationByCity.length() - 3));
     }
 }

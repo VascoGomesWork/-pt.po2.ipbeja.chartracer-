@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
@@ -49,8 +48,10 @@ public class ChartRacerBoard extends Pane implements View {
         List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
 
         //Creates a Combobox with the Observable List Created from the Years List
-        ComboBox<String> comboBox = new ComboBox(convertListToObservableList(allYearsList));
-        //TODO - Set Default Year in Combobox
+        ComboBox<String> yearsComboBox = new ComboBox(convertListToObservableList(allYearsList));
+        //https://stackoverflow.com/questions/34949422/how-to-set-default-value-in-combobox-javafx
+        yearsComboBox.getSelectionModel().selectFirst();
+
         //Creates a Button
         Button selectYearBtn = new Button("Select Year");
 
@@ -61,7 +62,7 @@ public class ChartRacerBoard extends Pane implements View {
         TextChartRacer textChartRacer = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
 
         //Adds the Combobox and Button to HBox
-        hBox.getChildren().addAll(textChartRacer, comboBox, selectYearBtn);
+        hBox.getChildren().addAll(textChartRacer, yearsComboBox, selectYearBtn);
         //Adds HBox to Pane
         this.getChildren().add(hBox);
 
@@ -69,7 +70,7 @@ public class ChartRacerBoard extends Pane implements View {
         selectYearBtn.setOnAction(event -> {
 
             //Method that asks User File and asks user year and Draws the Chart
-            createChart(userChoosenFile, comboBox.getValue());
+            createChart(userChoosenFile, yearsComboBox.getValue());
 
         });
     }
@@ -147,7 +148,8 @@ public class ChartRacerBoard extends Pane implements View {
         menuItemDrawAllYears.setOnAction(event -> {
 
             //Loops through all the Years and Draws the Graphic with animations
-            drawAllYears(chartRacer.readFile(askUserFile(primaryStage)));
+            String userFile = askUserFile(primaryStage);
+            drawAllYears(chartRacer.readFile(userFile), userFile);
 
         });
 
@@ -210,12 +212,15 @@ public class ChartRacerBoard extends Pane implements View {
     /**
      * Resume : Loops through all the Years and Draws the Graphic with animations
      */
-    private void drawAllYears(List<String> allYearsList) {
+    private void drawAllYears(List<String> allYearsList, String userFile) {
 
         System.out.println("All Year List View Side = " + allYearsList);
-        /*for (int i = 0; i < allYearsList.size(); i++) {
+        for (int i = 0; i < allYearsList.size(); i++) {
+            //Check Witch Year the iteration is
+            //List<String> yearDataChartRacer = chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter));
+            System.out.println("TEste = ");
             //TODO - Need to Get List Order Every Year
-        }*/
+        }
 
     }
 

@@ -30,7 +30,7 @@ public class ChartRacerStart extends Application {
         ChartRacerBoard board = new ChartRacerBoard(primaryStage);
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos Nº19921");
+        primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos por: Vasco Gomes Nº19921");
         primaryStage.setMinHeight(minHeight);
         primaryStage.setMinWidth(minWidth);
         primaryStage.show();

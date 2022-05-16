@@ -96,7 +96,6 @@ public class ChartRacer {
             finalSpecificYearOrderedData.add(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
         }
 
-        System.out.println("Ordered List ChartRacer Class = " + finalSpecificYearOrderedData);
         return finalSpecificYearOrderedData;
     }
 
@@ -119,7 +118,6 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",");
         int endIndex = dataString.indexOf(",", beginIndex + 1);
         this.cityEndIndex = endIndex;
-        //System.out.println("City = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -133,7 +131,6 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",", this.cityEndIndex);
         int endIndex = dataString.indexOf(",", beginIndex + 1);
         this.countryEndIndex = endIndex;
-        //System.out.println("Country = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -147,7 +144,6 @@ public class ChartRacer {
         int beginIndex = dataString.indexOf(",", this.countryEndIndex);
         int endIndex = dataString.lastIndexOf(',');
         this.populationEndIndex = endIndex;
-        //System.out.println("Population = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
@@ -160,7 +156,6 @@ public class ChartRacer {
         //Uses globally defined variable populationEndIndex saved before as starting point
         int beginIndex = dataString.indexOf(",", this.populationEndIndex);
         int endIndex = dataString.length();
-        //System.out.println("Region = " + dataString.substring(beginIndex, endIndex).replace(",", ""));
         return dataString.substring(beginIndex, endIndex).replace(",", "");
     }
 
