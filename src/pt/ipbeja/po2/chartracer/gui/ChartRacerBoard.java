@@ -12,6 +12,7 @@ import pt.ipbeja.po2.chartracer.model.ChartRacer;
 import pt.ipbeja.po2.chartracer.model.View;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -214,11 +215,14 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void drawAllYears(List<String> allYearsList, String userFile) {
 
+        List<List> yearDataChartRacer = new ArrayList<>();
         System.out.println("All Year List View Side = " + allYearsList);
+        int yearsCounter = 0;
         for (int i = 0; i < allYearsList.size(); i++) {
             //Check Witch Year the iteration is
-            //List<String> yearDataChartRacer = chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter));
-            System.out.println("TEste = ");
+            yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));
+            System.out.println("TEste = " + yearDataChartRacer.get(i));
+            yearsCounter++;
             //TODO - Need to Get List Order Every Year
         }
 
