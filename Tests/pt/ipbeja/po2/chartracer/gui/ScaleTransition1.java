@@ -1,10 +1,12 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.List;
 
 /**
  * @author Vasco Gomes 19921
@@ -12,25 +14,24 @@ import javafx.util.Duration;
  */
 public class ScaleTransition1 {
 
+    ScaleTransition scaleTransition;
+    ScaleTransition scaleTransition1 = new ScaleTransition();
+    ParallelTransition parallelTransition = new ParallelTransition();
+    Rectangle rectangleToAnimate;
+    Rectangle oldRectangleToAnimate;
     public ScaleTransition1() {
-
+        scaleTransition = new ScaleTransition();
     }
 
     public void runScaleTransition(Rectangle rectangle, int xToScale){
 
         Platform.runLater( () -> {
-            ScaleTransition scaleTransition = new ScaleTransition();
 
             //Set the Desired Properties Like Duration, Cycle-Count, etc for the transition
-            scaleTransition.setDuration(Duration.seconds(3));
+            scaleTransition.setDuration(Duration.millis(500));
             //scaleTransition.setToX(50);
             scaleTransition.setFromX(0);
             scaleTransition.setToX(xToScale);
-            //translateTransition.set
-
-            //translateTransition.setToY(500);
-            //scaleTransition.setAutoReverse(true);
-            //scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
 
             //Set the Target Node on Witch the Transition will be Applied.
             //Use the Following Method for this purpose
@@ -38,6 +39,84 @@ public class ScaleTransition1 {
 
             //Finally, Play the Transition Using the Play Method.
             scaleTransition.play();
+
         });
     }
+
+    public void testBarMovement(List<Rectangle> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter, int monthCounter){
+        //Gets old bar size so it can determine the new one
+        int oldX = lastBarSizeList.get(counter);
+        rectangleToAnimate = rectangleList.get(counter);
+        Platform.runLater(() -> {
+            //lastBarSizeList.add(newBarSize);
+            scaleTransition.setDuration(Duration.millis(500));
+            scaleTransition.setFromX(oldX);
+            scaleTransition.setToX(newBarSize);
+
+            //scaleTransition1.setFromY(300);
+            //scaleTransition1.setToY(50);
+
+            //scaleTransition1.setNode(rectangleToAnimate);
+            scaleTransition.setNode(rectangleToAnimate);
+
+            //Function that Displaces the Bars Through The Chart According to their population Values
+            displaceBarsInChart(rectangleList, lastBarSizeList, newBarSize, counter);
+
+            scaleTransition.play();
+        });
+    }
+
+    private void displaceBarsInChart(List<Rectangle> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter) {
+        //For Loop loops through the rectangles backwards to see if there are any smaller rectangles to make a switch
+        //Get a Backwards Counter
+        int newCounter = rectangleList.indexOf(rectangleToAnimate);
+        System.out.println("Last Bar Size List = " + lastBarSizeList);
+        for (int i = 12; i < lastBarSizeList.size(); i++) {
+
+            //System.out.println(lastBarSizeList.get(i));
+            if(newBarSize > lastBarSizeList.get(i)){
+                //TODO - Make new variable
+                oldRectangleToAnimate = rectangleToAnimate;
+                System.out.println(newBarSize + " É maior que " + lastBarSizeList.get(i));
+                System.out.println("I = " + i);
+                permutePositions(rectangleList, newCounter);
+                oldRectangleToAnimate = rectangleList.get(counter - 1);
+                newCounter--;
+                //rectangleToAnimate = rectangleList.get(counter);*/
+            }
+        }
+        System.out.println();
+    }
+
+
+    private void permutePositions(List<Rectangle> rectangleList, int counter){
+
+        rectangleToAnimate.setY(rectangleToAnimate.getY() - 50);
+        System.out.println("Bar Index = " + (rectangleList.indexOf(rectangleToAnimate) - counter));
+        //for (int i = 1; i <= rectangleList.indexOf(rectangleToAnimate); i++) {
+            rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).setY(rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).getY() + 50);
+        //}
+
+
+        System.out.println();
+    }
+
+    /*private void permutePositions(List<Rectangle> rectangleList, int i){
+        //TODo - FIx Problem rectangleToAnimate moving while in if()
+        // TODO - Permuta mal feita estou a trocar o valor do y quando devia trocar o retangulo todo
+        //rectangleToAnimate = rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - 2);
+        System.out.println("Rectangle List = " + rectangleList);
+        System.out.println("Permute");
+        double tempY = oldRectangleToAnimate.getY();
+        int rectangleToAnimateBeforeIndex = rectangleList.indexOf(oldRectangleToAnimate);
+        System.out.println("TempY = " + tempY);
+        double rectangleBeforeY = rectangleList.get(rectangleList.indexOf(oldRectangleToAnimate) - 1).getY();
+        System.out.println("Rectangle Before Y = " + rectangleBeforeY);
+        oldRectangleToAnimate.setY(rectangleBeforeY);
+        System.out.println("RectangleToAnimate After Update = " + oldRectangleToAnimate.getY());
+        rectangleList.get(rectangleToAnimateBeforeIndex - 1).setY(tempY);
+        System.out.println("Teste = " + rectangleList.get(rectangleToAnimateBeforeIndex - 1).getY());
+        System.out.println();
+    }*/
+
 }
