@@ -127,6 +127,14 @@ public class AnimationTestStart extends Application {
                             newBarSize = 67;
                         }
 
+                        if(counter == 7/*5*/){
+                            newBarSize = 68;
+                        }
+
+                        if(counter == 8/*5*/){
+                            newBarSize = 66;
+                        }
+
                         if(counter == 11/*5*/){
                             newBarSize = 69;
                         }

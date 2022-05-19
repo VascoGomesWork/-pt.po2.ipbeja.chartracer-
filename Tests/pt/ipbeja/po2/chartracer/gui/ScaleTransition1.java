@@ -70,10 +70,7 @@ public class ScaleTransition1 {
         //For Loop loops through the rectangles backwards to see if there are any smaller rectangles to make a switch
         //Get a Backwards Counter
         int newCounter = rectangleList.indexOf(rectangleToAnimate);
-        System.out.println("Last Bar Size List = " + lastBarSizeList);
         for (int i = 12; i < lastBarSizeList.size(); i++) {
-
-            //System.out.println(lastBarSizeList.get(i));
             if(newBarSize > lastBarSizeList.get(i)){
                 //TODO - Make new variable
                 oldRectangleToAnimate = rectangleToAnimate;
@@ -82,7 +79,6 @@ public class ScaleTransition1 {
                 permutePositions(rectangleList, newCounter);
                 oldRectangleToAnimate = rectangleList.get(counter - 1);
                 newCounter--;
-                //rectangleToAnimate = rectangleList.get(counter);*/
             }
         }
         System.out.println();
@@ -92,31 +88,6 @@ public class ScaleTransition1 {
     private void permutePositions(List<Rectangle> rectangleList, int counter){
 
         rectangleToAnimate.setY(rectangleToAnimate.getY() - 50);
-        System.out.println("Bar Index = " + (rectangleList.indexOf(rectangleToAnimate) - counter));
-        //for (int i = 1; i <= rectangleList.indexOf(rectangleToAnimate); i++) {
-            rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).setY(rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).getY() + 50);
-        //}
-
-
-        System.out.println();
+        rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).setY(rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).getY() + 50);
     }
-
-    /*private void permutePositions(List<Rectangle> rectangleList, int i){
-        //TODo - FIx Problem rectangleToAnimate moving while in if()
-        // TODO - Permuta mal feita estou a trocar o valor do y quando devia trocar o retangulo todo
-        //rectangleToAnimate = rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - 2);
-        System.out.println("Rectangle List = " + rectangleList);
-        System.out.println("Permute");
-        double tempY = oldRectangleToAnimate.getY();
-        int rectangleToAnimateBeforeIndex = rectangleList.indexOf(oldRectangleToAnimate);
-        System.out.println("TempY = " + tempY);
-        double rectangleBeforeY = rectangleList.get(rectangleList.indexOf(oldRectangleToAnimate) - 1).getY();
-        System.out.println("Rectangle Before Y = " + rectangleBeforeY);
-        oldRectangleToAnimate.setY(rectangleBeforeY);
-        System.out.println("RectangleToAnimate After Update = " + oldRectangleToAnimate.getY());
-        rectangleList.get(rectangleToAnimateBeforeIndex - 1).setY(tempY);
-        System.out.println("Teste = " + rectangleList.get(rectangleToAnimateBeforeIndex - 1).getY());
-        System.out.println();
-    }*/
-
 }
