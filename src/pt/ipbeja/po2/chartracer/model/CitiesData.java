@@ -44,8 +44,8 @@ public class CitiesData implements Comparable<CitiesData>{
     @Override
     public int compareTo(CitiesData o) {
         if(this.getCityPopulation() == o.getCityPopulation()) return 0;
-        else if(this.getCityPopulation() > o.getCityPopulation()) return 1;
-        else return -1;
+        else if(this.getCityPopulation() > o.getCityPopulation()) return -1;
+        else return 1;
     }
 
     public String convertToString(CitiesData citiesData) {

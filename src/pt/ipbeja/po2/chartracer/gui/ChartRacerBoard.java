@@ -49,7 +49,7 @@ public class ChartRacerBoard extends Pane implements View {
         List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
 
         //Creates a Combobox with the Observable List Created from the Years List
-        ComboBox<String> yearsComboBox = new ComboBox(convertListToObservableList(allYearsList));
+        ComboBox<String> yearsComboBox = new ComboBox<>(convertListToObservableList(allYearsList));
         //https://stackoverflow.com/questions/34949422/how-to-set-default-value-in-combobox-javafx
         yearsComboBox.getSelectionModel().selectFirst();
 
@@ -131,13 +131,8 @@ public class ChartRacerBoard extends Pane implements View {
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
 
-            hBox.getChildren().clear();
-
-            //Clears the Drawing Box
-            drawingPane.clear();
-
-            //Resets the Drawing Box
-            drawingPane = new DrawingPane(xAxis, yAxis);
+            //Clears Drawing Pane
+            clear();
 
             //Calls the Function to Choose a File
             String userChoosenFile = askUserFile(primaryStage);
@@ -148,8 +143,12 @@ public class ChartRacerBoard extends Pane implements View {
         //OnClick of Menu Item "Draw All Years"
         menuItemDrawAllYears.setOnAction(event -> {
 
+            //Clears Drawing Pane
+            clear();
+
             //Loops through all the Years and Draws the Graphic with animations
             String userFile = askUserFile(primaryStage);
+
             drawAllYears(chartRacer.readFile(userFile), userFile);
 
         });
@@ -157,11 +156,7 @@ public class ChartRacerBoard extends Pane implements View {
         //OnClick of Menu Item "Clear All"
         menuItemClearAll.setOnAction(event -> {
             // Clears HBox and Drawing Box
-            hBox.getChildren().clear();
-            drawingPane.clear();
-
-            //Makes DrawingPane new Object
-            drawingPane = new DrawingPane(xAxis, yAxis);
+            clear();
 
         });
 
@@ -191,6 +186,19 @@ public class ChartRacerBoard extends Pane implements View {
         this.getChildren().add(menuBar);
     }
 
+    /**
+     * Resume : Function that clears hBox, drawing pane and sets another drawing pane
+     */
+    private void clear() {
+        hBox.getChildren().clear();
+
+        //Clears the Drawing Box
+        drawingPane.clear();
+
+        //Resets the Drawing Box
+        drawingPane = new DrawingPane(xAxis, yAxis);
+    }
+
     private void createChart(String file, String year) {
 
         //Removes HBox from Pane
@@ -210,22 +218,32 @@ public class ChartRacerBoard extends Pane implements View {
         hBox = new HBox();
     }
 
+    @Override
+    public void drawAllGraphics(List<String> orderedSpecificYearData) {
+        Platform.runLater(() -> {
+            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData));
+        });
+    }
+
     /**
      * Resume : Loops through all the Years and Draws the Graphic with animations
      */
     private void drawAllYears(List<String> allYearsList, String userFile) {
 
-        List<List> yearDataChartRacer = new ArrayList<>();
+        List<List<String>> yearDataChartRacer = new ArrayList<>();
         System.out.println("All Year List View Side = " + allYearsList);
         int yearsCounter = 0;
         for (int i = 0; i < allYearsList.size(); i++) {
             //Check Witch Year the iteration is
-            yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));
-            System.out.println("TEste = " + yearDataChartRacer.get(i));
+            if(yearsCounter < chartRacer.getQtyYearsInList(allYearsList)) {
+                yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));
+                //System.out.println("TEste = " + yearDataChartRacer.get(i));
+            }
             yearsCounter++;
             //TODO - Need to Get List Order Every Year
+            // get the difference between both years and animate the changes
         }
-
+        chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
     }
 
 }

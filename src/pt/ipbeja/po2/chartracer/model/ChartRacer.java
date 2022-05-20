@@ -87,6 +87,7 @@ public class ChartRacer {
                 specificYearOrderedData.add(citiesData);
             }
         }
+
         //Sorts the List by Population Number
         Collections.sort(specificYearOrderedData);
 
@@ -227,5 +228,33 @@ public class ChartRacer {
         allYearsList.addAll(allYearsTreeSet);
 
         return allYearsList;
+    }
+
+    /**
+     * Resume : Function that gets the quantity of years in a list using TreeSet to remove duplicates
+     * @param dataList
+     * @return
+     */
+    public int getQtyYearsInList(List<String> dataList) {
+        List<String> yearsList = new ArrayList<>();
+        dataList.removeAll(Collections.singleton(" "));
+        for (int i = 0; i < dataList.size() - 1; i++) {
+            //Check if String not Empty
+            if(dataList.get(i).length() > 0) {
+                System.out.println("String = " + dataList.get(i));
+                yearsList.add(getYear(dataList.get(i)));
+            }
+        }
+        return new TreeSet<>(yearsList).size();
+    }
+
+    public void getDataDrawAllGraphics(List<List<String>> yearDataChartRacer) {
+        new Thread( () -> {
+            for (int i = 0; i < yearDataChartRacer.size(); i++) {
+                //specificYearData = chartRacer.orderByPopulation(specificYearDataList, Integer.parseInt(chartRacer.getYear(specificYearDataList.get(index))+""));
+                    view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(i)))));
+                    //return yearDataChartRacer.get(i);
+            }
+        }).start();
     }
 }

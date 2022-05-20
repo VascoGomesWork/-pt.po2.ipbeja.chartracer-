@@ -1,11 +1,12 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class DrawingPane extends Pane {
         this.getChildren().clear();
     }
 
-    public Pane drawGraphic(List<String> specificYearData) {
+    public Pane drawGraphic(List<String> specificYearDataList) {
 
         int xChartBar = 150;
         int yChartBar = 100;
@@ -42,38 +43,46 @@ public class DrawingPane extends Pane {
         int yAxisCityName = 130;
         int xCityPopulation = 200;
         int yAxisLine = 60;
+        List<String> specificYearData = specificYearDataList;
 
-        //Sets Up Text About the Chart
-        this.addObjectsDrawingPane(new Text(xAxis, yAxis,"Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(0))));
 
-        for (int i = 0; i < specificYearData.size(); i++) {
+        //for (int index = 0; index < specificYearDataList.size(); index++) {
+                //Else loops through the List of Lists to the other lists
+                //specificYearData = chartRacer.orderByPopulation(specificYearDataList, Integer.parseInt(chartRacer.getYear(specificYearDataList.get(index))+""));
 
-            chartRacer.getYear(specificYearData.get(i));
-            String city = chartRacer.getCity(specificYearData.get(i));
-            String country = chartRacer.getCountry(specificYearData.get(i));
-            String population = chartRacer.getPopulationByCity(specificYearData.get(i));
-            String region = chartRacer.getRegion(specificYearData.get(i));
+            //Loops Through String List and displays Data
+            for (int i = 0; i < specificYearData.size(); i++) {
 
-            //Sets Up Lines to make the Graphic
-            this.addObjectsDrawingPane(new LineChartRacer(150, yAxisLine, 150, 200));
+                //Sets Up Text About the Chart
+                this.addObjectsDrawingPane(new Text(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearData.get(i))));
 
-            //Draws City Name
-            this.addObjectsDrawingPane(new TextChartRacer(xAxis, yAxisCityName,city));
+                chartRacer.getYear(specificYearData.get(i));
+                String city = chartRacer.getCity(specificYearData.get(i));
+                String country = chartRacer.getCountry(specificYearData.get(i));
+                String population = chartRacer.getPopulationByCity(specificYearData.get(i));
+                String region = chartRacer.getRegion(specificYearData.get(i));
 
-            //Sets Up the Bars of the Graphic
-            //Makes Width according the Population Number
-            double populationWidth = getBarWidthPopulation(population);
-            RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-            //Gets color generated automaticly
-            rectangle.setColor(generateRandomColor());
-            this.addObjectsDrawingPane(rectangle);
+                //Sets Up Lines to make the Graphic
+                this.addObjectsDrawingPane(new LineChartRacer(150, yAxisLine, 150, 200));
 
-            this.addObjectsDrawingPane(new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName,population));
+                //Draws City Name
+                this.addObjectsDrawingPane(new TextChartRacer(xAxis, yAxisCityName, city));
 
-            yAxisCityName += 70;
-            yChartBar += 70;
-            yAxisLine += 82;
-        }
+                //Sets Up the Bars of the Graphic
+                //Makes Width according the Population Number
+                double populationWidth = getBarWidthPopulation(population);
+                RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
+                //Gets color generated automaticly
+                rectangle.setColor(generateRandomColor());
+                this.addObjectsDrawingPane(rectangle);
+
+                this.addObjectsDrawingPane(new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, population));
+
+                yAxisCityName += 70;
+                yChartBar += 70;
+                yAxisLine += 82;
+            }
+        //}
         //Adds the DrawingPane to super
         return this;
     }
@@ -82,7 +91,7 @@ public class DrawingPane extends Pane {
      * Resume : Function that Generates a Random Color and returns a String of that Color
      * @return
      */
-    private String generateRandomColor() {
+    public String generateRandomColor() {
         int r = (int) ((Math.random() * (255)) + 0);
         int g = (int) ((Math.random() * (255)) + 0);
         int b = (int) ((Math.random() * (255)) + 0);

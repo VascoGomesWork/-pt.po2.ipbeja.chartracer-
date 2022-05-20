@@ -12,14 +12,14 @@ import java.util.List;
  * @author Vasco Gomes 19921
  * @date 16/05/2022
  */
-public class ScaleTransition1 {
+public class ScaleTransitionGui {
 
     ScaleTransition scaleTransition;
     ScaleTransition scaleTransition1 = new ScaleTransition();
     ParallelTransition parallelTransition = new ParallelTransition();
     Rectangle rectangleToAnimate;
     Rectangle oldRectangleToAnimate;
-    public ScaleTransition1() {
+    public ScaleTransitionGui() {
         scaleTransition = new ScaleTransition();
     }
 
