@@ -1,0 +1,63 @@
+1500,Beijing,China,672,East Asia
+1500,Cairo,Egypt,400,Middle East
+1500,Cuttack,India,140,South Asia
+1500,Fez,Morocco,130,Middle East
+1500,Gauda,India,200,South Asia
+1500,Guangzhou,China,150,East Asia
+1500,Hangzhou,China,250,East Asia
+1500,Istanbul,Turkey,200,Europe
+1500,Nanjing,China,147,East Asia
+1500,Paris,France,185,Europe
+1500,Tabriz,Iran,250,Middle East
+1500,Vijayanagar,India,500,South Asia
+
+1501,Beijing,China,672,East Asia
+1501,Vijayanagar,India,500,South Asia
+1501,Cairo,Egypt,399,Middle East
+1501,Hangzhou,China,250,East Asia
+1501,Tabriz,Iran,248,Middle East
+1501,Istanbul,Turkey,205,Europe
+1501,Gauda,India,200,South Asia
+1501,Paris,France,186,Europe
+1501,Guangzhou,China,150,East Asia
+1501,Nanjing,China,147,East Asia
+1501,Cuttack,India,139,South Asia
+1501,Fez,Morocco,130,Middle East
+
+
+1967,Tokyo,Japan,21490,East Asia
+1967,New York,United States,16007,North America
+1967,Osaka,Japan,13948,East Asia
+1967,Paris,France,8263,Europe
+1967,Los Angeles,United States,7930,North America
+1967,London,United Kingdom,7841,Europe
+1967,Buenos Aires,Argentina,7840,Latin America
+1967,Mexico City,Mexico,7781,Latin America
+1967,Shanghai,China,7017,East Asia
+1967,Chicago,United States,7017,North America
+1967,Moscow,Russia,6816,Europe
+1967,Kolkata,India,6527,South Asia
+
+
+2018,Beijing,China,22674,East Asia
+2018,Cairo,Egypt,19850,Middle East
+2018,Delhi,India,27890,South Asia
+2018,Dhaka,Bangladesh,19633,South Asia
+2018,Karachi,Pakistan,18185,South Asia
+2018,Mexico City,Mexico,21520,Latin America
+2018,Mumbai,India,22120,South Asia
+2018,New York,United States,18713,North America
+2018,Osaka,Japan,20409,East Asia
+2018,Shanghai,China,25779,East Asia
+2018,SÃ£o Paulo,Brazil,21698,Latin America
+2018,Tokyo,Japan,38194,East Asia
+
+
+
+
+
+
+
+
+
+

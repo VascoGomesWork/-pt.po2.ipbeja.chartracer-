@@ -24,8 +24,9 @@ public class ChartRacerBoard extends Pane implements View {
 
     //Creates a HBox
     HBox hBox = new HBox();
+    MenuBar menuBar;
     private int xAxis = 50;
-    private int yAxis = 50;
+    private int yAxis = 30;
     DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
@@ -118,7 +119,7 @@ public class ChartRacerBoard extends Pane implements View {
     private void createMenuBar(Stage primaryStage) {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
         //https://stackoverflow.com/questions/10315774/javafx-2-0-activating-a-menu-like-a-menuitem
-        MenuBar menuBar = new MenuBar();
+        menuBar = new MenuBar();
         Menu menuGraphicOperations = new Menu("Graphic Operations");
         Menu menuProgramOperations = new Menu("Program Operations");
 
@@ -199,6 +200,17 @@ public class ChartRacerBoard extends Pane implements View {
         drawingPane = new DrawingPane(xAxis, yAxis);
     }
 
+    /**
+     * Resume : Function that clears Pane and Adds Menu Bar to Pane
+     */
+    private void clearPaneAddMenu(){
+        //Clears Pane
+        this.getChildren().clear();
+        //Adds Menu Bar to the Pane
+        this.getChildren().add(menuBar);
+
+    }
+
     private void createChart(String file, String year) {
 
         //Removes HBox from Pane
@@ -221,6 +233,11 @@ public class ChartRacerBoard extends Pane implements View {
     @Override
     public void drawAllGraphics(List<String> orderedSpecificYearData) {
         Platform.runLater(() -> {
+            //Clears Pane so it dosent't throw a duplicate exeption error
+            clearPaneAddMenu();
+            //Gets the last Year so it can make the animation
+
+            //Adds to Pane the Drawing Pane with the information from other Thread
             this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData));
         });
         try {

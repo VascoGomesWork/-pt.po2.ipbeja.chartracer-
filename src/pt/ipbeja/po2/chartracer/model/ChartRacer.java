@@ -61,6 +61,9 @@ public class ChartRacer {
             //Removes all numbers 12 and spaces
             citiesList.removeAll(Collections.singleton("12"));
             citiesList.removeAll(Collections.singleton(" "));
+            //Removes all lines with length is 0
+            //citiesList.subList(0, citiesList.size()).clear();
+            //citiesList.removeAll(citiesList.get(c).length() == 0);
         }
         return citiesList;
     }
@@ -248,12 +251,15 @@ public class ChartRacer {
         return new TreeSet<>(yearsList).size();
     }
 
+    /**
+     * Resume : Function that gets the data to animate and draw all the graphics and uses a new Thread to JavaFx Thread be available to update View
+     * @param yearDataChartRacer
+     */
     public void getDataDrawAllGraphics(List<List<String>> yearDataChartRacer) {
+        //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo Barros
         new Thread( () -> {
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
-                //specificYearData = chartRacer.orderByPopulation(specificYearDataList, Integer.parseInt(chartRacer.getYear(specificYearDataList.get(index))+""));
-                    view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(i)))));
-                    //return yearDataChartRacer.get(i);
+                view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(i)))));
             }
         }).start();
     }

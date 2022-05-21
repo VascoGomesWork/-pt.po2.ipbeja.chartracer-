@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
  */
 public class TextChartRacer extends Text {
 
-    public TextChartRacer(double x, double y, String text) {
+    public TextChartRacer(int x, int y, String text) {
         super(x, y, text);
     }
 

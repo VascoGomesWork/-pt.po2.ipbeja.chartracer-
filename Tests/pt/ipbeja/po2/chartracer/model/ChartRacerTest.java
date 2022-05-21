@@ -52,7 +52,7 @@ class ChartRacerTest {
         List orderedDataYearList = null;
         try {
             //Reads in 1500
-            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/UnorderedCitiesSample.txt")), year);
+            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year);
 
             System.out.println("Ordered List By Habitants Number in 1500 = " + orderedDataYearList);
             //check if array list is ordered in 1500 with orderDa
@@ -63,7 +63,7 @@ class ChartRacerTest {
             //Orders the data using Comparable Interface.
             //Reads in 2018
             year = 2018;
-            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/UnorderedCitiesSample.txt")), year);
+            orderedDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year);
             System.out.println("Ordered List By Habitants Number in 2018 = " + orderedDataYearList);
             //unorderedDataYearList = chartRacer.getSpecificYearData(fileData, year+"");
             assertEquals(orderedDataYearList, chartRacer.orderByPopulation(fileData, year));
@@ -81,7 +81,7 @@ class ChartRacerTest {
         try {
             int year = 1500;
             //Reads in 1500
-            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/UnorderedCitiesSample.txt")), year).subList(0, 5);
+            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year).subList(0, 5);
             System.out.println("5 Items from 1500 Ordered Data year List = " + ordered5ElementsDataYearList);
 
             //Puts orderDataYearList inside a file
@@ -95,7 +95,7 @@ class ChartRacerTest {
 
             year = 2018;
             //Reads in 2018
-            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/UnorderedCitiesSample.txt")), year).subList(0, 5);
+            ordered5ElementsDataYearList = chartRacer.orderByPopulation(Files.readAllLines(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt")), year).subList(0, 5);
             System.out.println("5 Items from 2018 Ordered Data year List = " + ordered5ElementsDataYearList);
 
             //Puts orderDataYearList inside a file

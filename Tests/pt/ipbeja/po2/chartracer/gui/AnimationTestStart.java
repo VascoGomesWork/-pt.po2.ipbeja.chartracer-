@@ -135,7 +135,7 @@ public class AnimationTestStart extends Application {
 
         ChartRacer chartRacer = new ChartRacer();
 
-        String userFile = "src/pt/ipbeja/po2/chartracer/model/UnorderedCitiesSample.txt";
+        String userFile = "src/pt/ipbeja/po2/chartracer/model/OrderedCitiesSample.txt";
         //TODO - Make for loop too loop through years
         //TODO Chamar Função Anterior
         List<List<String>> allYearsList = new ArrayList<>();
@@ -151,7 +151,7 @@ public class AnimationTestStart extends Application {
         String yearTest = chartRacer.getYear(allYearsList.get(0).get(0)+ "");
         Pane pane = new Pane();
         Rectangle rectanglePane = new Rectangle(0, 0, 70, 700);
-        TextChartRacer textChartRacer = new TextChartRacer(300, 50, yearTest);
+        TextChartRacer textChartRacer = new TextChartRacer(50, 50, yearTest);
         List<Integer> lastBarSizeList = new ArrayList<>();
 
 
@@ -163,6 +163,7 @@ public class AnimationTestStart extends Application {
         primaryStage.show();
 
         //TODO - Make Ratio and make bar width grow when changing spots
+        //TODo
         //Counter is used to put the bars in it's correct order
         //Creating a new Thread and executing code inside
         new Thread( () -> {

@@ -26,7 +26,7 @@ public class ScaleTransitionGui {
     //Todo - Check if the bar we are updating is the correct one
     // Add a New Bar and Remove an Old One when new cities appear
 
-    public void runTransition(List<Rectangle> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter, int i){
+    public void runTransition(List<RectangleChartRacer> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter, int i){
         //Gets old bar size so it can determine the new one
         int oldX = lastBarSizeList.get(counter);
         rectangleToAnimate = rectangleList.get(counter);
@@ -56,7 +56,7 @@ public class ScaleTransitionGui {
         });
     }
 
-    private void displaceBarsInChart(List<Rectangle> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter) {
+    private void displaceBarsInChart(List<RectangleChartRacer> rectangleList, List<Integer> lastBarSizeList, int newBarSize, int counter) {
         //For Loop loops through the rectangles backwards to see if there are any smaller rectangles to make a switch
         //Get a Backwards Counter
         int newCounter = rectangleList.indexOf(rectangleToAnimate);
@@ -75,7 +75,7 @@ public class ScaleTransitionGui {
     }
 
 
-    private void permutePositions(List<Rectangle> rectangleList, int counter){
+    private void permutePositions(List<RectangleChartRacer> rectangleList, int counter){
         //TODO - FIX To When Middium BArs Get in the Middle
         rectangleToAnimate.setY(rectangleToAnimate.getY() - 50);
         rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).setY(rectangleList.get(rectangleList.indexOf(rectangleToAnimate) - counter).getY() + 50);
