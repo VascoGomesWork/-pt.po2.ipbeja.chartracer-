@@ -239,9 +239,9 @@ public class ChartRacer {
      * @return
      */
     public int getQtyYearsInList(List<String> dataList) {
+        System.out.println("Data List = " + dataList);
         List<String> yearsList = new ArrayList<>();
-        dataList.removeAll(Collections.singleton(" "));
-        for (int i = 0; i < dataList.size() - 1; i++) {
+        for (int i = 0; i < dataList.size(); i++) {
             //Check if String not Empty
             if(dataList.get(i).length() > 0) {
                 System.out.println("String = " + dataList.get(i));
@@ -256,10 +256,16 @@ public class ChartRacer {
      * @param yearDataChartRacer
      */
     public void getDataDrawAllGraphics(List<List<String>> yearDataChartRacer) {
-        //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo Barros
+        //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo
         new Thread( () -> {
+            int counter = 0;
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
-                view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(i)))));
+                if(counter < 12) {
+                    view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))));
+                } else if(counter == 12){
+                    counter = 0;
+                }
+                counter++;
             }
         }).start();
     }

@@ -1,11 +1,8 @@
 package pt.ipbeja.po2.chartracer.gui;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,13 +31,13 @@ public class DrawingPane extends Pane {
         this.getChildren().clear();
     }
 
-    public Pane drawGraphic(List<String> specificYearDataList) {
+    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears) {
 
         int xChartBar = 150;
-        int yChartBar = 100;
+        int yChartBar = 50;
         int width = 150;
-        int height = 70;
-        int yAxisCityName = 120;
+        int height = 50;
+        int yAxisCityName = 80;
         int xCityPopulation = 200;
         int yAxisLine = 60;
         //Clears Pane
@@ -48,7 +45,6 @@ public class DrawingPane extends Pane {
         //Loops Through String List and displays Data
         for (int i = 0; i < specificYearDataList.size(); i++) {
             //Sets Up Text About the Chart
-            System.out.println("Ordered List = " + specificYearDataList.get(i));
             this.getChildren().add(new TextChartRacer(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearDataList.get(i))));
 
             chartRacer.getYear(specificYearDataList.get(i));
@@ -61,16 +57,19 @@ public class DrawingPane extends Pane {
             this.getChildren().add(new LineChartRacer(150, yAxisLine, 150, 200));
 
             //Draws City Name
-            this.getChildren().add(new TextChartRacer(xAxis, yAxisCityName, city + "\n" + country + "\n" + region));
+            this.getChildren().add(new TextChartRacer(xAxis, yAxisCityName, city));
 
             //Sets Up the Bars of the Graphic
             //Makes Width according the Population Number
-            int populationWidth = getBarWidthPopulation(population);
+            int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears);
             RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-            //Gets color generated automaticly
+            //Gets color generated automatically
+            //TODO - Check if is function allYears
+
             rectangle.setColor(generateRandomColor());
+
             this.getChildren().add(rectangle);
-            this.getChildren().add(new TextChartRacer((int) (populationWidth + xCityPopulation), yAxisCityName + 17, population));
+            this.getChildren().add(new TextChartRacer((int) (populationWidth + xCityPopulation), yAxisCityName, population));
 
             yAxisCityName += 70;
             yChartBar += 70;
@@ -94,15 +93,13 @@ public class DrawingPane extends Pane {
     /**
      * Resume : Gets the With of the Bar Through the Population in the List
      * @param populationByCity
+     * @param checkFunctionAllYears
      * @return
      */
-    private int getBarWidthPopulation(String populationByCity) {
-        //If the population number has more than 3 digits makes a new width
-        if(populationByCity.length() == 4){
-            return Integer.parseInt(populationByCity) / 10;
-        } else if(populationByCity.length() == 5){
-            return Integer.parseInt(populationByCity) / 50;
+    private int getBarWidthPopulation(String populationByCity, boolean checkFunctionAllYears) {
+        if(!checkFunctionAllYears){
+            return Integer.parseInt(populationByCity);
         }
-        return Integer.parseInt(populationByCity);
+        return Integer.parseInt(populationByCity) / 30;
     }
 }

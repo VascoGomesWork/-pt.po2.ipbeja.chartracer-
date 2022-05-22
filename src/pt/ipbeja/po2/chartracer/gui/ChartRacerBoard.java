@@ -191,6 +191,7 @@ public class ChartRacerBoard extends Pane implements View {
      * Resume : Function that clears hBox, drawing pane and sets another drawing pane
      */
     private void clear() {
+        //TODO -Make Clear Function Stop JavaFx Threads
         hBox.getChildren().clear();
 
         //Clears the Drawing Box
@@ -224,7 +225,7 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
 
         //Gets the Function to Draw the Graphic
-        this.getChildren().add(drawingPane.drawGraphic(specificYearData));
+        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false));
 
         //Creates new HBox Object
         hBox = new HBox();
@@ -238,10 +239,11 @@ public class ChartRacerBoard extends Pane implements View {
             //Gets the last Year so it can make the animation
 
             //Adds to Pane the Drawing Pane with the information from other Thread
-            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData));
+            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true));
         });
+        //Make Thread Sleep it can be possible to see the Graphics Passing Through
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -255,15 +257,14 @@ public class ChartRacerBoard extends Pane implements View {
         List<List<String>> yearDataChartRacer = new ArrayList<>();
         System.out.println("All Year List View Side = " + allYearsList);
         int yearsCounter = 0;
+        int qtyYearsInList = chartRacer.getQtyYearsInList(allYearsList);
         for (int i = 0; i < allYearsList.size(); i++) {
             //Check Witch Year the iteration is
-            if(yearsCounter < chartRacer.getQtyYearsInList(allYearsList)) {
+            if(yearsCounter < qtyYearsInList) {
                 yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));
                 //System.out.println("TEste = " + yearDataChartRacer.get(i));
             }
             yearsCounter++;
-            //TODO - Need to Get List Order Every Year
-            // get the difference between both years and animate the changes
         }
         chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
     }
