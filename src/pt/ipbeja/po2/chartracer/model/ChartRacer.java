@@ -239,12 +239,12 @@ public class ChartRacer {
      * @return
      */
     public int getQtyYearsInList(List<String> dataList) {
-        System.out.println("Data List = " + dataList);
+        //System.out.println("Data List = " + dataList);
         List<String> yearsList = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             //Check if String not Empty
             if(dataList.get(i).length() > 0) {
-                System.out.println("String = " + dataList.get(i));
+                //System.out.println("String = " + dataList.get(i));
                 yearsList.add(getYear(dataList.get(i)));
             }
         }
@@ -259,9 +259,15 @@ public class ChartRacer {
         //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo
         new Thread( () -> {
             int counter = 0;
+            List<String> yearBeforeList;
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
                 if(counter < 12) {
-                    view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))));
+                    //Gets the year before of the current one only if i - 1 > 0
+                   yearBeforeList = new ArrayList<>();
+                    if(i - 1 > 0) {
+                        yearBeforeList = yearDataChartRacer.get(i - 1);
+                    }
+                    view.drawAllGraphics(yearBeforeList, orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))));
                 } else if(counter == 12){
                     counter = 0;
                 }

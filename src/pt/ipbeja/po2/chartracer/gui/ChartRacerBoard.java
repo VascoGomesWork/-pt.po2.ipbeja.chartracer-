@@ -121,12 +121,15 @@ public class ChartRacerBoard extends Pane implements View {
         //https://stackoverflow.com/questions/10315774/javafx-2-0-activating-a-menu-like-a-menuitem
         menuBar = new MenuBar();
         Menu menuGraphicOperations = new Menu("Graphic Operations");
+        Menu menuSkins = new Menu("Skins");
         Menu menuProgramOperations = new Menu("Program Operations");
 
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
         MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
         MenuItem menuItemClearAll = new MenuItem("Clear All");
         MenuItem menuItemExit = new MenuItem("Exit");
+
+        CheckMenuItem menuGraphicSkin1 = new CheckMenuItem("Skin 1");
 
         //OnClick of Menu Item "Draw 1 Year"
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
@@ -179,10 +182,12 @@ public class ChartRacerBoard extends Pane implements View {
 
         //Adds Items to Graphic Operations Menu
         menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears, menuItemClearAll);
+        //Adds Items to Skin Menu
+        menuSkins.getItems().addAll(menuGraphicSkin1);
         //Adds Items to Program Operation Menu
         menuProgramOperations.getItems().addAll(menuItemExit);
         //Adds Menu to Menu Bar
-        menuBar.getMenus().addAll(menuGraphicOperations, menuProgramOperations);
+        menuBar.getMenus().addAll(menuGraphicOperations, menuSkins, menuProgramOperations);
         //Adds Menu Bar To Program
         this.getChildren().add(menuBar);
     }
@@ -232,11 +237,11 @@ public class ChartRacerBoard extends Pane implements View {
     }
 
     @Override
-    public void drawAllGraphics(List<String> orderedSpecificYearData) {
+    public void drawAllGraphics(List<String> yearBeforeList, List<String> orderedSpecificYearData) {
+        List<String> oldColorList = new ArrayList<>();
         Platform.runLater(() -> {
             //Clears Pane so it dosent't throw a duplicate exeption error
             clearPaneAddMenu();
-            //Gets the last Year so it can make the animation
 
             //Adds to Pane the Drawing Pane with the information from other Thread
             this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true));
@@ -255,7 +260,7 @@ public class ChartRacerBoard extends Pane implements View {
     private void drawAllYears(List<String> allYearsList, String userFile) {
 
         List<List<String>> yearDataChartRacer = new ArrayList<>();
-        System.out.println("All Year List View Side = " + allYearsList);
+        //System.out.println("All Year List View Side = " + allYearsList);
         int yearsCounter = 0;
         int qtyYearsInList = chartRacer.getQtyYearsInList(allYearsList);
         for (int i = 0; i < allYearsList.size(); i++) {

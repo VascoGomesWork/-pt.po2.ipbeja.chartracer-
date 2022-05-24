@@ -9,5 +9,5 @@ import java.util.List;
 public interface View {
     void drawGraphic(List<String> specificYearData);
 
-    void drawAllGraphics(List<String> orderedSpecificYearData);
+    void drawAllGraphics(List<String> s, List<String> orderedSpecificYearData);
 }

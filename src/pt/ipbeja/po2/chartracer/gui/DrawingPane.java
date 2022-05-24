@@ -3,6 +3,7 @@ package pt.ipbeja.po2.chartracer.gui;
 import javafx.scene.layout.Pane;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,15 @@ public class DrawingPane extends Pane {
 
     private final int xAxis;
     private final int yAxis;
+    List<String> yearBeforeList = new ArrayList<>();
+    List<String> oldColorList = new ArrayList<>();
+    String[][] rectangleColorArray;
+    String[][] rectangleCityArray;
     private ChartRacer chartRacer = new ChartRacer();
+    int counter = 0;
+    int yearsCounter = 0;
+    int countryCounter = 0;
+    int beforeListCounter = 0;
 
 
     public DrawingPane(int xAxis, int yAxis) {
@@ -22,10 +31,6 @@ public class DrawingPane extends Pane {
         this.setLayoutX(this.xAxis);
         this.setLayoutY(this.yAxis);
     }
-
-    /*public void addObjectsDrawingPane(Object javaFxObject){
-        this.getChildren().add(((Node) javaFxObject));
-    }*/
 
     public void clear() {
         this.getChildren().clear();
@@ -44,6 +49,7 @@ public class DrawingPane extends Pane {
         this.getChildren().clear();
         //Loops Through String List and displays Data
         for (int i = 0; i < specificYearDataList.size(); i++) {
+
             //Sets Up Text About the Chart
             this.getChildren().add(new TextChartRacer(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearDataList.get(i))));
 
@@ -63,10 +69,17 @@ public class DrawingPane extends Pane {
             //Makes Width according the Population Number
             int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears);
             RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-            //Gets color generated automatically
-            //TODO - Check if is function allYears
 
-            rectangle.setColor(generateRandomColor());
+            //Adds Elements to yearBeforeList and oldColorList
+            chartRacer.getYear(specificYearDataList.get(i));
+            yearBeforeList.add(chartRacer.getCity(specificYearDataList.get(i)));
+            oldColorList.add(generateRandomColor());
+
+            //Checks if it is AllYears Function that called if it wasn't generates a random color
+            if(checkFunctionAllYears && counter > specificYearDataList.size())
+                checkBarColor(specificYearDataList.subList(0, specificYearDataList.size()), i, rectangle, specificYearDataList.size());
+            else rectangle.setColor(generateRandomColor());
+            counter++;
 
             this.getChildren().add(rectangle);
             this.getChildren().add(new TextChartRacer((int) (populationWidth + xCityPopulation), yAxisCityName, population));
@@ -77,6 +90,32 @@ public class DrawingPane extends Pane {
         }
         //Adds the DrawingPane to super
         return this;
+    }
+
+    /**
+     * Resume : Function that gets the color to the graphic
+     * @param specificYearDataList
+     * @param i
+     * @param rectangle
+     * @param size
+     */
+    private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
+            chartRacer.getYear(specificYearDataList.get(i));
+
+            if (yearBeforeList.subList(0, size).contains(chartRacer.getCity(specificYearDataList.get(i)))) {
+                String oldColor = oldColorList.get(i);
+                rectangle.setColor(oldColor);
+            } else {
+                String newColor = generateRandomColor();
+                oldColorList.add(newColor);
+                rectangle.setColor(newColor);
+            }
+
+            if (i == size - 1) {
+                yearBeforeList.subList(0, size - 1).clear();
+                yearBeforeList.remove(0);
+            }
+        counter++;
     }
 
     /**
