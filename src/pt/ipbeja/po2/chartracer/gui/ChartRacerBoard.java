@@ -24,21 +24,23 @@ import java.util.Optional;
 public class ChartRacerBoard extends Pane implements View {
 
     //Creates a HBox
-    HBox hBox = new HBox();
-    MenuBar menuBar;
+    private HBox hBox = new HBox();
+    private MenuBar menuBar;
     private int xAxis = 20;
     private int yAxis = 30;
-    DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
+    private DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
     //Sets up the View by passing "this" that extends from GridPane
-    ChartRacer chartRacer = new ChartRacer(this);
-    TextChartRacer textChartRacer;
+    private ChartRacer chartRacer = new ChartRacer(this);
+    private TextChartRacer textChartRacer;
     private boolean applySkin = false;
+    private Stage primaryStage;
 
     public ChartRacerBoard(Stage primaryStage) {
         //Properties that Maximizes Primary Stage
         primaryStage.setMaximized(true);
         //Method that draws a Menu Bar with options
         createMenuBar(primaryStage);
+        this.primaryStage = primaryStage;
     }
 
     /**
@@ -252,7 +254,7 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
 
         //Gets the Function to Draw the Graphic
-        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applySkin));
+        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applySkin, primaryStage));
 
         //Creates new HBox Object
         hBox = new HBox();
@@ -266,7 +268,7 @@ public class ChartRacerBoard extends Pane implements View {
             clearPaneAddMenu();
 
             //Adds to Pane the Drawing Pane with the information from other Thread
-            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true, applySkin));
+            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true, applySkin, primaryStage));
         });
         //Make Thread Sleep it can be possible to see the Graphics Passing Through
         try {

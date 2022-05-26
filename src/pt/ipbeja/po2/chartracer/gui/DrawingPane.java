@@ -1,9 +1,9 @@
 package pt.ipbeja.po2.chartracer.gui;
 
 import javafx.scene.Node;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
 
 import java.util.ArrayList;
@@ -20,12 +20,6 @@ public class DrawingPane extends Pane {
     private final int yAxis;
     private List<String> yearBeforeList = new ArrayList<>();
     private List<String> oldColorList = new ArrayList<>();
-    private int xChartBar = 90;
-    private int yChartBar = 40;
-    private int height = 40;
-    private int yAxisCityName = yChartBar + 20;
-    private int xCityPopulation = 100;
-    private int yAxisLine = yChartBar;
     private ChartRacer chartRacer = new ChartRacer();
     private int counter = 0;
     private boolean applySkin = false;
@@ -43,7 +37,14 @@ public class DrawingPane extends Pane {
         this.getChildren().clear();
     }
 
-    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applySkin) {
+    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applySkin, Stage primaryStage) {
+        int xChartBar = 90;
+        int yChartBar = 40;
+        int height = 40;
+        int yAxisCityName = yChartBar + 20;
+        int xCityPopulation = 100;
+        int yAxisLine = yChartBar;
+
         //Clears Pane
         this.getChildren().clear();
             //Loops Through String List and displays Data
@@ -66,7 +67,7 @@ public class DrawingPane extends Pane {
 
                 //Sets Up the Bars of the Graphic
                 //Makes Width according the Population Number
-                int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears);
+                int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears, primaryStage);
 
                 //Creating a RectangleChartRacer
                 RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
@@ -275,17 +276,24 @@ public class DrawingPane extends Pane {
     }
 
     /**
+     * Resume : Function that Converts a Double to an Integer
+     * @param doubleToConvertToInteger
+     * @return
+     */
+    private int getIntegerPart(double doubleToConvertToInteger){
+        String numToString = doubleToConvertToInteger+"";
+        return Integer.parseInt(numToString.substring(0, numToString.indexOf(".")));
+    }
+
+    /**
      * Resume : Gets the With of the Bar Through the Population in the List
      * @param populationByCity
      * @param checkFunctionAllYears
+     * //@param primaryStage
      * @return
      */
-    private int getBarWidthPopulation(String populationByCity, boolean checkFunctionAllYears) {
-        //Todo - Get Fitted to Window Size
-        if(!checkFunctionAllYears){
-            return Integer.parseInt(populationByCity);
-        }
-        System.out.println("Window Size = " );
-        return Integer.parseInt(populationByCity) / 35;
+    private int getBarWidthPopulation(String populationByCity, boolean checkFunctionAllYears, Stage primaryStage) {
+        //Make Graphic Fit in any Window Size
+        return (int) Math.sqrt(Integer.parseInt(populationByCity)) * (int) Math.sqrt(getIntegerPart(primaryStage.getWidth())) / 7;
     }
 }
