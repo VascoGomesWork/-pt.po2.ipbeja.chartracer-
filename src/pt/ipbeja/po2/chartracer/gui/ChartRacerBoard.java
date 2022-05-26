@@ -26,15 +26,15 @@ public class ChartRacerBoard extends Pane implements View {
     //Creates a HBox
     HBox hBox = new HBox();
     MenuBar menuBar;
-    private int xAxis = 50;
+    private int xAxis = 20;
     private int yAxis = 30;
     DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
     //Sets up the View by passing "this" that extends from GridPane
     ChartRacer chartRacer = new ChartRacer(this);
+    TextChartRacer textChartRacer;
     private boolean applySkin = false;
 
     public ChartRacerBoard(Stage primaryStage) {
-
         //Properties that Maximizes Primary Stage
         primaryStage.setMaximized(true);
         //Method that draws a Menu Bar with options
@@ -63,7 +63,7 @@ public class ChartRacerBoard extends Pane implements View {
         hBox.setLayoutX(200);
         hBox.setLayoutY(60);
 
-        TextChartRacer textChartRacer = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
+        textChartRacer = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
 
         //Adds the Combobox and Button to HBox
         hBox.getChildren().addAll(textChartRacer, yearsComboBox, selectYearBtn);
@@ -123,7 +123,7 @@ public class ChartRacerBoard extends Pane implements View {
         //https://stackoverflow.com/questions/10315774/javafx-2-0-activating-a-menu-like-a-menuitem
         menuBar = new MenuBar();
         Menu menuGraphicOperations = new Menu("Graphic Operations");
-        Menu menuSkins = new Menu("Skins");
+        Menu menuSkins = new Menu("Skin");
         Menu menuProgramOperations = new Menu("Program Operations");
 
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
@@ -132,7 +132,7 @@ public class ChartRacerBoard extends Pane implements View {
         CheckMenuItem menuDarkMode = new CheckMenuItem("Dark Mode");
         MenuItem menuItemExit = new MenuItem("Exit");
 
-        CheckMenuItem menuGraphicSkin1 = new CheckMenuItem("Skin 1");
+        CheckMenuItem menuGraphicSkin1 = new CheckMenuItem("Line Bar Chart Skin");
 
         //OnClick of Menu Item "Draw 1 Year"
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
@@ -195,6 +195,7 @@ public class ChartRacerBoard extends Pane implements View {
         //https://www.geeksforgeeks.org/javafx-checkmenuitem-with-examples/
         menuDarkMode.setOnAction(event -> {
             if(menuDarkMode.isSelected()) {
+                //TODO - Make Dark Mode
                 super.setStyle("-fx-background-color: black;");
             } else if(!menuDarkMode.isSelected()){
                 super.setStyle("-fx-background-color: white;");
@@ -244,7 +245,7 @@ public class ChartRacerBoard extends Pane implements View {
         hBox.getChildren().clear();
 
         //Gets the Data Relative to the Graphic and Draws it
-        chartRacer.getDataToDrawGhraphic(chartRacer.getSpecificYearData(chartRacer.readFile(file), year));
+        chartRacer.getDataToDrawGraphic(chartRacer.getSpecificYearData(chartRacer.readFile(file), year));
     }
 
     @Override
@@ -288,7 +289,6 @@ public class ChartRacerBoard extends Pane implements View {
             //Check Witch Year the iteration is
             if(yearsCounter < qtyYearsInList) {
                 yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));
-                //System.out.println("TEste = " + yearDataChartRacer.get(i));
             }
             yearsCounter++;
         }

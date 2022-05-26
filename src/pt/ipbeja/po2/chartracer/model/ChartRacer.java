@@ -191,7 +191,7 @@ public class ChartRacer {
      * Resume : Method that Sends Data to the View
      * @param specificYearData
      */
-    public void getDataToDrawGhraphic(List<String> specificYearData) {
+    public void getDataToDrawGraphic(List<String> specificYearData) {
         view.drawGraphic(specificYearData);
     }
 
