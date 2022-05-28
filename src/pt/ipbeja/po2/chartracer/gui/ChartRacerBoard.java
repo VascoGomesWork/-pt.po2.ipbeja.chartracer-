@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
@@ -32,7 +31,8 @@ public class ChartRacerBoard extends Pane implements View {
     //Sets up the View by passing "this" that extends from GridPane
     private ChartRacer chartRacer = new ChartRacer(this);
     private TextChartRacer textChartRacer;
-    private boolean applySkin = false;
+    private boolean applyLinesSkin = false;
+    private boolean applyTrianglesSkin = false;
     private Stage primaryStage;
 
     public ChartRacerBoard(Stage primaryStage) {
@@ -126,6 +126,7 @@ public class ChartRacerBoard extends Pane implements View {
         menuBar = new MenuBar();
         Menu menuGraphicOperations = new Menu("Graphic Operations");
         Menu menuSkins = new Menu("Skin");
+        Menu menuData = new Menu("Data");
         Menu menuProgramOperations = new Menu("Program Operations");
 
         MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
@@ -134,12 +135,13 @@ public class ChartRacerBoard extends Pane implements View {
         CheckMenuItem menuDarkMode = new CheckMenuItem("Dark Mode");
         MenuItem menuItemExit = new MenuItem("Exit");
 
-        CheckMenuItem menuGraphicSkin1 = new CheckMenuItem("Line Bar Chart Skin");
+        CheckMenuItem menuGraphicLinesSkin = new CheckMenuItem("Line Bar Chart Skin");
+        CheckMenuItem menuGraphicSquaresSkin = new CheckMenuItem("Square Bar Chart Skin");
+        CheckMenuItem menuGenerateFile = new CheckMenuItem("Generate File");
 
         //OnClick of Menu Item "Draw 1 Year"
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         menuItemDraw1Year.setOnAction(event -> {
-
             //Clears Drawing Pane
             clear();
 
@@ -187,10 +189,23 @@ public class ChartRacerBoard extends Pane implements View {
 
         //On Click in Check Menu Item Skin and check if it is selected
         //https://www.geeksforgeeks.org/javafx-checkmenuitem-with-examples/
-        menuGraphicSkin1.setOnAction(event -> {
-            if(menuGraphicSkin1.isSelected()) {
-                applySkin = true;
-            }else applySkin = false;
+        menuGraphicLinesSkin.setOnAction(event -> {
+            if(menuGraphicLinesSkin.isSelected()) {
+                applyLinesSkin = true;
+            }else applyLinesSkin = false;
+        });
+
+        menuGraphicSquaresSkin.setOnAction(event -> {
+            if(menuGraphicSquaresSkin.isSelected()){
+                applyTrianglesSkin = true;
+            } else applyTrianglesSkin = false;
+        });
+
+        menuData.setOnAction(event -> {
+            if(menuGenerateFile.isSelected()){
+                //Generates Statistics File
+                chartRacer.generateStatisticFile();
+            }
         });
 
         //On Click in Check Menu Item Dark Mode
@@ -207,11 +222,13 @@ public class ChartRacerBoard extends Pane implements View {
         //Adds Items to Graphic Operations Menu
         menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears, menuItemClearAll);
         //Adds Items to Skin Menu
-        menuSkins.getItems().addAll(menuGraphicSkin1);
+        menuSkins.getItems().addAll(menuGraphicLinesSkin, menuGraphicSquaresSkin);
+        //Adds Items to Data Menu
+        menuData.getItems().add(menuGenerateFile);
         //Adds Items to Program Operation Menu
         menuProgramOperations.getItems().addAll(menuDarkMode, menuItemExit);
         //Adds Menu to Menu Bar
-        menuBar.getMenus().addAll(menuGraphicOperations, menuSkins, menuProgramOperations);
+        menuBar.getMenus().addAll(menuGraphicOperations, menuSkins, menuData ,menuProgramOperations);
         //Adds Menu Bar To Program
         this.getChildren().add(menuBar);
     }
@@ -254,7 +271,7 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
 
         //Gets the Function to Draw the Graphic
-        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applySkin, primaryStage));
+        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applyLinesSkin, primaryStage, applyTrianglesSkin));
 
         //Creates new HBox Object
         hBox = new HBox();
@@ -268,7 +285,7 @@ public class ChartRacerBoard extends Pane implements View {
             clearPaneAddMenu();
 
             //Adds to Pane the Drawing Pane with the information from other Thread
-            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true, applySkin, primaryStage));
+            this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true, applyLinesSkin, primaryStage, applyTrianglesSkin));
         });
         //Make Thread Sleep it can be possible to see the Graphics Passing Through
         try {

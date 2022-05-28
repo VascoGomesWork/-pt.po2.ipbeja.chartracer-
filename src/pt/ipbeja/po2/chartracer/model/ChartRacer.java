@@ -275,4 +275,11 @@ public class ChartRacer {
             }
         }).start();
     }
+
+    /**
+     * Resume : Function that Generates a Statistic File
+     */
+    public void generateStatisticFile() {
+        
+    }
 }

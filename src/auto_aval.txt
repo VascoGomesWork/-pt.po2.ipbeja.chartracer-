@@ -1,0 +1,12 @@
+Nome: Vasco Miguel Guerreiro Gomes
+Nº: 19921
+
+Requisito E1 -> 2.0 valores
+Requisito E2 -> 3.0 valores
+Requisito E3 -> 2.0 valores
+Requisito E4 -> 3.0 valores
+Requisito NE1 -> 2.5 valores
+
+Total -> 12.5 valores
+
+Tempo Gasto a Realizar Este Projeto : 2 Semanas

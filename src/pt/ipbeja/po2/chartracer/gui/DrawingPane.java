@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class DrawingPane extends Pane {
 
-    private static final int END_Y = 40;
     private final int xAxis;
     private final int yAxis;
     private List<String> yearBeforeList = new ArrayList<>();
@@ -23,8 +22,6 @@ public class DrawingPane extends Pane {
     private ChartRacer chartRacer = new ChartRacer();
     private int counter = 0;
     private boolean applySkin = false;
-    private final int lineWidth = 90;
-    private final int BAR_NUM = 9;
 
     public DrawingPane(int xAxis, int yAxis) {
         this.xAxis = xAxis;
@@ -37,7 +34,7 @@ public class DrawingPane extends Pane {
         this.getChildren().clear();
     }
 
-    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applySkin, Stage primaryStage) {
+    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin) {
         int xChartBar = 90;
         int yChartBar = 40;
         int height = 40;
@@ -77,11 +74,16 @@ public class DrawingPane extends Pane {
                 checkGenerateColor(specificYearDataList, checkFunctionAllYears, i, rectangle);
 
                 //Checks if Skin Check box is Checked
-                if(applySkin){
+                if(applyLinesSkin){
                     //Puts the Color of the Rectangle Transparent
                     rectangle.setFill(Color.TRANSPARENT);
                     //Draws Graphic with Skin
-                    drawGraphicSkin(xChartBar, yChartBar, populationWidth);
+                    drawGraphicSkinLines(xChartBar, yChartBar, populationWidth);
+                } else if(applySquaresSkin){
+                    Color color = Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber());
+                    rectangle.setFill(Color.TRANSPARENT);
+                    //Draws Graphic with Skin
+                    drawGraphicSkinSquares(xChartBar, yChartBar, populationWidth, height, color);
                 }
                 this.getChildren().add(rectangle);
 
@@ -125,23 +127,23 @@ public class DrawingPane extends Pane {
         oldColorList.add(generateRandomColor());
     }
 
-
     /**
      * Resume : Function That Draws the Graphic with a Skin
      * @param xChartBar
      * @param yChartBar
      * @param population
      */
-    private void drawGraphicSkin(int xChartBar, int yChartBar, int population) {
+    public void drawGraphicSkinLines(int xChartBar, int yChartBar, int population) {
         //Draws the Graphics with a Different Skin Creating Lists of Nodes
-        List<Node> barLinesUpLeft = createBarLinesUpLeft(xChartBar, yChartBar, population);
-        List<Node> barLinesUpRight = createBarLinesUpRight(xChartBar, yChartBar, population);
-        List<Node> barLinesDownLeft = createBarLinesDownLeft(xChartBar, yChartBar, population);
-        List<Node> barLinesDownRight = createBarLinesDownRight(xChartBar, yChartBar, population);
+        LinesSkins linesSkins = new LinesSkins();
+        List<Node> barLinesUpLeft = linesSkins.createBarLinesUpLeft(xChartBar, yChartBar, population);
+        List<Node> barLinesUpRight = linesSkins.createBarLinesUpRight(xChartBar, yChartBar, population);
+        List<Node> barLinesDownLeft = linesSkins.createBarLinesDownLeft(xChartBar, yChartBar, population);
+        List<Node> barLinesDownRight = linesSkins.createBarLinesDownRight(xChartBar, yChartBar, population);
 
         //Draws the Lists of Nodes in Drawing Pane
         for (Node node : barLinesUpLeft) {
-            this.getChildren().add(node);
+            super.getChildren().add(node);
         }
 
         for (Node node : barLinesUpRight) {
@@ -158,77 +160,22 @@ public class DrawingPane extends Pane {
         }
     }
 
-    /**
-     * Resume : Function that Creates Lines From Left to Up inside the RectangleBar
-     * @param barX
-     * @param barY
-     * @param barWidth
-     * @return
-     */
-    private List<Node> createBarLinesUpLeft(int barX, int barY, int barWidth) {
-        List<Node> lineList = new ArrayList<>();
-
-        for (int i = 0; i < BAR_NUM; i++) {
-            LineChartRacer line = new LineChartRacer(barX,barY, barWidth + lineWidth, barY + (5 * i));
-            line.setStroke(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-            lineList.add(line);
-        }
-        return lineList;
-    }
 
     /**
-     * Resume : Function that Creates Lines From Right to Up inside the RectangleBar
-     * @param barX
-     * @param barY
-     * @param barWidth
-     * @return
+     *
      */
-    private List<Node> createBarLinesUpRight(int barX, int barY, int barWidth){
-        List<Node> lineList = new ArrayList<>();
+    void drawGraphicSkinSquares(int xChartBar, int yChartBar, int population, int height, Color color){
+        //Todo - Make new Skin
+        // APPly Polymorphism in Skins, make abstract Class
+        SquaresSkins squaresSkins = new SquaresSkins();
+        List<Node> squaresSkinsList = squaresSkins.createSquare(xChartBar, yChartBar, population, height, color);
 
-        for (int i = 0; i < BAR_NUM; i++) {
-            LineChartRacer line = new LineChartRacer(barX,barY + (5 * i), barWidth + lineWidth, barY);
-            line.setStroke(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-            lineList.add(line);
+        for (Node node : squaresSkinsList) {
+            this.getChildren().add(node);
         }
-        return lineList;
     }
 
-    /**
-     * Resume : Function that Creates Lines From Left to Down inside the RectangleBar
-     * @param barX
-     * @param barY
-     * @param barWidth
-     * @return
-     */
-    private List<Node> createBarLinesDownLeft(int barX, int barY, int barWidth){
-        List<Node> lineList = new ArrayList<>();
 
-        for (int i = 0; i < BAR_NUM; i++) {
-            LineChartRacer line = new LineChartRacer(barX,barY + END_Y, barWidth + lineWidth, barY + (5 * i));
-            line.setStroke(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-            lineList.add(line);
-        }
-        return lineList;
-    }
-
-    /**
-     * Resume : Function that Creates Lines From Right to Down inside the RectangleBar
-     * @param barX
-     * @param barY
-     * @param barWidth
-     * @return
-     */
-    private List<Node> createBarLinesDownRight(int barX, int barY, int barWidth){
-        List<Node> lineList = new ArrayList<>();
-
-        for (int i = 0; i < BAR_NUM; i++) {
-            LineChartRacer line = new LineChartRacer(barX,barY + (5 * i), barWidth + lineWidth, barY + END_Y);
-            line.setStroke(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-            lineList.add(line);
-        }
-        return lineList;
-    }
 
     /**
      * Resume : Function that gets the color to the graphic
