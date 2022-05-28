@@ -1,0 +1,7 @@
+Number of Data Sets in File: 519
+First Date: 1500
+Last Date: 2018
+Average Number of Lines in Each Data Set12
+Number of Columns in Each Data Set: 5
+Maximum Value Considering All Data Sets: 38194
+Minimum Value Considering All Data Sets: 130

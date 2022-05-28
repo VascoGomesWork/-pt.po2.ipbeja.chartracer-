@@ -278,8 +278,103 @@ public class ChartRacer {
 
     /**
      * Resume : Function that Generates a Statistic File
+     * @param dataFile
      */
-    public void generateStatisticFile() {
-        
+    public void generateStatisticFile(String dataFile) {
+        List<String> stringDataList = readFile(dataFile);
+        List<String> dataToFileList = new ArrayList<>();
+
+        //Adds Data To List that Will be Written in the File
+        dataToFileList.add("Number of Data Sets in File: " + getQtyYearsInList(stringDataList));
+        dataToFileList.add("First Date: " + getYear(stringDataList.get(0)));
+        dataToFileList.add("Last Date: " + getYear(stringDataList.get(stringDataList.size() - 1)));
+        dataToFileList.add("Average Number of Lines in Each Data Set" + getDataSetAverageLines(stringDataList));
+        dataToFileList.add("Number of Columns in Each Data Set: " + getColumnsQty(stringDataList));
+        dataToFileList.add("Maximum Value Considering All Data Sets: " + maximumPopulationValue(stringDataList));
+        dataToFileList.add("Minimum Value Considering All Data Sets: " + minimumPopulationValue(stringDataList));
+        //Write Data in File
+        writeDataFile("src/pt/ipbeja/po2/chartracer/model/StatisticData.txt", dataToFileList);
+    }
+
+    /**
+     * Resume : Function that Gets the Average Number of Lines
+     * @param stringDataList
+     * @return
+     */
+    private int getDataSetAverageLines(List<String> stringDataList) {
+        int counter = 0;
+        for (String data : stringDataList) {
+            if(data.length() > 0 && getYear(data).equals(getYear(stringDataList.get(0)))){
+                counter++;
+            } else return counter;
+        }
+        return counter;
+    }
+
+    /**
+     * Resume : Function that gets the Column Quantity
+     * @param stringDataList
+     * @return
+     */
+    private int getColumnsQty(List<String> stringDataList) {
+        int counter = 0;
+        for (int i = 0; i < stringDataList.get(0).length(); i++) {
+            if(stringDataList.get(0).charAt(i) == ',') counter++;
+        }
+        //Returns Number of ',' + 1
+        return counter + 1;
+    }
+
+    /**
+     * Resume : Function that Gets the Max Population Number
+     * @param stringDataList
+     * @return
+     */
+    private int maximumPopulationValue(List<String> stringDataList) {
+        int maxValue = 0;
+        for (int i = 0; i < stringDataList.size(); i++) {
+            if(stringDataList.get(i).length() > 0) {
+                getYear(stringDataList.get(i));
+                getCity(stringDataList.get(i));
+                getCountry(stringDataList.get(i));
+                if (Integer.parseInt(getPopulationByCity(stringDataList.get(i))) > maxValue) {
+                    maxValue = Integer.parseInt(getPopulationByCity(stringDataList.get(i)));
+                }
+            }
+        }
+        return maxValue;
+    }
+
+    /**
+     * Resume : Function that Gets the Min Population Number
+     * @param stringDataList
+     * @return
+     */
+    private int minimumPopulationValue(List<String> stringDataList) {
+        int minValue = Integer.MAX_VALUE;
+        for (int i = 0; i < stringDataList.size(); i++) {
+            if(stringDataList.get(i).length() > 0) {
+                getYear(stringDataList.get(i));
+                getCity(stringDataList.get(i));
+                getCountry(stringDataList.get(i));
+                if (Integer.parseInt(getPopulationByCity(stringDataList.get(i))) < minValue) {
+                    minValue = Integer.parseInt(getPopulationByCity(stringDataList.get(i)));
+                }
+            }
+        }
+        return minValue;
+    }
+
+    /**
+     * Resume : Function that Writes Data into File
+     * @param filePath
+     * @param dataList
+     */
+    public void writeDataFile(String filePath, List dataList) {
+        try {
+            Files.write(Paths.get(filePath), dataList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

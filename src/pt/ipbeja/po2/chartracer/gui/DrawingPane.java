@@ -165,8 +165,7 @@ public class DrawingPane extends Pane {
      *
      */
     void drawGraphicSkinSquares(int xChartBar, int yChartBar, int population, int height, Color color){
-        //Todo - Make new Skin
-        // APPly Polymorphism in Skins, make abstract Class
+        // TODO - APPly Polymorphism in Skins, make abstract Class
         SquaresSkins squaresSkins = new SquaresSkins();
         List<Node> squaresSkinsList = squaresSkins.createSquare(xChartBar, yChartBar, population, height, color);
 

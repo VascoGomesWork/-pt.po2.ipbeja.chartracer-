@@ -85,7 +85,7 @@ class ChartRacerTest {
             System.out.println("5 Items from 1500 Ordered Data year List = " + ordered5ElementsDataYearList);
 
             //Puts orderDataYearList inside a file
-            Files.write(Paths.get("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt"), ordered5ElementsDataYearList);
+            chartRacer.writeDataFile("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt", ordered5ElementsDataYearList);
 
             //Extracts the information from the file
             checkOrder5FirstFromFile = chartRacer.readFile("src/pt/ipbeja/po2/chartracer/model/OrderedDataYear5.txt");

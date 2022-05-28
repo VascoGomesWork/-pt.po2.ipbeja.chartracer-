@@ -33,6 +33,7 @@ public class ChartRacerBoard extends Pane implements View {
     private TextChartRacer textChartRacer;
     private boolean applyLinesSkin = false;
     private boolean applyTrianglesSkin = false;
+    private boolean generateStatisticFile = false;
     private Stage primaryStage;
 
     public ChartRacerBoard(Stage primaryStage) {
@@ -147,6 +148,11 @@ public class ChartRacerBoard extends Pane implements View {
 
             //Calls the Function to Choose a File
             String userChoosenFile = askUserFile(primaryStage);
+            //Generates Statistic File
+            if(generateStatisticFile){
+                //Generates Statistics File
+                chartRacer.generateStatisticFile(userChoosenFile);
+            }
             //Asks the User with year they want to see
             askYearFile(userChoosenFile);
         });
@@ -159,7 +165,11 @@ public class ChartRacerBoard extends Pane implements View {
 
             //Loops through all the Years and Draws the Graphic with animations
             String userFile = askUserFile(primaryStage);
-
+            //Generates Statistic File
+            if(generateStatisticFile){
+                //Generates Statistics File
+                chartRacer.generateStatisticFile(userFile);
+            }
             drawAllYears(chartRacer.readFile(userFile), userFile);
 
         });
@@ -203,8 +213,7 @@ public class ChartRacerBoard extends Pane implements View {
 
         menuData.setOnAction(event -> {
             if(menuGenerateFile.isSelected()){
-                //Generates Statistics File
-                chartRacer.generateStatisticFile();
+                generateStatisticFile = true;
             }
         });
 
