@@ -283,7 +283,6 @@ public class ChartRacer {
     public void generateStatisticFile(String dataFile) {
         List<String> stringDataList = readFile(dataFile);
         List<String> dataToFileList = new ArrayList<>();
-
         //Adds Data To List that Will be Written in the File
         dataToFileList.add("Number of Data Sets in File: " + getQtyYearsInList(stringDataList));
         dataToFileList.add("First Date: " + getYear(stringDataList.get(0)));

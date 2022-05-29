@@ -310,7 +310,7 @@ public class DrawingPane extends Pane {
     }
 
     /**
-     * 
+     *
      */
     public void fadeTransition() {
         FadeTransition fadeTransition = new FadeTransition();
