@@ -1,6 +1,12 @@
 package pt.ipbeja.po2.chartracer.gui;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -8,6 +14,7 @@ import pt.ipbeja.po2.chartracer.model.ChartRacer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Vasco Gomes 19921
@@ -17,11 +24,17 @@ public class DrawingPane extends Pane {
 
     private final int xAxis;
     private final int yAxis;
+    private final int imageViewLayoutX = 5;
+    private final int imageViewLayoutY = 30;
+    private final int imageViewWidth = 100;
+    private final int imageViewHeight = 100;
     private List<String> yearBeforeList = new ArrayList<>();
     private List<String> oldColorList = new ArrayList<>();
     private ChartRacer chartRacer = new ChartRacer();
     private int counter = 0;
     private boolean applySkin = false;
+    TranslateTransition translateTransition;
+    ImageView imageView;
 
     public DrawingPane(int xAxis, int yAxis) {
         this.xAxis = xAxis;
@@ -241,5 +254,71 @@ public class DrawingPane extends Pane {
     private int getBarWidthPopulation(String populationByCity, boolean checkFunctionAllYears, Stage primaryStage) {
         //Make Graphic Fit in any Window Size
         return (int) Math.sqrt(Integer.parseInt(populationByCity)) * (int) Math.sqrt(getIntegerPart(primaryStage.getWidth())) / 7;
+    }
+
+    /**
+     * Resume : Function that animates an image
+     */
+    public Node animateImage(Stage primaryStage) {
+
+        ImageView imageView = setUpImageView();
+
+        Platform.runLater(() -> {
+            makeTranslateTransition(imageView, primaryStage.getWidth(), primaryStage.getHeight());
+        });
+
+        return imageView;
+    }
+
+    public TranslateTransition getTransition(){
+        return translateTransition;
+    }
+
+    /**
+     * Resume : Function that Makes a Translate Transition
+     * @param imageView
+     * @param width
+     * @param height
+     */
+    private void makeTranslateTransition(ImageView imageView, double width, double height) {
+        //Translate Transition
+        this.translateTransition = new TranslateTransition();
+        this.translateTransition.setNode(imageView);
+        this.translateTransition.setByX(width);
+        this.translateTransition.setByY(height);
+        this.translateTransition.setAutoReverse(true);
+        //How to Control Animation Speed
+        //https://stackoverflow.com/questions/28290814/how-to-slow-down-javafx-animation
+        this.translateTransition.setRate(0.1);
+        this.translateTransition.setCycleCount(Animation.INDEFINITE);
+        this.translateTransition.play();
+    }
+
+    /**
+     * Resume Function that Sets Up an Image View
+     * @return
+     */
+    private ImageView setUpImageView() {
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("chart_png_mod.png")));
+        imageView = new ImageView(image);
+        imageView.setLayoutX(this.imageViewLayoutX);
+        imageView.setLayoutY(this.imageViewLayoutY);
+        imageView.setFitWidth(this.imageViewWidth);
+        imageView.setFitHeight(this.imageViewHeight);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    /**
+     * 
+     */
+    public void fadeTransition() {
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setFromValue(0.1);
+        fadeTransition.setToValue(0.5);
+        fadeTransition.setAutoReverse(true);
+        fadeTransition.setNode(imageView);
+        fadeTransition.setCycleCount(2);
+        fadeTransition.play();
     }
 }

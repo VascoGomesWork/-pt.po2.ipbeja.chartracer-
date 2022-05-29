@@ -37,11 +37,12 @@ public class ChartRacerBoard extends Pane implements View {
     private Stage primaryStage;
 
     public ChartRacerBoard(Stage primaryStage) {
-        //Properties that Maximizes Primary Stage
-        primaryStage.setMaximized(true);
         //Method that draws a Menu Bar with options
         createMenuBar(primaryStage);
         this.primaryStage = primaryStage;
+        System.out.println("X = " + primaryStage.getWidth());
+        //Make animation
+        this.getChildren().add(drawingPane.animateImage(primaryStage));
     }
 
     /**
@@ -178,7 +179,8 @@ public class ChartRacerBoard extends Pane implements View {
         menuItemClearAll.setOnAction(event -> {
             // Clears HBox and Drawing Box
             clear();
-
+            //Make animation
+            this.getChildren().add(drawingPane.animateImage(primaryStage));
         });
 
         //OnClick of Menu Item "Exit"
@@ -246,7 +248,12 @@ public class ChartRacerBoard extends Pane implements View {
      * Resume : Function that clears hBox, drawing pane and sets another drawing pane
      */
     private void clear() {
-        //TODO -Make Clear Function Stop JavaFx Threads
+        //TODO -Make Clear Function Stop JavaFx Threads and Transitions
+        if(drawingPane.translateTransition != null) {
+            drawingPane.translateTransition.stop();
+            drawingPane.fadeTransition();
+        }
+
         hBox.getChildren().clear();
 
         //Clears the Drawing Box

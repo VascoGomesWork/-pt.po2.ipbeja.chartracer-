@@ -33,8 +33,8 @@ public class ChartRacerStart extends Application {
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos por: Vasco Gomes Nº19921");
-        primaryStage.setMinHeight(minHeight);
-        primaryStage.setMinWidth(minWidth);
+        //Properties that Maximizes Primary Stage
+        primaryStage.setMaximized(true);
         //Sets an Application Icon
         //https://kensoftph.com/change-the-stage-icon-in-javafx/
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("bar_chart_icon2.png"))));
