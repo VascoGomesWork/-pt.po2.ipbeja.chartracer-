@@ -4,37 +4,37 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Vasco Gomes 19921
  * @date 27/05/2022
  */
-public class SquaresSkins {
+public class SquaresSkins extends GraphicalSkins{
 
-    private static int POPULATION_DIVISION = 2;
+    private static double STROKE_WIDTH = 3.0;
+    private static int height = 40;
 
-    public List<Node> createSquare(int xChartBar, int yChartBar, int population, int height, Color color) {
+    public SquaresSkins(int xChartBar, int yChartBar, int population) {
+        super(xChartBar, yChartBar, population);
+    }
+
+    @Override
+    public List<List<Node>> generateSkin() {
+        return new ArrayList<>(Collections.singleton(createSquare(xChartBar(), yChartBar(), population())));
+    }
+
+    public List<Node> createSquare(int xChartBar, int yChartBar, int population) {
 
         List<Node> squaresList = new ArrayList<>();
 
-        for (int i = 0; i < POPULATION_DIVISION; i++) {
-            RectangleChartRacer square = new RectangleChartRacer(xChartBar, yChartBar, population / 2, height);
-            square.setFill(color);
-            if(i > 0) {
-                square.setFill(color.darker());
-            }
-            squaresList.add(square);
-            xChartBar += xChartBar / 3;
-        }
-        return squaresList;
-    }
+        RectangleChartRacer square = new RectangleChartRacer(xChartBar, yChartBar, population, height);
+        square.setFill(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
+        //TODO - Set Stroke Width
+        square.setStrokeWidth(STROKE_WIDTH);
+        squaresList.add(square);
 
-    /**
-     * Resume : Function that Generates Random RGB Number Between 0 and 255
-     * @return
-     */
-    private int generateRandRGBNumber(){
-        return (int) ((Math.random() * (255)) + 0);
+        return squaresList;
     }
 }

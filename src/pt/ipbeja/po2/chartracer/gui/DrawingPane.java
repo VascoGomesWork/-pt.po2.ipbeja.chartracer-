@@ -35,6 +35,7 @@ public class DrawingPane extends Pane {
     private boolean applySkin = false;
     TranslateTransition translateTransition;
     ImageView imageView;
+    RectangleChartRacer rectangle;
 
     public DrawingPane(int xAxis, int yAxis) {
         this.xAxis = xAxis;
@@ -80,24 +81,13 @@ public class DrawingPane extends Pane {
                 int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears, primaryStage);
 
                 //Creating a RectangleChartRacer
-                RectangleChartRacer rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
+                rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
                 rectangle.setStroke(Color.BLACK);
 
                 //Checks if is Needed to Generate Color
                 checkGenerateColor(specificYearDataList, checkFunctionAllYears, i, rectangle);
 
-                //Checks if Skin Check box is Checked
-                if(applyLinesSkin){
-                    //Puts the Color of the Rectangle Transparent
-                    rectangle.setFill(Color.TRANSPARENT);
-                    //Draws Graphic with Skin
-                    drawGraphicSkinLines(xChartBar, yChartBar, populationWidth);
-                } else if(applySquaresSkin){
-                    Color color = Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber());
-                    rectangle.setFill(Color.TRANSPARENT);
-                    //Draws Graphic with Skin
-                    drawGraphicSkinSquares(xChartBar, yChartBar, populationWidth, height, color);
-                }
+                checkIfSkinApplied(applyLinesSkin, applySquaresSkin, xChartBar, yChartBar, populationWidth);
                 this.getChildren().add(rectangle);
 
                 //Adds Elements to the Lists
@@ -111,6 +101,38 @@ public class DrawingPane extends Pane {
         }
         //Adds the DrawingPane to super
         return this;
+    }
+
+    /**
+     * Resume : Function that Checks if Any Skin is Applied
+     * @param applyLinesSkin
+     * @param applySquaresSkin
+     * @param xChartBar
+     * @param yChartBar
+     * @param populationWidth
+     */
+    private void checkIfSkinApplied(boolean applyLinesSkin, boolean applySquaresSkin, int xChartBar, int yChartBar, int populationWidth) {
+        if(applyLinesSkin){
+            GraphicalSkins graphicalSkins = new LinesSkins(xChartBar, yChartBar, populationWidth);
+            drawGraphicWithSkin(graphicalSkins);
+        }
+        if(applySquaresSkin){
+            GraphicalSkins graphicalSkins = new SquaresSkins(xChartBar, yChartBar, populationWidth);
+            drawGraphicWithSkin(graphicalSkins);
+        }
+    }
+
+    /**
+     * Resume : Function that Draws the Graphics
+     * @param graphicalSkins
+     */
+    private void drawGraphicWithSkin(GraphicalSkins graphicalSkins) {
+        rectangle.setFill(Color.TRANSPARENT);
+        for (int i = 0; i < graphicalSkins.generateSkin().size(); i++) {
+            for (int j = 0; j < graphicalSkins.generateSkin().get(i).size(); j++) {
+                this.getChildren().add(graphicalSkins.generateSkin().get(i).get(j));
+            }
+        }
     }
 
     /**
@@ -139,55 +161,6 @@ public class DrawingPane extends Pane {
         yearBeforeList.add(chartRacer.getCity(specificYearDataList.get(i)));
         oldColorList.add(generateRandomColor());
     }
-
-    /**
-     * Resume : Function That Draws the Graphic with a Skin
-     * @param xChartBar
-     * @param yChartBar
-     * @param population
-     */
-    public void drawGraphicSkinLines(int xChartBar, int yChartBar, int population) {
-        //Draws the Graphics with a Different Skin Creating Lists of Nodes
-        LinesSkins linesSkins = new LinesSkins();
-        List<Node> barLinesUpLeft = linesSkins.createBarLinesUpLeft(xChartBar, yChartBar, population);
-        List<Node> barLinesUpRight = linesSkins.createBarLinesUpRight(xChartBar, yChartBar, population);
-        List<Node> barLinesDownLeft = linesSkins.createBarLinesDownLeft(xChartBar, yChartBar, population);
-        List<Node> barLinesDownRight = linesSkins.createBarLinesDownRight(xChartBar, yChartBar, population);
-
-        //Draws the Lists of Nodes in Drawing Pane
-        for (Node node : barLinesUpLeft) {
-            super.getChildren().add(node);
-        }
-
-        for (Node node : barLinesUpRight) {
-            this.getChildren().add(node);
-        }
-
-
-        for (Node node : barLinesDownLeft) {
-            this.getChildren().add(node);
-        }
-
-        for (Node node : barLinesDownRight) {
-            this.getChildren().add(node);
-        }
-    }
-
-
-    /**
-     *
-     */
-    void drawGraphicSkinSquares(int xChartBar, int yChartBar, int population, int height, Color color){
-        // TODO - APPly Polymorphism in Skins, make abstract Class
-        SquaresSkins squaresSkins = new SquaresSkins();
-        List<Node> squaresSkinsList = squaresSkins.createSquare(xChartBar, yChartBar, population, height, color);
-
-        for (Node node : squaresSkinsList) {
-            this.getChildren().add(node);
-        }
-    }
-
-
 
     /**
      * Resume : Function that gets the color to the graphic
@@ -310,7 +283,7 @@ public class DrawingPane extends Pane {
     }
 
     /**
-     *
+     * Resume: Function that makes a FadeTransition
      */
     public void fadeTransition() {
         FadeTransition fadeTransition = new FadeTransition();

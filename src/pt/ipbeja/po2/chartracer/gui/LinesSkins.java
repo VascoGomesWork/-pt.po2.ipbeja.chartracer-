@@ -10,12 +10,32 @@ import java.util.List;
  * @author Vasco Gomes 19921
  * @date 27/05/2022
  */
-public class LinesSkins {
+public class LinesSkins extends GraphicalSkins{
 
     private static final int END_Y = 40;
     private final int lineWidth = 90;
     private final int BAR_NUM = 9;
 
+    public LinesSkins(int xChartBar, int yChartBar, int population) {
+        super(xChartBar, yChartBar, population);
+    }
+
+
+    @Override
+    public List<List<Node>> generateSkin() {
+        List<List<Node>> allBars = new ArrayList<>();
+        List<Node> barLinesUpLeft = createBarLinesUpLeft(xChartBar(), yChartBar(), population());
+        List<Node> barLinesUpRight = createBarLinesUpRight(xChartBar(), yChartBar(), population());
+        List<Node> barLinesDownLeft = createBarLinesDownLeft(xChartBar(), yChartBar(), population());
+        List<Node> barLinesDownRight = createBarLinesDownRight(xChartBar(), yChartBar(), population());
+
+        allBars.add(barLinesUpLeft);
+        allBars.add(barLinesUpRight);
+        allBars.add(barLinesDownLeft);
+        allBars.add(barLinesDownRight);
+        //allBars.addAll(barLinesUpLeft, barLinesUpRight, barLinesDownLeft, barLinesDownRight);
+        return allBars;
+    }
 
     /**
      * Resume : Function that Creates Lines From Left to Up inside the RectangleBar
@@ -87,13 +107,5 @@ public class LinesSkins {
             lineList.add(line);
         }
         return lineList;
-    }
-
-    /**
-     * Resume : Function that Generates Random RGB Number Between 0 and 255
-     * @return
-     */
-    private int generateRandRGBNumber(){
-        return (int) ((Math.random() * (255)) + 0);
     }
 }
