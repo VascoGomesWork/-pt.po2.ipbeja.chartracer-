@@ -81,8 +81,7 @@ public class DrawingPane extends Pane {
                 int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears, primaryStage);
 
                 //Creating a RectangleChartRacer
-                rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-                rectangle.setStroke(Color.BLACK);
+                createRectangle(xChartBar, yChartBar, height, populationWidth);
 
                 //Checks if is Needed to Generate Color
                 checkGenerateColor(specificYearDataList, checkFunctionAllYears, i, rectangle);
@@ -101,6 +100,18 @@ public class DrawingPane extends Pane {
         }
         //Adds the DrawingPane to super
         return this;
+    }
+
+    /**
+     * Resume: Function that Creates a Rectangle with the Atributes Needed
+     * @param xChartBar
+     * @param yChartBar
+     * @param height
+     * @param populationWidth
+     */
+    private void createRectangle(int xChartBar, int yChartBar, int height, int populationWidth) {
+        rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
+        rectangle.setStroke(Color.BLACK);
     }
 
     /**
