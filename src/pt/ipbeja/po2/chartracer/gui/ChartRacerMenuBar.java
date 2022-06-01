@@ -21,12 +21,13 @@ public class ChartRacerMenuBar extends MenuBar {
     MenuItem menuItemDraw1Year = new MenuItem("Draw 1 Year");
     MenuItem menuItemDrawAllYears = new MenuItem("Draw All Years");
     MenuItem menuItemClearAll = new MenuItem("Clear All");
-    CheckMenuItem menuDarkMode = new CheckMenuItem("Dark Mode");
+    MenuItem menuChooseTextColor = new MenuItem("Choose Text Color");
     MenuItem menuItemExit = new MenuItem("Exit");
 
     CheckMenuItem menuGraphicLinesSkin = new CheckMenuItem("Line Bar Chart Skin");
     CheckMenuItem menuGraphicSquaresSkin = new CheckMenuItem("Square Bar Chart Skin");
     CheckMenuItem menuGenerateFile = new CheckMenuItem("Generate File");
+    CheckMenuItem menuDarkMode = new CheckMenuItem("Dark Mode");
 
     public ChartRacerMenuBar() {
 
@@ -43,7 +44,7 @@ public class ChartRacerMenuBar extends MenuBar {
         //Adds Items to Data Menu
         menuData.getItems().add(menuGenerateFile);
         //Adds Items to Program Operation Menu
-        menuProgramOperations.getItems().addAll(menuDarkMode, menuItemExit);
+        menuProgramOperations.getItems().addAll(menuDarkMode, menuChooseTextColor, menuItemExit);
         //Adds Menu to Menu Bar
         menuBar.getMenus().addAll(menuGraphicOperations, menuSkins, menuData ,menuProgramOperations);
 
