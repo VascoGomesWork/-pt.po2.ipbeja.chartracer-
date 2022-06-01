@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pt.ipbeja.po2.chartracer.model.ChartRacer;
@@ -15,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Vasco Gomes 19921
@@ -177,11 +177,32 @@ public class ChartRacerBoard extends Pane implements View {
      * @param chartRacerMenuBar
      */
     private void menuBarDarkMode(ChartRacerMenuBar chartRacerMenuBar) {
+        applyDarkMode(chartRacerMenuBar);
+    }
+
+    /**
+     * Resume: Function that Really Applies Dark Mode Theme
+     * @param chartRacerMenuBar
+     */
+    private void applyDarkMode(ChartRacerMenuBar chartRacerMenuBar) {
+        //Checks if Dark Mode is Selected
         if(chartRacerMenuBar.menuDarkMode.isSelected()) {
-            //TODO - Make Dark Mode
-            super.setStyle("-fx-background-color: black;");
+            setUpDarkMode(Color.WHITE);
         } else if(!chartRacerMenuBar.menuDarkMode.isSelected()){
+            setUpDarkMode(Color.BLACK);
             super.setStyle("-fx-background-color: white;");
+        }
+    }
+
+    /**
+     * Resume: Function that Sets Up Dark Mode
+     * @param color
+     */
+    private void setUpDarkMode(Color color) {
+        super.setStyle("-fx-background-color: black;");
+        //Checks if Drawing Pane has been Created
+        if(drawingPane != null){
+            drawingPane.changeTheme(color);
         }
     }
 
@@ -285,10 +306,10 @@ public class ChartRacerBoard extends Pane implements View {
      * Resume : Function that clears hBox, drawing pane and sets another drawing pane
      */
     private void clear() {
-        //TODO -Make Clear Function Stop JavaFx Threads and Transitions
+        //Stop Transitions
         if(drawingPane.translateTransition != null) {
-            drawingPane.translateTransition.stop();
             drawingPane.fadeTransition();
+            drawingPane.translateTransition.stop();
         }
 
         hBox.getChildren().clear();
@@ -324,6 +345,8 @@ public class ChartRacerBoard extends Pane implements View {
         //Gets the Function to Draw the Graphic
         this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applyLinesSkin, primaryStage, applyTrianglesSkin));
 
+        applyDarkMode(chartRacerMenuBar);
+
         //Creates new HBox Object
         hBox = new HBox();
     }
@@ -343,6 +366,8 @@ public class ChartRacerBoard extends Pane implements View {
 
             //Adds to Pane the Drawing Pane with the information from other Thread
             this.getChildren().add(drawingPane.drawGraphic(orderedSpecificYearData, true, applyLinesSkin, primaryStage, applyTrianglesSkin));
+
+            applyDarkMode(chartRacerMenuBar);
         });
         //Make Thread Sleep it can be possible to see the Graphics Passing Through
         try {
@@ -362,6 +387,9 @@ public class ChartRacerBoard extends Pane implements View {
         int yearsCounter = 0;
         int qtyYearsInList = chartRacer.getQtyYearsInList(allYearsList);
         for (int i = 0; i < allYearsList.size(); i++) {
+
+            applyDarkMode(chartRacerMenuBar);
+
             //Check Witch Year the iteration is
             if(yearsCounter < qtyYearsInList) {
                 yearDataChartRacer.add(chartRacer.getSpecificYearData(allYearsList, chartRacer.getAllYearsList(userFile).get(yearsCounter)));

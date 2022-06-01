@@ -36,6 +36,11 @@ public class DrawingPane extends Pane {
     TranslateTransition translateTransition;
     ImageView imageView;
     RectangleChartRacer rectangle;
+    TextChartRacer beginText;
+    TextChartRacer cityNameText;
+    TextChartRacer populationText;
+    List<TextChartRacer> cityNameTextList = new ArrayList<>();
+    List<TextChartRacer> populationTextList = new ArrayList<>();
 
     public DrawingPane(int xAxis, int yAxis) {
         this.xAxis = xAxis;
@@ -62,7 +67,8 @@ public class DrawingPane extends Pane {
             for (int i = 0; i < specificYearDataList.size(); i++) {
 
                 //Sets Up Text About the Chart
-                this.getChildren().add(new TextChartRacer(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearDataList.get(i))));
+                beginText = new TextChartRacer(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearDataList.get(i)));
+                this.getChildren().add(beginText);
 
                 chartRacer.getYear(specificYearDataList.get(i));
                 String city = chartRacer.getCity(specificYearDataList.get(i));
@@ -74,7 +80,9 @@ public class DrawingPane extends Pane {
                 this.getChildren().add(new LineChartRacer(xChartBar, yAxisLine, xChartBar, xChartBar));
 
                 //Draws City Name
-                this.getChildren().add(new TextChartRacer(xAxis, yAxisCityName, city));
+                cityNameText = new TextChartRacer(xAxis, yAxisCityName, city);
+                cityNameTextList.add(cityNameText);
+                this.getChildren().add(cityNameText);
 
                 //Sets Up the Bars of the Graphic
                 //Makes Width according the Population Number
@@ -92,7 +100,9 @@ public class DrawingPane extends Pane {
                 //Adds Elements to the Lists
                 addElementsToList(specificYearDataList, i);
 
-                this.getChildren().add(new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, population));
+                populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, population);
+                populationTextList.add(populationText);
+                this.getChildren().add(populationText);
 
                 yAxisCityName += 60;
                 yChartBar += 60;
@@ -254,10 +264,6 @@ public class DrawingPane extends Pane {
         return imageView;
     }
 
-    public TranslateTransition getTransition(){
-        return translateTransition;
-    }
-
     /**
      * Resume : Function that Makes a Translate Transition
      * @param imageView
@@ -268,8 +274,8 @@ public class DrawingPane extends Pane {
         //Translate Transition
         this.translateTransition = new TranslateTransition();
         this.translateTransition.setNode(imageView);
-        this.translateTransition.setByX(width);
-        this.translateTransition.setByY(height);
+        this.translateTransition.setByX(width - (width / 4));
+        this.translateTransition.setByY(height - (height / 4));
         this.translateTransition.setAutoReverse(true);
         //How to Control Animation Speed
         //https://stackoverflow.com/questions/28290814/how-to-slow-down-javafx-animation
@@ -298,11 +304,25 @@ public class DrawingPane extends Pane {
      */
     public void fadeTransition() {
         FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setFromValue(0.1);
+        fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(0.5);
         fadeTransition.setAutoReverse(true);
         fadeTransition.setNode(imageView);
         fadeTransition.setCycleCount(2);
         fadeTransition.play();
+    }
+
+    public void changeTheme(Color color) {
+        if(beginText != null){
+            beginText.setFill(color);
+        }
+
+        for (TextChartRacer textChartRacer : cityNameTextList) {
+            textChartRacer.setFill(color);
+        }
+
+        for (TextChartRacer textChartRacer : populationTextList) {
+            textChartRacer.setFill(color);
+        }
     }
 }
