@@ -26,13 +26,12 @@ public class ChartRacerBoard extends Pane implements View {
     //Creates a HBox
     private HBox hBox = new HBox();
     ChartRacerMenuBar chartRacerMenuBar;
-    MenuBar menuBar;
-    private int xAxis = 20;
-    private int yAxis = 30;
-    private int hBoxXLayout = 200;
-    private int hBoxYLayout = 60;
-    private int hBoxXColorPicker = 700;
-    private int hBoxYColorPicker = 30;
+    private final int xAxis = 20;
+    private final int yAxis = 30;
+    private final int hBoxXLayout = 200;
+    private final int hBoxYLayout = 60;
+    private final int hBoxXColorPicker = 700;
+    private final int hBoxYColorPicker = 30;
     private DrawingPane drawingPane = new DrawingPane(xAxis,yAxis);
     //Sets up the View by passing "this" that extends from GridPane
     private ChartRacer chartRacer = new ChartRacer(this);
@@ -58,38 +57,40 @@ public class ChartRacerBoard extends Pane implements View {
      * @param userChoosenFile
      */
     private void askYearFile(String userChoosenFile) {
-
         //Gets the File that the user Choose and Shows the Years Inside It for the User to Choose it
         List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
 
         //Creates a Combobox with the Observable List Created from the Years List
         ComboBox<String> yearsComboBox = new ComboBox<>(convertListToObservableList(allYearsList));
-        //https://stackoverflow.com/questions/34949422/how-to-set-default-value-in-combobox-javafx
-        yearsComboBox.getSelectionModel().selectFirst();
+        //Checks if Year List is Different from NUll
+        if(allYearsList.size() > 0) {
+            //https://stackoverflow.com/questions/34949422/how-to-set-default-value-in-combobox-javafx
+            yearsComboBox.getSelectionModel().selectFirst();
 
-        //Creates a Button
-        Button selectYearBtn = new Button("Select Year");
+            //Creates a Button
+            Button selectYearBtn = new Button("Select Year");
 
-        //Sets the Hbox in Pane
-        this.hBox.setLayoutX(this.hBoxXLayout);
-        this.hBox.setLayoutY(this.hBoxYLayout);
+            //Sets the Hbox in Pane
+            this.hBox.setLayoutX(this.hBoxXLayout);
+            this.hBox.setLayoutY(this.hBoxYLayout);
 
-        this.textChartRacerChooseYear = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
-        if(this.chartRacerMenuBar.menuDarkMode.isSelected()) {
-            this.textChartRacerChooseYear.setFill(colorToModify);
-        }
-        //Adds the Combobox and Button to HBox
-        this.hBox.getChildren().addAll(this.textChartRacerChooseYear, yearsComboBox, selectYearBtn);
-        //Adds HBox to Pane
-        this.getChildren().add(hBox);
+            this.textChartRacerChooseYear = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
+            if (this.chartRacerMenuBar.menuDarkMode.isSelected()) {
+                this.textChartRacerChooseYear.setFill(colorToModify);
+            }
+            //Adds the Combobox and Button to HBox
+            this.hBox.getChildren().addAll(this.textChartRacerChooseYear, yearsComboBox, selectYearBtn);
+            //Adds HBox to Pane
+            this.getChildren().add(hBox);
 
-        //Click of The Button
-        selectYearBtn.setOnAction(event -> {
+            //Click of The Button
+            selectYearBtn.setOnAction(event -> {
 
-            //Method that asks User File and asks user year and Draws the Chart
-            createChart(userChoosenFile, yearsComboBox.getValue());
+                //Method that asks User File and asks user year and Draws the Chart
+                createChart(userChoosenFile, yearsComboBox.getValue());
 
-        });
+            });
+        } else this.hBox.getChildren().clear();
     }
 
     /**
@@ -423,17 +424,19 @@ public class ChartRacerBoard extends Pane implements View {
         //System.out.println("All Year List View Side = " + allYearsList);
         int yearsCounter = 0;
         int qtyYearsInList = this.chartRacer.getQtyYearsInList(allYearsList);
-        for (int i = 0; i < allYearsList.size(); i++) {
+        if(allYearsList != null) {
+            for (int i = 0; i < allYearsList.size(); i++) {
 
-            applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
+                applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
 
-            //Check Witch Year the iteration is
-            if(yearsCounter < qtyYearsInList) {
-                yearDataChartRacer.add(this.chartRacer.getSpecificYearData(allYearsList, this.chartRacer.getAllYearsList(userFile).get(yearsCounter)));
+                //Check Witch Year the iteration is
+                if (yearsCounter < qtyYearsInList) {
+                    yearDataChartRacer.add(this.chartRacer.getSpecificYearData(allYearsList, this.chartRacer.getAllYearsList(userFile).get(yearsCounter)));
+                }
+                yearsCounter++;
             }
-            yearsCounter++;
+            this.chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
         }
-        this.chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
     }
 
 }

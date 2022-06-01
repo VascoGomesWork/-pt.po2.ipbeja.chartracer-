@@ -7,7 +7,8 @@ Requisito E3 -> 2.0 valores
 Requisito E4 -> 3.0 valores
 Requisito NE1 -> 2.5 valores
 Requisito NE2 -> 2.5 valores
+Requisito NE3 -> 2.0 valores
 
-Total -> 15 valores
+Total -> 17 valores
 
 Tempo Gasto a Realizar Este Projeto : 2 Semanas

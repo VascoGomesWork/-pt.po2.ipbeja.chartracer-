@@ -39,12 +39,9 @@ public class ChartRacer {
      * @return
      */
     public List<String> readFile(String fileName) {
-        //TODO - Check if the File has length > 0 and the file format of year,city,country,population,region
         try {
-                return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            return removeUnwantedDataFromList(Files.readAllLines(Paths.get(fileName)));
+        } catch (Exception e) {}
         return null;
     }
 
@@ -205,11 +202,13 @@ public class ChartRacer {
         List<String> userReadedFile = readFile(userChoosenFile);
         List<String> allYearsList = new ArrayList<>();
 
-        for (int i = 0; i < userReadedFile.size(); i++) {
-            //Gets all the Years in File Choosen By The User and Puts it in all Year List
-            //Checks if String Length is Greater Than 0
-            if(userReadedFile.get(i).length() > 0) {
-                allYearsList.add(getYear(userReadedFile.get(i)));
+        if(userReadedFile != null) {
+            for (int i = 0; i < userReadedFile.size(); i++) {
+                //Gets all the Years in File Choosen By The User and Puts it in all Year List
+                //Checks if String Length is Greater Than 0
+                if (userReadedFile.get(i).length() > 0) {
+                    allYearsList.add(getYear(userReadedFile.get(i)));
+                }
             }
         }
         //Calls Method to Remove Repeated Elements from List with TreeSet
@@ -241,14 +240,16 @@ public class ChartRacer {
     public int getQtyYearsInList(List<String> dataList) {
         //System.out.println("Data List = " + dataList);
         List<String> yearsList = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            //Check if String not Empty
-            if(dataList.get(i).length() > 0) {
-                //System.out.println("String = " + dataList.get(i));
-                yearsList.add(getYear(dataList.get(i)));
+        if(dataList != null) {
+            for (int i = 0; i < dataList.size(); i++) {
+                //Check if String not Empty
+                if (dataList.get(i).length() > 0) {
+                    yearsList.add(getYear(dataList.get(i)));
+                }
             }
+            return new TreeSet<>(yearsList).size();
         }
-        return new TreeSet<>(yearsList).size();
+        return 0;
     }
 
     /**
