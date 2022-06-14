@@ -12,6 +12,14 @@ public class CitiesData implements Comparable<CitiesData>{
     private final String country;
     private final String region;
 
+    /**
+     * Resume: Constructor
+     * @param year
+     * @param city
+     * @param country
+     * @param populationByCity
+     * @param region
+     */
     public CitiesData(String year, String city, String country, String populationByCity, String region) {
 
         this.year = Integer.parseInt(year);
@@ -21,26 +29,19 @@ public class CitiesData implements Comparable<CitiesData>{
         this.region = region;
     }
 
-    public int getYear() {
-        return year;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
+    /**
+     * Resume: Function that Gets the City Population
+     * @return
+     */
     public int getCityPopulation() {
         return this.populationByCity;
     }
 
+    /**
+     * Resume: Function that compares Objects
+     * @param o
+     * @return
+     */
     @Override
     public int compareTo(CitiesData o) {
         if(this.getCityPopulation() == o.getCityPopulation()) return 0;
@@ -48,6 +49,11 @@ public class CitiesData implements Comparable<CitiesData>{
         else return 1;
     }
 
+    /**
+     * Resume: Function that Converts Object to String
+     * @param citiesData
+     * @return
+     */
     public String convertToString(CitiesData citiesData) {
         return citiesData.year + "," + citiesData.city + "," + citiesData.country + "," + citiesData.populationByCity + "," + citiesData.region;
     }

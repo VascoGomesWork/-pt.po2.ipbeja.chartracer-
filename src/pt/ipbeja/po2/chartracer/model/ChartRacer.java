@@ -14,11 +14,12 @@ import java.util.TreeSet;
  */
 public class ChartRacer {
 
-    String dataString = "";
     private int cityEndIndex;
     private int countryEndIndex;
     private int populationEndIndex;
-    View view;
+    private static int NUM_BARS = 12;
+    private boolean isThreadAlive = false;
+    private View view;
 
     /**
      * Resume : Constructor that Sets Up the View
@@ -44,7 +45,6 @@ public class ChartRacer {
         } catch (Exception e) {}
         return null;
     }
-
 
     /**
      * Resume : Function that makes a newList
@@ -82,7 +82,6 @@ public class ChartRacer {
             if(specificYearUnorderedData.get(i).contains(",")) {
                 String data = specificYearUnorderedData.get(i);
                 citiesData = new CitiesData(getYear(data), getCity(data), getCountry(data), getPopulationByCity(data), getRegion(data));
-                System.out.println();
                 //Adds to the ordered List what comes from Comparable
                 specificYearOrderedData.add(citiesData);
             }
@@ -93,10 +92,8 @@ public class ChartRacer {
 
         //Get String inside of an ordered finalList
         for (int i = 0; i < specificYearOrderedData.size(); i++) {
-            //System.out.println(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
             finalSpecificYearOrderedData.add(specificYearOrderedData.get(i).convertToString(specificYearOrderedData.get(i)));
         }
-
         return finalSpecificYearOrderedData;
     }
 
@@ -106,7 +103,6 @@ public class ChartRacer {
      * @return
      */
     public String getYear(String dataString) {
-        //System.out.println("Year = " + dataString.substring(0, dataString.indexOf(',')));
         return dataString.substring(0, dataString.indexOf(','));
     }
 
@@ -178,7 +174,6 @@ public class ChartRacer {
                 }
             }
             catch (Exception e){
-                //break;
             }
         }
         return specificYearList;
@@ -189,7 +184,7 @@ public class ChartRacer {
      * @param specificYearData
      */
     public void getDataToDrawGraphic(List<String> specificYearData) {
-        view.drawGraphic(specificYearData);
+        this.view.drawGraphic(specificYearData);
     }
 
     /**
@@ -257,19 +252,20 @@ public class ChartRacer {
      * @param yearDataChartRacer
      */
     public void getDataDrawAllGraphics(List<List<String>> yearDataChartRacer) {
-        //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo
+        //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo Barros
         new Thread( () -> {
             int counter = 0;
-            List<String> yearBeforeList;
+            List<String> yearBeforeList = new ArrayList<>();
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
-                if(counter < 12) {
+                if(counter < NUM_BARS) {
                     //Gets the year before of the current one only if i - 1 > 0
-                   yearBeforeList = new ArrayList<>();
+                   //yearBeforeList = new ArrayList<>();
                     if(i - 1 > 0) {
                         yearBeforeList = yearDataChartRacer.get(i - 1);
                     }
-                    view.drawAllGraphics(yearBeforeList, orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))));
-                } else if(counter == 12){
+                    this.isThreadAlive = true;
+                    this.view.drawAllGraphics(yearBeforeList, orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.isThreadAlive);
+                } else if(counter == NUM_BARS){
                     counter = 0;
                 }
                 counter++;
@@ -288,7 +284,7 @@ public class ChartRacer {
         dataToFileList.add("Number of Data Sets in File: " + getQtyYearsInList(stringDataList));
         dataToFileList.add("First Date: " + getYear(stringDataList.get(0)));
         dataToFileList.add("Last Date: " + getYear(stringDataList.get(stringDataList.size() - 1)));
-        dataToFileList.add("Average Number of Lines in Each Data Set" + getDataSetAverageLines(stringDataList));
+        dataToFileList.add("Average Number of Lines in Each Data Set: " + getDataSetAverageLines(stringDataList));
         dataToFileList.add("Number of Columns in Each Data Set: " + getColumnsQty(stringDataList));
         dataToFileList.add("Maximum Value Considering All Data Sets: " + maximumPopulationValue(stringDataList));
         dataToFileList.add("Minimum Value Considering All Data Sets: " + minimumPopulationValue(stringDataList));

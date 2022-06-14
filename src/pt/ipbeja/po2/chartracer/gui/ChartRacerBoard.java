@@ -37,28 +37,32 @@ public class ChartRacerBoard extends Pane implements View {
     private ChartRacer chartRacer = new ChartRacer(this);
     private TextChartRacer textChartRacerChooseYear;
     private boolean applyLinesSkin = false;
-    private boolean applyTrianglesSkin = false;
+    private boolean applyColorsSkin = false;
     private boolean generateStatisticFile = false;
+    private boolean isThreadAlive = false;
     private Stage primaryStage;
     Color colorToModify = Color.WHITE;
 
+    /**
+     * Resume: Chart Racer Board Constructor
+     * @param primaryStage
+     */
     public ChartRacerBoard(Stage primaryStage) {
         //Method that draws a Menu Bar with options
         createMenuBar(primaryStage);
         this.primaryStage = primaryStage;
-        System.out.println("X = " + primaryStage.getWidth());
-        //Make animation
-        this.getChildren().add(drawingPane.animateImage(primaryStage));
+        //Starts Animation
+        this.getChildren().add(this.drawingPane.animateImage(primaryStage));
     }
 
     /**
      * Resume : Function that asks for a Year on a Specific File
      * @return
-     * @param userChoosenFile
+     * @param userChosenFile
      */
-    private void askYearFile(String userChoosenFile) {
+    private void askYearFile(String userChosenFile) {
         //Gets the File that the user Choose and Shows the Years Inside It for the User to Choose it
-        List<String> allYearsList = chartRacer.getAllYearsList(userChoosenFile);
+        List<String> allYearsList = this.chartRacer.getAllYearsList(userChosenFile);
 
         //Creates a Combobox with the Observable List Created from the Years List
         ComboBox<String> yearsComboBox = new ComboBox<>(convertListToObservableList(allYearsList));
@@ -76,19 +80,17 @@ public class ChartRacerBoard extends Pane implements View {
 
             this.textChartRacerChooseYear = new TextChartRacer(50, 50, "Choose the Year You Want to See!! ");
             if (this.chartRacerMenuBar.menuDarkMode.isSelected()) {
-                this.textChartRacerChooseYear.setFill(colorToModify);
+                this.textChartRacerChooseYear.setFill(this.colorToModify);
             }
             //Adds the Combobox and Button to HBox
             this.hBox.getChildren().addAll(this.textChartRacerChooseYear, yearsComboBox, selectYearBtn);
             //Adds HBox to Pane
-            this.getChildren().add(hBox);
+            this.getChildren().add(this.hBox);
 
             //Click of The Button
             selectYearBtn.setOnAction(event -> {
-
                 //Method that asks User File and asks user year and Draws the Chart
-                createChart(userChoosenFile, yearsComboBox.getValue());
-
+                createChart(userChosenFile, yearsComboBox.getValue());
             });
         } else this.hBox.getChildren().clear();
     }
@@ -138,17 +140,17 @@ public class ChartRacerBoard extends Pane implements View {
         //OnClick of Menu Item "Draw 1 Year"
         //https://www.programcreek.com/java-api-examples/?class=javafx.scene.control.MenuItem&method=setOnAction
         this.chartRacerMenuBar.menuItemDraw1Year.setOnAction(event -> {
-            menuBarDraw1Year(primaryStage);
+            menuBarDraw1Year(this.primaryStage);
         });
 
         //OnClick of Menu Item "Draw All Years"
         this.chartRacerMenuBar.menuItemDrawAllYears.setOnAction(event -> {
-            menuBarDrawAllYears(primaryStage);
+            menuBarDrawAllYears(this.primaryStage);
         });
 
         //OnClick of Menu Item "Clear All"
         this.chartRacerMenuBar.menuItemClearAll.setOnAction(event -> {
-            menuBarClearAll(primaryStage);
+            menuBarClearAll(this.primaryStage);
         });
 
         //OnClick of Menu Item "Exit"
@@ -159,21 +161,21 @@ public class ChartRacerBoard extends Pane implements View {
         //On Click in Check Menu Item Skin and check if it is selected
         //https://www.geeksforgeeks.org/javafx-checkmenuitem-with-examples/
         this.chartRacerMenuBar.menuGraphicLinesSkin.setOnAction(event -> {
-            menuBarLinesGraphic(chartRacerMenuBar);
+            menuBarLinesGraphic(this.chartRacerMenuBar);
         });
 
-        this.chartRacerMenuBar.menuGraphicSquaresSkin.setOnAction(event -> {
-            menuBarSquaresGraphic(chartRacerMenuBar);
+        this.chartRacerMenuBar.menuGraphicColorsSkin.setOnAction(event -> {
+            menuBarColorsGraphic(this.chartRacerMenuBar);
         });
 
         this.chartRacerMenuBar.menuData.setOnAction(event -> {
-            menuBarGenerateDataFile(chartRacerMenuBar);
+            menuBarGenerateDataFile(this.chartRacerMenuBar);
         });
 
         //On Click in Check Menu Item Dark Mode
         //https://www.geeksforgeeks.org/javafx-checkmenuitem-with-examples/
         this.chartRacerMenuBar.menuDarkMode.setOnAction(event -> {
-            menuBarDarkMode(chartRacerMenuBar,colorToModify);
+            menuBarDarkMode(this.chartRacerMenuBar,this.colorToModify);
         });
 
         this.chartRacerMenuBar.menuChooseTextColor.setOnAction(event -> {
@@ -255,23 +257,43 @@ public class ChartRacerBoard extends Pane implements View {
     }
 
     /**
-     * Resume: Menu Bar Draw Skin With Squares OnClick Function
+     * Resume: Menu Bar Draw Skin With Colors OnClick Function
      * @param chartRacerMenuBar
      */
-    private void menuBarSquaresGraphic(ChartRacerMenuBar chartRacerMenuBar) {
-        if(chartRacerMenuBar.menuGraphicSquaresSkin.isSelected()){
-            this.applyTrianglesSkin = true;
-        } else this.applyTrianglesSkin = false;
+    private void menuBarColorsGraphic(ChartRacerMenuBar chartRacerMenuBar) {
+        //Checks if JavaFX Thread is Still Running if it ain't executes the code inside If statement
+        if(!this.isThreadAlive){
+            if(chartRacerMenuBar.menuGraphicColorsSkin.isSelected() && !chartRacerMenuBar.menuGraphicLinesSkin.isSelected()){
+                this.applyColorsSkin = true;
+            } else{
+                this.applyColorsSkin = false;
+                /*chartRacerMenuBar.menuGraphicLinesSkin.setSelected(false);
+                this.applyLinesSkin = false;*/
+            }
+        } else {
+            //Raises an Alert about JavaFX Thread Still Running
+            raiseThreadAliveAlert();
+        }
     }
-
+    //TODO - FIX Cannot Select Skin after DrawAll Graphics Run
     /**
      * Resume: Menu Bar Draw Skin With Lines OnClick Function
      * @param chartRacerMenuBar
      */
     private void menuBarLinesGraphic(ChartRacerMenuBar chartRacerMenuBar) {
-        if(chartRacerMenuBar.menuGraphicLinesSkin.isSelected()) {
-            this.applyLinesSkin = true;
-        } else this.applyLinesSkin = false;
+        //Checks if JavaFX Thread is Still Running if it ain't executes the code inside If statement
+        if(!this.isThreadAlive){
+            if(chartRacerMenuBar.menuGraphicLinesSkin.isSelected() && !chartRacerMenuBar.menuGraphicColorsSkin.isSelected()) {
+                this.applyLinesSkin = true;
+            } else{
+                this.applyLinesSkin = false;
+                /*chartRacerMenuBar.menuGraphicColorsSkin.setSelected(false);
+                this.applyColorsSkin = false;*/
+            }
+        } else {
+            //Raises an Alert about JavaFX Thread Still Running
+            raiseThreadAliveAlert();
+        }
     }
 
     /**
@@ -285,6 +307,7 @@ public class ChartRacerBoard extends Pane implements View {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are You Sure You Want to Exit?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> btnResult = alert.showAndWait();
 
+        //If Button Has Been Clicked Ends the Program
         if(btnResult.isPresent() && btnResult.get() == ButtonType.YES){
             //How to Terminate an Application
             //https://stackoverflow.com/questions/12153622/how-to-close-a-javafx-application-on-window-close
@@ -300,7 +323,7 @@ public class ChartRacerBoard extends Pane implements View {
         // Clears HBox and Drawing Box
         clear();
         //Make animation
-        this.getChildren().add(drawingPane.animateImage(primaryStage));
+        this.getChildren().add(this.drawingPane.animateImage(primaryStage));
     }
 
     /**
@@ -309,16 +332,24 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void menuBarDrawAllYears(Stage primaryStage) {
         //Clears Drawing Pane
-        clear();
+        this.clear();
 
         //Loops through all the Years and Draws the Graphic with animations
         String userFile = askUserFile(primaryStage);
-        //Generates Statistic File
+        checksGenerateStatisticsFileActive(userFile);
+        drawAllYears(this.chartRacer.readFile(userFile), userFile);
+    }
+
+    /**
+     * Resume: Function that Generates a Statistics File if Boolean Value is Set to True
+     * @param userFile
+     */
+    private void checksGenerateStatisticsFileActive(String userFile) {
+        //If Generates Statistics Files Boolean Variable is True Then Executes Code Inside If
         if(this.generateStatisticFile){
             //Generates Statistics File
             this.chartRacer.generateStatisticFile(userFile);
         }
-        drawAllYears(this.chartRacer.readFile(userFile), userFile);
     }
 
     /**
@@ -326,18 +357,30 @@ public class ChartRacerBoard extends Pane implements View {
      * @param primaryStage
      */
     private void menuBarDraw1Year(Stage primaryStage) {
-        //Clears Drawing Pane
-        clear();
-
-        //Calls the Function to Choose a File
-        String userChoosenFile = askUserFile(primaryStage);
-        //Generates Statistic File
-        if(this.generateStatisticFile){
-            //Generates Statistics File
-            this.chartRacer.generateStatisticFile(userChoosenFile);
+        //Checks if JavaFx Thread is Running and if it is Raises an Alert
+        if(!this.isThreadAlive) {
+            //Clears Drawing Pane
+            clear();
+            //Calls the Function to Choose a File
+            String userChosenFile = askUserFile(primaryStage);
+            //Generates Statistic File
+            checksGenerateStatisticsFileActive(userChosenFile);
+            //Asks the User with year they want to see
+            askYearFile(userChosenFile);
+        } else {
+            //Raises an Alert about JavaFX Thread Still Running
+            raiseThreadAliveAlert();
         }
-        //Asks the User with year they want to see
-        askYearFile(userChoosenFile);
+    }
+
+    /**
+     * Resume: Function that makes an alert if the JavaFX Thread is Running
+     */
+    private void raiseThreadAliveAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "The JavaFX Thread is Running so This Option Cannot be Selected!!Please Wait Until Thread has Finished it's Execution");
+        alert.setTitle("JavaFX Thread Information");
+        alert.setHeaderText("JavaFX Thread Information");
+        alert.showAndWait();
     }
 
     /**
@@ -356,7 +399,7 @@ public class ChartRacerBoard extends Pane implements View {
         this.drawingPane.clear();
 
         //Resets the Drawing Box
-        this.drawingPane = new DrawingPane(xAxis, yAxis);
+        this.drawingPane = new DrawingPane(this.xAxis, this.yAxis);
     }
 
     /**
@@ -370,7 +413,7 @@ public class ChartRacerBoard extends Pane implements View {
         this.hBox.getChildren().clear();
 
         //Gets the Data Relative to the Graphic and Draws it
-        this.chartRacer.getDataToDrawGraphic(chartRacer.getSpecificYearData(chartRacer.readFile(file), year));
+        this.chartRacer.getDataToDrawGraphic(this.chartRacer.getSpecificYearData(this.chartRacer.readFile(file), year));
     }
 
     /**
@@ -381,9 +424,8 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
 
         //Gets the Function to Draw the Graphic
-        this.getChildren().add(drawingPane.drawGraphic(specificYearData, false, applyLinesSkin, primaryStage, applyTrianglesSkin));
-
-        applyDarkMode(chartRacerMenuBar, colorToModify);
+        this.getChildren().add(this.drawingPane.drawGraphic(specificYearData, false, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin));
+        applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
 
         //Creates new HBox Object
         this.hBox = new HBox();
@@ -393,17 +435,19 @@ public class ChartRacerBoard extends Pane implements View {
      * Resume: Method From View to Draw All Graphics
      * @param yearBeforeList
      * @param orderedSpecificYearData
+     * @param isThreadAlive
      */
     @Override
-    public void drawAllGraphics(List<String> yearBeforeList, List<String> orderedSpecificYearData) {
+    public void drawAllGraphics(List<String> yearBeforeList, List<String> orderedSpecificYearData, boolean isThreadAlive) {
         List<String> oldColorList = new ArrayList<>();
+        this.isThreadAlive = isThreadAlive;
         Platform.runLater(() -> {
-            //Clears DrawingPane so it dosent't throw a duplicate exeption error
+            //Clears DrawingPane and Creates new DrawingPane Object so it dosent't throw a duplicate exeption error
             this.drawingPane.clear();
             this.drawingPane = new DrawingPane(this.xAxis, this.yAxis);
 
             //Adds to Pane the Drawing Pane with the information from other Thread
-            this.getChildren().add(this.drawingPane.drawGraphic(orderedSpecificYearData, true, applyLinesSkin, primaryStage, applyTrianglesSkin));
+            this.getChildren().add(this.drawingPane.drawGraphic(orderedSpecificYearData, true, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin));
 
             applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
         });
@@ -438,5 +482,4 @@ public class ChartRacerBoard extends Pane implements View {
             this.chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
         }
     }
-
 }

@@ -9,11 +9,22 @@ import javafx.scene.shape.Rectangle;
  */
 public class RectangleChartRacer extends Rectangle {
 
+    /**
+     * Resume: RectangleChartRacer Constructor
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     public RectangleChartRacer(double x, double y, double width, double height) {
         super(x, y, width, height);
     }
 
 
+    /**
+     * Resume: Function that Sets Bars Colors
+     * @param color
+     */
     public void setColor(String color){
         //Sets Colors through RGB Values
         //Sets Background Color

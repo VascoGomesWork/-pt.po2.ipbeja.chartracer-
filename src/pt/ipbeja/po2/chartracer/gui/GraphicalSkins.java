@@ -14,24 +14,46 @@ public abstract class GraphicalSkins implements Skin{
     private final int yChartBar;
     private final int population;
 
+    /**
+     * Resume: Graphical Skins Constructor
+     * @param xChartBar
+     * @param yChartBar
+     * @param population
+     */
     public GraphicalSkins(int xChartBar, int yChartBar, int population) {
         this.xChartBar = xChartBar;
         this.yChartBar = yChartBar;
         this.population = population;
     }
 
+    /**
+     * Resume: Returns xChartBar Variable
+     * @return
+     */
     public int xChartBar() {
         return xChartBar;
     }
 
+    /**
+     * Resume: Returns yChartBar Variable
+     * @return
+     */
     public int yChartBar() {
         return yChartBar;
     }
 
+    /**
+     * Resume: Returns population Variable
+     * @return
+     */
     public int population() {
         return population;
     }
 
+    /**
+     * Resume: Abstract Function that Generates Skin
+     * @return
+     */
     public abstract List<List<Node>> generateSkin();
 
     /**

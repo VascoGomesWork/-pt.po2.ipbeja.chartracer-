@@ -8,10 +8,13 @@ import javafx.scene.text.Text;
  */
 public class TextChartRacer extends Text {
 
+    /**
+     * Resume: TextChartRacer Constructor
+     * @param x
+     * @param y
+     * @param text
+     */
     public TextChartRacer(int x, int y, String text) {
         super(x, y, text);
     }
-
-
-
 }

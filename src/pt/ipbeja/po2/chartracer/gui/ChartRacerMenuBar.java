@@ -25,7 +25,7 @@ public class ChartRacerMenuBar extends MenuBar {
     MenuItem menuItemExit = new MenuItem("Exit");
 
     CheckMenuItem menuGraphicLinesSkin = new CheckMenuItem("Line Bar Chart Skin");
-    CheckMenuItem menuGraphicSquaresSkin = new CheckMenuItem("Square Bar Chart Skin");
+    CheckMenuItem menuGraphicColorsSkin = new CheckMenuItem("Colored Bar Chart Skin");
     CheckMenuItem menuGenerateFile = new CheckMenuItem("Generate File");
     CheckMenuItem menuDarkMode = new CheckMenuItem("Dark Mode");
 
@@ -33,6 +33,10 @@ public class ChartRacerMenuBar extends MenuBar {
 
     }
 
+    /**
+     * Resume: Function that Returns Menu Bar
+     * @return: MenuBar
+     */
     public MenuBar getMenuBar() {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/MenuBar.html
         //https://stackoverflow.com/questions/10315774/javafx-2-0-activating-a-menu-like-a-menuitem
@@ -40,7 +44,7 @@ public class ChartRacerMenuBar extends MenuBar {
         //Adds Items to Graphic Operations Menu
         menuGraphicOperations.getItems().addAll(menuItemDraw1Year, menuItemDrawAllYears, menuItemClearAll);
         //Adds Items to Skin Menu
-        menuSkins.getItems().addAll(menuGraphicLinesSkin, menuGraphicSquaresSkin);
+        menuSkins.getItems().addAll(menuGraphicLinesSkin, menuGraphicColorsSkin);
         //Adds Items to Data Menu
         menuData.getItems().add(menuGenerateFile);
         //Adds Items to Program Operation Menu

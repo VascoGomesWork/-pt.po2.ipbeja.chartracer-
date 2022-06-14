@@ -26,13 +26,11 @@ public class ChartRacerStart extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        int minHeight = 200;
-        int minWidth = 400;
         //TODO - Reduce Method With more than 30 ;
         ChartRacerBoard board = new ChartRacerBoard(primaryStage);
         Scene scene = new Scene(board);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Chart Racer - Trabalho Prático de Programação Orientada a Objetos por: Vasco Gomes Nº19921");
+        primaryStage.setTitle("Bar Chart Racer - Trabalho Prático de Programação Orientada a Objetos por: Vasco Gomes Nº19921");
         //Properties that Maximizes Primary Stage
         primaryStage.setMaximized(true);
         //Sets an Application Icon

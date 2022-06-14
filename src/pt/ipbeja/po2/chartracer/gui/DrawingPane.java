@@ -42,6 +42,11 @@ public class DrawingPane extends Pane {
     List<TextChartRacer> cityNameTextList = new ArrayList<>();
     List<TextChartRacer> populationTextList = new ArrayList<>();
 
+    /**
+     * Resume: Drawing Pane Constructor
+     * @param xAxis
+     * @param yAxis
+     */
     public DrawingPane(int xAxis, int yAxis) {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
@@ -49,10 +54,46 @@ public class DrawingPane extends Pane {
         this.setLayoutY(this.yAxis);
     }
 
+    /**
+     * Resume: Function That Clears Drawing Pane
+     */
     public void clear() {
         this.getChildren().clear();
     }
 
+    /**
+     * Resume: Get Bar Chart Racer Data to be Used in Draw Graphic Function
+     * @param specificYearDataList
+     * @param i
+     * @return: barChartRacerData
+     */
+    private List<String> getBarChartRacerData(List<String> specificYearDataList, int i){
+        //Creates new Array List
+        List<String> barChartRacerDataList = new ArrayList<>();
+
+        //Gets Data Necessary
+        this.chartRacer.getYear(specificYearDataList.get(i));
+        String city = this.chartRacer.getCity(specificYearDataList.get(i));
+        this.chartRacer.getCountry(specificYearDataList.get(i));
+        String population = this.chartRacer.getPopulationByCity(specificYearDataList.get(i));
+        this.chartRacer.getRegion(specificYearDataList.get(i));
+
+        //Adds City and Population to ArrayList
+        barChartRacerDataList.add(city);
+        barChartRacerDataList.add(population);
+
+        return barChartRacerDataList;
+    }
+
+    /**
+     * Resume: Function that Draws the Graphic
+     * @param specificYearDataList
+     * @param checkFunctionAllYears
+     * @param applyLinesSkin
+     * @param primaryStage
+     * @param applySquaresSkin
+     * @return
+     */
     public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin) {
         int xChartBar = 90;
         int yChartBar = 40;
@@ -67,32 +108,29 @@ public class DrawingPane extends Pane {
             for (int i = 0; i < specificYearDataList.size(); i++) {
 
                 //Sets Up Text About the Chart
-                beginText = new TextChartRacer(xAxis, yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + chartRacer.getYear(specificYearDataList.get(i)));
-                this.getChildren().add(beginText);
-
-                chartRacer.getYear(specificYearDataList.get(i));
-                String city = chartRacer.getCity(specificYearDataList.get(i));
-                String country = chartRacer.getCountry(specificYearDataList.get(i));
-                String population = chartRacer.getPopulationByCity(specificYearDataList.get(i));
-                String region = chartRacer.getRegion(specificYearDataList.get(i));
+                this.beginText = new TextChartRacer(this.xAxis, this.yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + this.chartRacer.getYear(specificYearDataList.get(i)));
+                this.getChildren().add(this.beginText);
 
                 //Sets Up Lines to make the Graphic
                 this.getChildren().add(new LineChartRacer(xChartBar, yAxisLine, xChartBar, xChartBar));
 
+                //Gets Data of Bar Chart Racer to be Used in This Function
+                List<String> barChartRacerData = getBarChartRacerData(specificYearDataList, i);
+
                 //Draws City Name
-                cityNameText = new TextChartRacer(xAxis, yAxisCityName, city);
-                cityNameTextList.add(cityNameText);
-                this.getChildren().add(cityNameText);
+                this.cityNameText = new TextChartRacer(this.xAxis, yAxisCityName, barChartRacerData.get(0));
+                this.cityNameTextList.add(this.cityNameText);
+                this.getChildren().add(this.cityNameText);
 
                 //Sets Up the Bars of the Graphic
                 //Makes Width according the Population Number
-                int populationWidth = getBarWidthPopulation(population, checkFunctionAllYears, primaryStage);
+                int populationWidth = getBarWidthPopulation(barChartRacerData.get(1), primaryStage);
 
                 //Creating a RectangleChartRacer
                 createRectangle(xChartBar, yChartBar, height, populationWidth);
 
                 //Checks if is Needed to Generate Color
-                checkGenerateColor(specificYearDataList, checkFunctionAllYears, i, rectangle);
+                checkGenerateColor(specificYearDataList, checkFunctionAllYears, i, this.rectangle);
 
                 checkIfSkinApplied(applyLinesSkin, applySquaresSkin, xChartBar, yChartBar, populationWidth);
                 this.getChildren().add(rectangle);
@@ -100,9 +138,9 @@ public class DrawingPane extends Pane {
                 //Adds Elements to the Lists
                 addElementsToList(specificYearDataList, i);
 
-                populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, population);
-                populationTextList.add(populationText);
-                this.getChildren().add(populationText);
+                this.populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, barChartRacerData.get(1));
+                this.populationTextList.add(this.populationText);
+                this.getChildren().add(this.populationText);
 
                 yAxisCityName += 60;
                 yChartBar += 60;
@@ -120,8 +158,8 @@ public class DrawingPane extends Pane {
      * @param populationWidth
      */
     private void createRectangle(int xChartBar, int yChartBar, int height, int populationWidth) {
-        rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
-        rectangle.setStroke(Color.BLACK);
+        this.rectangle = new RectangleChartRacer(xChartBar, yChartBar, populationWidth, height);
+        this.rectangle.setStroke(Color.BLACK);
     }
 
     /**
@@ -138,7 +176,7 @@ public class DrawingPane extends Pane {
             drawGraphicWithSkin(graphicalSkins);
         }
         if(applySquaresSkin){
-            GraphicalSkins graphicalSkins = new SquaresSkins(xChartBar, yChartBar, populationWidth);
+            GraphicalSkins graphicalSkins = new ColorsSkins(xChartBar, yChartBar, populationWidth);
             drawGraphicWithSkin(graphicalSkins);
         }
     }
@@ -148,7 +186,7 @@ public class DrawingPane extends Pane {
      * @param graphicalSkins
      */
     private void drawGraphicWithSkin(GraphicalSkins graphicalSkins) {
-        rectangle.setFill(Color.TRANSPARENT);
+        this.rectangle.setFill(Color.TRANSPARENT);
         for (int i = 0; i < graphicalSkins.generateSkin().size(); i++) {
             for (int j = 0; j < graphicalSkins.generateSkin().get(i).size(); j++) {
                 this.getChildren().add(graphicalSkins.generateSkin().get(i).get(j));
@@ -165,10 +203,10 @@ public class DrawingPane extends Pane {
      */
     private void checkGenerateColor(List<String> specificYearDataList, boolean checkFunctionAllYears, int i, RectangleChartRacer rectangle) {
         //Checks if it is AllYears Function that called if it wasn't generates a random color
-        if (checkFunctionAllYears && counter > specificYearDataList.size())
+        if (checkFunctionAllYears && this.counter > specificYearDataList.size())
             checkBarColor(specificYearDataList.subList(0, specificYearDataList.size()), i, rectangle, specificYearDataList.size());
         else rectangle.setColor(generateRandomColor());
-        counter++;
+        this.counter++;
     }
 
     /**
@@ -178,9 +216,9 @@ public class DrawingPane extends Pane {
      */
     private void addElementsToList(List<String> specificYearDataList, int i) {
         //Adds Elements to yearBeforeList and oldColorList
-        chartRacer.getYear(specificYearDataList.get(i));
-        yearBeforeList.add(chartRacer.getCity(specificYearDataList.get(i)));
-        oldColorList.add(generateRandomColor());
+        this.chartRacer.getYear(specificYearDataList.get(i));
+        this.yearBeforeList.add(this.chartRacer.getCity(specificYearDataList.get(i)));
+        this.oldColorList.add(generateRandomColor());
     }
 
     /**
@@ -191,22 +229,23 @@ public class DrawingPane extends Pane {
      * @param size
      */
     private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
-            chartRacer.getYear(specificYearDataList.get(i));
+            this.chartRacer.getYear(specificYearDataList.get(i));
 
-            if (yearBeforeList.subList(0, size).contains(chartRacer.getCity(specificYearDataList.get(i)))) {
-                String oldColor = oldColorList.get(i);
+            //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
+            if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
+                String oldColor = this.oldColorList.get(i);
                 rectangle.setColor(oldColor);
             } else {
                 String newColor = generateRandomColor();
-                oldColorList.add(newColor);
+                this.oldColorList.add(newColor);
                 rectangle.setColor(newColor);
             }
 
             if (i == size - 1) {
-                yearBeforeList.subList(0, size - 1).clear();
-                yearBeforeList.remove(0);
+                this.yearBeforeList.subList(0, size - 1).clear();
+                this.yearBeforeList.remove(0);
             }
-        counter++;
+        this.counter++;
     }
 
     /**
@@ -241,11 +280,10 @@ public class DrawingPane extends Pane {
     /**
      * Resume : Gets the With of the Bar Through the Population in the List
      * @param populationByCity
-     * @param checkFunctionAllYears
      * //@param primaryStage
      * @return
      */
-    private int getBarWidthPopulation(String populationByCity, boolean checkFunctionAllYears, Stage primaryStage) {
+    private int getBarWidthPopulation(String populationByCity, Stage primaryStage) {
         //Make Graphic Fit in any Window Size
         return (int) Math.sqrt(Integer.parseInt(populationByCity)) * (int) Math.sqrt(getIntegerPart(primaryStage.getWidth())) / 7;
     }
@@ -254,13 +292,10 @@ public class DrawingPane extends Pane {
      * Resume : Function that animates an image
      */
     public Node animateImage(Stage primaryStage) {
-
         ImageView imageView = setUpImageView();
-
         Platform.runLater(() -> {
-            makeTranslateTransition(imageView, primaryStage.getWidth(), primaryStage.getHeight());
+            makeTranslateTransition(this.imageView, primaryStage.getWidth(), primaryStage.getHeight());
         });
-
         return imageView;
     }
 
@@ -290,13 +325,13 @@ public class DrawingPane extends Pane {
      */
     private ImageView setUpImageView() {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("chart_png_mod.png")));
-        imageView = new ImageView(image);
-        imageView.setLayoutX(this.imageViewLayoutX);
-        imageView.setLayoutY(this.imageViewLayoutY);
-        imageView.setFitWidth(this.imageViewWidth);
-        imageView.setFitHeight(this.imageViewHeight);
-        imageView.setPreserveRatio(true);
-        return imageView;
+        this.imageView = new ImageView(image);
+        this.imageView.setLayoutX(this.imageViewLayoutX);
+        this.imageView.setLayoutY(this.imageViewLayoutY);
+        this.imageView.setFitWidth(this.imageViewWidth);
+        this.imageView.setFitHeight(this.imageViewHeight);
+        this.imageView.setPreserveRatio(true);
+        return this.imageView;
     }
 
     /**
@@ -307,21 +342,25 @@ public class DrawingPane extends Pane {
         fadeTransition.setFromValue(0.0);
         fadeTransition.setToValue(0.5);
         fadeTransition.setAutoReverse(true);
-        fadeTransition.setNode(imageView);
+        fadeTransition.setNode(this.imageView);
         fadeTransition.setCycleCount(2);
         fadeTransition.play();
     }
 
+    /**
+     * Resume: Function that Changes Graphic Theme to Dark Theme or Light Theme
+     * @param color
+     */
     public void changeTheme(Color color) {
-        if(beginText != null){
-            beginText.setFill(color);
+        if(this.beginText != null){
+            this.beginText.setFill(color);
         }
 
-        for (TextChartRacer textChartRacer : cityNameTextList) {
+        for (TextChartRacer textChartRacer : this.cityNameTextList) {
             textChartRacer.setFill(color);
         }
 
-        for (TextChartRacer textChartRacer : populationTextList) {
+        for (TextChartRacer textChartRacer : this.populationTextList) {
             textChartRacer.setFill(color);
         }
     }

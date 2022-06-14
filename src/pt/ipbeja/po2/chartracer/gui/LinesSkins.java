@@ -16,11 +16,20 @@ public class LinesSkins extends GraphicalSkins{
     private final int lineWidth = 90;
     private final int BAR_NUM = 9;
 
+    /**
+     * Resume: Lines Skins Constructor
+     * @param xChartBar
+     * @param yChartBar
+     * @param population
+     */
     public LinesSkins(int xChartBar, int yChartBar, int population) {
         super(xChartBar, yChartBar, population);
     }
 
-
+    /**
+     * Resume: Function that generates Skin
+     * @return
+     */
     @Override
     public List<List<Node>> generateSkin() {
         List<List<Node>> allBars = new ArrayList<>();
