@@ -20,6 +20,7 @@ public class ChartRacer {
     private static int NUM_BARS = 12;
     private boolean isThreadAlive = false;
     private View view;
+    private List<String> yearsBeforeList = new ArrayList<>();
 
     /**
      * Resume : Constructor that Sets Up the View
@@ -257,13 +258,9 @@ public class ChartRacer {
             List<String> yearBeforeList = new ArrayList<>();
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
                 if(counter < NUM_BARS) {
-                    //Gets the year before of the current one only if i - 1 > 0
-                   //yearBeforeList = new ArrayList<>();
-                    if(i - 1 > 0) {
-                        yearBeforeList = yearDataChartRacer.get(i - 1);
-                    }
+
                     this.isThreadAlive = true;
-                    this.view.drawAllGraphics(yearBeforeList, orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.isThreadAlive);
+                    this.view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.isThreadAlive);
                     this.isThreadAlive = false;
                 } else if(counter == NUM_BARS){
                     counter = 0;

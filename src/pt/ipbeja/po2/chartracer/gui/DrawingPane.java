@@ -96,16 +96,19 @@ public class DrawingPane extends Pane {
      * @param primaryStage
      * @param applySquaresSkin
      * @param cyclesCounter
+     * @param yearBeforeList
      * @return
      */
-    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin, int cyclesCounter) {
+    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin, int cyclesCounter, List<String> oldColorList, List<String> yearBeforeList) {
         int xChartBar = 90;
         int yChartBar = 40;
         int height = 40;
         int yAxisCityName = yChartBar + 20;
         int xCityPopulation = 100;
         int yAxisLine = yChartBar;
-        this.cyclesCounter = cyclesCounter;
+        this.oldColorList = oldColorList;
+        this.yearBeforeList = yearBeforeList;
+        System.out.println("Lista Teste = " + this.yearBeforeList);
         //Clears Pane
         this.getChildren().clear();
             //Loops Through String List and displays Data
@@ -140,7 +143,7 @@ public class DrawingPane extends Pane {
                 this.getChildren().add(rectangle);
 
                 //Adds Elements to the Lists
-                addElementsToList(specificYearDataList, i);
+                //addElementsToList(specificYearDataList, i);
 
                 this.populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, barChartRacerData.get(1));
                 this.populationTextList.add(this.populationText);
@@ -208,26 +211,16 @@ public class DrawingPane extends Pane {
      */
     private void checkGenerateColor(List<String> specificYearDataList, boolean checkFunctionAllYears, int i, RectangleChartRacer rectangle) {
         //Checks if it is AllYears Function that called if it wasn't generates a random color
-        System.out.println("Counter = " + this.counter);
+        System.out.println("Counter = " + this.cyclesCounter);
         System.out.println("Data = " + specificYearDataList);
-        System.out.println("Size = " + specificYearDataList.size());
-        if (checkFunctionAllYears && this.counter > specificYearDataList.size())
+        if (checkFunctionAllYears && this.cyclesCounter > specificYearDataList.size())
             checkBarColor(specificYearDataList.subList(0, specificYearDataList.size()), i, rectangle, specificYearDataList.size());
         else rectangle.setColor(generateRandomColor());
         this.counter++;
+        this.cyclesCounter++;
     }
 
-    /**
-     * Resume : Function that Adds Elements to Lists
-     * @param specificYearDataList
-     * @param i
-     */
-    private void addElementsToList(List<String> specificYearDataList, int i) {
-        //Adds Elements to yearBeforeList and oldColorList
-        this.chartRacer.getYear(specificYearDataList.get(i));
-        this.yearBeforeList.add(this.chartRacer.getCity(specificYearDataList.get(i)));
-        this.oldColorList.add(generateRandomColor());
-    }
+
 
     /**
      * Resume : Function that gets the color to the graphic
@@ -238,9 +231,13 @@ public class DrawingPane extends Pane {
      */
     private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
         this.chartRacer.getYear(specificYearDataList.get(i));
-        System.out.println("Teste");
+        System.out.println("Teste List = " + this.chartRacer.getCity(specificYearDataList.get(i)));
+        System.out.println("YEars Before List = " + yearBeforeList);
+        System.out.println();
+        //TODO - Check only the names of the cities
         //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
         if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
+            System.out.println("Está cá");
             String oldColor = this.oldColorList.get(i);
             rectangle.setColor(oldColor);
         } else {
@@ -248,10 +245,10 @@ public class DrawingPane extends Pane {
             this.oldColorList.add(newColor);
             rectangle.setColor(newColor);
         }
-        if (i == size - 1) {
+        /*if (i == size - 1) {
             this.yearBeforeList.subList(0, size - 1).clear();
             this.yearBeforeList.remove(0);
-        }
+        }*/
         this.counter++;
     }
 

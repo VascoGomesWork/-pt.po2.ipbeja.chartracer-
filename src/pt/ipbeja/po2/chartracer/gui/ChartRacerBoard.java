@@ -32,6 +32,7 @@ public class ChartRacerBoard extends Pane implements View {
     private final int hBoxYLayout = 60;
     private final int hBoxXColorPicker = 700;
     private final int hBoxYColorPicker = 30;
+    private List<String> yearBeforeListBoard = new ArrayList<>();
     private int cyclesCounter = 0;
     private DrawingPane drawingPane = new DrawingPane(xAxis,yAxis, cyclesCounter);
     //Sets up the View by passing "this" that extends from GridPane
@@ -421,7 +422,7 @@ public class ChartRacerBoard extends Pane implements View {
     public void drawGraphic(List<String> specificYearData) {
 
         //Gets the Function to Draw the Graphic
-        this.getChildren().add(this.drawingPane.drawGraphic(specificYearData, false, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin, this.cyclesCounter));
+        this.getChildren().add(this.drawingPane.drawGraphic(specificYearData, false, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin, cyclesCounter, new ArrayList<>(), new ArrayList<>()));
         applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
 
         //Creates new HBox Object
@@ -436,24 +437,52 @@ public class ChartRacerBoard extends Pane implements View {
      * @param isThreadAlive
      */
     @Override
-    public void drawAllGraphics(List<String> yearBeforeList, List<String> orderedSpecificYearData, boolean isThreadAlive) {
+    public void drawAllGraphics(List<String> orderedSpecificYearData, boolean isThreadAlive) {
         List<String> oldColorList = new ArrayList<>();
+
         Platform.runLater(() -> {
-            //this.isThreadAlive = isThreadAlive;
             //Clears DrawingPane and Creates new DrawingPane Object so it dosent't throw a duplicate exeption error
+
             this.drawingPane.clear();
             this.drawingPane = new DrawingPane(this.xAxis, this.yAxis, cyclesCounter);
+            //Function that FulFills Random Color List and Old Year List
+            fulfillRandomColorList(oldColorList);
+
+            System.out.println("Years Before List = " + yearBeforeListBoard);
 
             //Adds to Pane the Drawing Pane with the information from other Thread
-            this.getChildren().add(this.drawingPane.drawGraphic(orderedSpecificYearData, true, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin, this.cyclesCounter));
-            cyclesCounter++;
+            this.getChildren().addAll(this.drawingPane.drawGraphic(orderedSpecificYearData, true, this.applyLinesSkin, this.primaryStage, this.applyColorsSkin, cyclesCounter, oldColorList, yearBeforeListBoard));
+            cyclesCounter+=12;
+            fulfillOldYearList(orderedSpecificYearData);
             applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
+            this.getChildren().remove(this);
+
         });
         //Make Thread Sleep it can be possible to see the Graphics Passing Through
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Resume : Function that Adds Elements to Lists
+     * @param specificYearDataList
+
+     */
+    private void fulfillOldYearList(List<String> specificYearDataList) {
+        //Adds Elements to yearBeforeList and oldColorList
+        for (int i = 0; i < 12; i++) {
+            this.chartRacer.getYear(specificYearDataList.get(i));
+            this.yearBeforeListBoard.add(this.chartRacer.getCity(specificYearDataList.get(i)));
+        }
+        System.out.println("Ganda teste = " + yearBeforeListBoard);
+    }
+
+    private void fulfillRandomColorList(List<String> oldColorList) {
+        for (int i = 0; i < 12; i++) {
+            oldColorList.add(this.drawingPane.generateRandomColor());
         }
     }
 
@@ -468,7 +497,7 @@ public class ChartRacerBoard extends Pane implements View {
         if(allYearsList != null) {
             for (int i = 0; i < allYearsList.size(); i++) {
 
-                applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
+                //applyDarkMode(this.chartRacerMenuBar, this.colorToModify);
 
                 //Check Witch Year the iteration is
                 if (yearsCounter < qtyYearsInList) {
