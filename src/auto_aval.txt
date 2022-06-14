@@ -8,7 +8,9 @@ Requisito E4 -> 3.0 valores
 Requisito NE1 -> 2.5 valores
 Requisito NE2 -> 2.5 valores
 Requisito NE3 -> 2.0 valores
+Requisito Adicional 1 -> Dark Theme
+Requisito Adicional 2 -> Mudança da Cord do Texto em Dark Theme
 
-Total -> 17 valores
+Total -> 18 valores
 
 Tempo Gasto a Realizar Este Projeto : 2 Semanas

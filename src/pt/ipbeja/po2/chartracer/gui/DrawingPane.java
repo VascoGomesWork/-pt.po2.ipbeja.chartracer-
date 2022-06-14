@@ -33,6 +33,7 @@ public class DrawingPane extends Pane {
     private ChartRacer chartRacer = new ChartRacer();
     private int counter = 0;
     private boolean applySkin = false;
+    private int cyclesCounter = 0;
     TranslateTransition translateTransition;
     ImageView imageView;
     RectangleChartRacer rectangle;
@@ -46,12 +47,14 @@ public class DrawingPane extends Pane {
      * Resume: Drawing Pane Constructor
      * @param xAxis
      * @param yAxis
+     * @param cyclesCounter
      */
-    public DrawingPane(int xAxis, int yAxis) {
+    public DrawingPane(int xAxis, int yAxis, int cyclesCounter) {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.setLayoutX(this.xAxis);
         this.setLayoutY(this.yAxis);
+        this.cyclesCounter = cyclesCounter;
     }
 
     /**
@@ -92,16 +95,17 @@ public class DrawingPane extends Pane {
      * @param applyLinesSkin
      * @param primaryStage
      * @param applySquaresSkin
+     * @param cyclesCounter
      * @return
      */
-    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin) {
+    public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin, int cyclesCounter) {
         int xChartBar = 90;
         int yChartBar = 40;
         int height = 40;
         int yAxisCityName = yChartBar + 20;
         int xCityPopulation = 100;
         int yAxisLine = yChartBar;
-
+        this.cyclesCounter = cyclesCounter;
         //Clears Pane
         this.getChildren().clear();
             //Loops Through String List and displays Data
@@ -194,6 +198,7 @@ public class DrawingPane extends Pane {
         }
     }
 
+    //TODO - FIX Bar Colors Without Skins
     /**
      * Function : Function that Checks if is needed to generate a new random color
      * @param specificYearDataList
@@ -203,6 +208,9 @@ public class DrawingPane extends Pane {
      */
     private void checkGenerateColor(List<String> specificYearDataList, boolean checkFunctionAllYears, int i, RectangleChartRacer rectangle) {
         //Checks if it is AllYears Function that called if it wasn't generates a random color
+        System.out.println("Counter = " + this.counter);
+        System.out.println("Data = " + specificYearDataList);
+        System.out.println("Size = " + specificYearDataList.size());
         if (checkFunctionAllYears && this.counter > specificYearDataList.size())
             checkBarColor(specificYearDataList.subList(0, specificYearDataList.size()), i, rectangle, specificYearDataList.size());
         else rectangle.setColor(generateRandomColor());
@@ -229,22 +237,21 @@ public class DrawingPane extends Pane {
      * @param size
      */
     private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
-            this.chartRacer.getYear(specificYearDataList.get(i));
-
-            //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
-            if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
-                String oldColor = this.oldColorList.get(i);
-                rectangle.setColor(oldColor);
-            } else {
-                String newColor = generateRandomColor();
-                this.oldColorList.add(newColor);
-                rectangle.setColor(newColor);
-            }
-
-            if (i == size - 1) {
-                this.yearBeforeList.subList(0, size - 1).clear();
-                this.yearBeforeList.remove(0);
-            }
+        this.chartRacer.getYear(specificYearDataList.get(i));
+        System.out.println("Teste");
+        //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
+        if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
+            String oldColor = this.oldColorList.get(i);
+            rectangle.setColor(oldColor);
+        } else {
+            String newColor = generateRandomColor();
+            this.oldColorList.add(newColor);
+            rectangle.setColor(newColor);
+        }
+        if (i == size - 1) {
+            this.yearBeforeList.subList(0, size - 1).clear();
+            this.yearBeforeList.remove(0);
+        }
         this.counter++;
     }
 

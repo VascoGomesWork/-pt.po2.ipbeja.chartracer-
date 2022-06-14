@@ -189,20 +189,20 @@ public class ChartRacer {
 
     /**
      * Resume : Method that returns a List with all the Years on a File
-     * @param userChoosenFile
+     * @param userChosenFile
      * @return
      */
-    public List<String> getAllYearsList(String userChoosenFile) {
+    public List<String> getAllYearsList(String userChosenFile) {
 
-        List<String> userReadedFile = readFile(userChoosenFile);
+        List<String> userReadFile = readFile(userChosenFile);
         List<String> allYearsList = new ArrayList<>();
 
-        if(userReadedFile != null) {
-            for (int i = 0; i < userReadedFile.size(); i++) {
+        if(userReadFile != null) {
+            for (int i = 0; i < userReadFile.size(); i++) {
                 //Gets all the Years in File Choosen By The User and Puts it in all Year List
                 //Checks if String Length is Greater Than 0
-                if (userReadedFile.get(i).length() > 0) {
-                    allYearsList.add(getYear(userReadedFile.get(i)));
+                if (userReadFile.get(i).length() > 0) {
+                    allYearsList.add(getYear(userReadFile.get(i)));
                 }
             }
         }
@@ -233,7 +233,6 @@ public class ChartRacer {
      * @return
      */
     public int getQtyYearsInList(List<String> dataList) {
-        //System.out.println("Data List = " + dataList);
         List<String> yearsList = new ArrayList<>();
         if(dataList != null) {
             for (int i = 0; i < dataList.size(); i++) {
@@ -265,12 +264,17 @@ public class ChartRacer {
                     }
                     this.isThreadAlive = true;
                     this.view.drawAllGraphics(yearBeforeList, orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.isThreadAlive);
+                    this.isThreadAlive = false;
                 } else if(counter == NUM_BARS){
                     counter = 0;
                 }
                 counter++;
             }
         }).start();
+    }
+
+    public boolean getThreadStatus(){
+        return this.isThreadAlive;
     }
 
     /**
