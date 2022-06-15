@@ -59,9 +59,6 @@ public class ChartRacer {
             //Removes all numbers 12 and spaces
             citiesList.removeAll(Collections.singleton("12"));
             citiesList.removeAll(Collections.singleton(" "));
-            //Removes all lines with length is 0
-            //citiesList.subList(0, citiesList.size()).clear();
-            //citiesList.removeAll(citiesList.get(c).length() == 0);
         }
         return citiesList;
     }

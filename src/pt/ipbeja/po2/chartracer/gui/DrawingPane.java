@@ -108,7 +108,6 @@ public class DrawingPane extends Pane {
         int yAxisLine = yChartBar;
         this.oldColorList = oldColorList;
         this.yearBeforeList = yearBeforeList;
-        System.out.println("Lista Teste = " + this.yearBeforeList);
         //Clears Pane
         this.getChildren().clear();
             //Loops Through String List and displays Data
@@ -125,8 +124,7 @@ public class DrawingPane extends Pane {
                 List<String> barChartRacerData = getBarChartRacerData(specificYearDataList, i);
 
                 //Draws City Name
-                this.cityNameText = new TextChartRacer(this.xAxis, yAxisCityName, barChartRacerData.get(0));
-                this.cityNameTextList.add(this.cityNameText);
+                setUpCityName(yAxisCityName, barChartRacerData);
                 this.getChildren().add(this.cityNameText);
 
                 //Sets Up the Bars of the Graphic
@@ -142,11 +140,7 @@ public class DrawingPane extends Pane {
                 checkIfSkinApplied(applyLinesSkin, applySquaresSkin, xChartBar, yChartBar, populationWidth);
                 this.getChildren().add(rectangle);
 
-                //Adds Elements to the Lists
-                //addElementsToList(specificYearDataList, i);
-
-                this.populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, barChartRacerData.get(1));
-                this.populationTextList.add(this.populationText);
+                setUpPopulation(yAxisCityName, xCityPopulation, barChartRacerData, populationWidth);
                 this.getChildren().add(this.populationText);
 
                 yAxisCityName += 60;
@@ -155,6 +149,28 @@ public class DrawingPane extends Pane {
         }
         //Adds the DrawingPane to super
         return this;
+    }
+
+    /**
+     * Resume: Function that Sets Up Population TextBox
+     * @param yAxisCityName
+     * @param xCityPopulation
+     * @param barChartRacerData
+     * @param populationWidth
+     */
+    private void setUpPopulation(int yAxisCityName, int xCityPopulation, List<String> barChartRacerData, int populationWidth) {
+        this.populationText = new TextChartRacer(populationWidth + xCityPopulation, yAxisCityName, barChartRacerData.get(1));
+        this.populationTextList.add(this.populationText);
+    }
+
+    /**
+     * Resume: Function that Sets Up City Name TextBox
+     * @param yAxisCityName
+     * @param barChartRacerData
+     */
+    private void setUpCityName(int yAxisCityName, List<String> barChartRacerData) {
+        this.cityNameText = new TextChartRacer(this.xAxis, yAxisCityName, barChartRacerData.get(0));
+        this.cityNameTextList.add(this.cityNameText);
     }
 
     /**
@@ -201,7 +217,6 @@ public class DrawingPane extends Pane {
         }
     }
 
-    //TODO - FIX Bar Colors Without Skins
     /**
      * Function : Function that Checks if is needed to generate a new random color
      * @param specificYearDataList
@@ -211,8 +226,6 @@ public class DrawingPane extends Pane {
      */
     private void checkGenerateColor(List<String> specificYearDataList, boolean checkFunctionAllYears, int i, RectangleChartRacer rectangle) {
         //Checks if it is AllYears Function that called if it wasn't generates a random color
-        System.out.println("Counter = " + this.cyclesCounter);
-        System.out.println("Data = " + specificYearDataList);
         if (checkFunctionAllYears && this.cyclesCounter > specificYearDataList.size())
             checkBarColor(specificYearDataList.subList(0, specificYearDataList.size()), i, rectangle, specificYearDataList.size());
         else rectangle.setColor(generateRandomColor());
@@ -231,13 +244,8 @@ public class DrawingPane extends Pane {
      */
     private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
         this.chartRacer.getYear(specificYearDataList.get(i));
-        System.out.println("Teste List = " + this.chartRacer.getCity(specificYearDataList.get(i)));
-        System.out.println("YEars Before List = " + yearBeforeList);
-        System.out.println();
-        //TODO - Check only the names of the cities
         //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
         if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
-            System.out.println("Está cá");
             String oldColor = this.oldColorList.get(i);
             rectangle.setColor(oldColor);
         } else {
@@ -245,10 +253,6 @@ public class DrawingPane extends Pane {
             this.oldColorList.add(newColor);
             rectangle.setColor(newColor);
         }
-        /*if (i == size - 1) {
-            this.yearBeforeList.subList(0, size - 1).clear();
-            this.yearBeforeList.remove(0);
-        }*/
         this.counter++;
     }
 
