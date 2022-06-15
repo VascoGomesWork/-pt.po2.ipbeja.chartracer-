@@ -43,8 +43,8 @@ public class ChartRacerBoard extends Pane implements View {
     private boolean applyLinesSkin = false;
     private boolean applyColorsSkin = false;
     private boolean generateStatisticFile = false;
-    private boolean isThreadAlive = false;
     private Stage primaryStage;
+    private Thread thread;
     Color colorToModify = Color.WHITE;
     private int counter = 0;
 
@@ -103,7 +103,7 @@ public class ChartRacerBoard extends Pane implements View {
     /**
      * Resume : Method that converts a List to an Observable List
      * @param allYearsList
-     * @return
+     * @return: Observable List
      */
     private ObservableList<String> convertListToObservableList(List<String> allYearsList) {
         //https://stackoverflow.com/questions/22191954/javafx-casting-arraylist-to-observablelist
@@ -112,8 +112,8 @@ public class ChartRacerBoard extends Pane implements View {
 
     /**
      * Resume : Function that asks for the file to Read
-     * @return
      * @param primaryStage
+     * @return: Filepath
      */
     private String askUserFile(Stage primaryStage) {
         //https://openjfx.io/javadoc/17/javafx.graphics/javafx/stage/FileChooser.html
@@ -140,6 +140,10 @@ public class ChartRacerBoard extends Pane implements View {
         return filePath;
     }
 
+    /**
+     * Resume: Function that Creates a Menu
+     * @param primaryStage
+     */
     private void createMenuBar(Stage primaryStage) {
         this.chartRacerMenuBar = new ChartRacerMenuBar();
         //OnClick of Menu Item "Draw 1 Year"
@@ -394,6 +398,12 @@ public class ChartRacerBoard extends Pane implements View {
             this.drawingPane.translateTransition.stop();
         }
 
+        //Checks if Thread is Null and if is alive if those conditions are true stops the thread
+        if(this.thread != null && this.thread.isAlive()){
+            this.thread.stop();
+            this.chartRacer.setThreadStatus(false);
+        }
+
         this.hBox.getChildren().clear();
 
         //Clears the Drawing Box
@@ -436,11 +446,11 @@ public class ChartRacerBoard extends Pane implements View {
     /**
      * Resume: Method From View to Draw All Graphics
      * @param orderedSpecificYearData
-     * @param isThreadAlive
+     * @param thread
      */
     @Override
-    public void drawAllGraphics(List<String> orderedSpecificYearData, boolean isThreadAlive) {
-
+    public void drawAllGraphics(List<String> orderedSpecificYearData, Thread thread) {
+        this.thread = thread;
         Platform.runLater(() -> {
             //Clears DrawingPane and Creates new DrawingPane Object so it dosent't throw a duplicate exeption error
             this.drawingPane.clear();

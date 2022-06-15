@@ -28,7 +28,7 @@ public abstract class GraphicalSkins implements Skin{
 
     /**
      * Resume: Returns xChartBar Variable
-     * @return
+     * @return: xChartBar
      */
     public int xChartBar() {
         return xChartBar;
@@ -36,7 +36,7 @@ public abstract class GraphicalSkins implements Skin{
 
     /**
      * Resume: Returns yChartBar Variable
-     * @return
+     * @return: yChartBar
      */
     public int yChartBar() {
         return yChartBar;
@@ -44,7 +44,7 @@ public abstract class GraphicalSkins implements Skin{
 
     /**
      * Resume: Returns population Variable
-     * @return
+     * @return: population
      */
     public int population() {
         return population;
@@ -52,13 +52,13 @@ public abstract class GraphicalSkins implements Skin{
 
     /**
      * Resume: Abstract Function that Generates Skin
-     * @return
+     * @return: List of List of Nodes With Skin
      */
     public abstract List<List<Node>> generateSkin();
 
     /**
      * Resume : Function that Generates Random RGB Number Between 0 and 255
-     * @return
+     * @return: Rand RGB Number
      */
     public int generateRandRGBNumber(){
         return (int) ((Math.random() * (255)) + 0);

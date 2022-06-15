@@ -31,7 +31,7 @@ public class CitiesData implements Comparable<CitiesData>{
 
     /**
      * Resume: Function that Gets the City Population
-     * @return
+     * @return: City Population
      */
     public int getCityPopulation() {
         return this.populationByCity;
@@ -40,7 +40,7 @@ public class CitiesData implements Comparable<CitiesData>{
     /**
      * Resume: Function that compares Objects
      * @param o
-     * @return
+     * @return: Number Accordingly to the Object Comparation
      */
     @Override
     public int compareTo(CitiesData o) {
@@ -52,7 +52,7 @@ public class CitiesData implements Comparable<CitiesData>{
     /**
      * Resume: Function that Converts Object to String
      * @param citiesData
-     * @return
+     * @return: Object Converted into String
      */
     public String convertToString(CitiesData citiesData) {
         return citiesData.year + "," + citiesData.city + "," + citiesData.country + "," + citiesData.populationByCity + "," + citiesData.region;

@@ -28,7 +28,7 @@ public class LinesSkins extends GraphicalSkins{
 
     /**
      * Resume: Function that generates Skin
-     * @return
+     * @return: List of List of Nodes With Skin
      */
     @Override
     public List<List<Node>> generateSkin() {
@@ -51,7 +51,7 @@ public class LinesSkins extends GraphicalSkins{
      * @param barX
      * @param barY
      * @param barWidth
-     * @return
+     * @return: List of Lines UP Left From Lines Skins
      */
     public List<Node> createBarLinesUpLeft(int barX, int barY, int barWidth) {
         List<Node> lineList = new ArrayList<>();
@@ -69,7 +69,7 @@ public class LinesSkins extends GraphicalSkins{
      * @param barX
      * @param barY
      * @param barWidth
-     * @return
+     * @return: List of Lines UP Right From Lines Skins
      */
     public List<Node> createBarLinesUpRight(int barX, int barY, int barWidth){
         List<Node> lineList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class LinesSkins extends GraphicalSkins{
      * @param barX
      * @param barY
      * @param barWidth
-     * @return
+     * @return: List of Lines DOWN Left From Lines Skins
      */
     public List<Node> createBarLinesDownLeft(int barX, int barY, int barWidth){
         List<Node> lineList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class LinesSkins extends GraphicalSkins{
      * @param barX
      * @param barY
      * @param barWidth
-     * @return
+     * @return: List of Lines DOWN Right From Lines Skins
      */
     public List<Node> createBarLinesDownRight(int barX, int barY, int barWidth){
         List<Node> lineList = new ArrayList<>();

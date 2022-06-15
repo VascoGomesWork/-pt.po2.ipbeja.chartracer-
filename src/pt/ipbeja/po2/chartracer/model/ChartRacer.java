@@ -38,7 +38,7 @@ public class ChartRacer {
     /**
      * Resume : Method to Read Cities Data from the File
      * @param fileName
-     * @return
+     * @return: List of Strings From a File
      */
     public List<String> readFile(String fileName) {
         try {
@@ -50,7 +50,7 @@ public class ChartRacer {
     /**
      * Resume : Function that makes a newList
      * @param citiesList
-     * @return
+     * @return: Returns New List Without Unwanted Data
      */
     public List<String> removeUnwantedDataFromList(List<String> citiesList) {
         //Removes the first lines until the first number 12 appears in the file
@@ -67,7 +67,7 @@ public class ChartRacer {
      * Resume : Orders List By Population Number with Comparable Interface implemented in OrderCitiesData Class
      * @param fileData
      * @param year
-     * @return
+     * @return: Ordered List By Population Number
      */
     public List<String> orderByPopulation(List<String> fileData, int year) {
         //https://www.youtube.com/watch?v=wboqZ2dPDtQ
@@ -98,7 +98,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Year from List Item
      * @param dataString
-     * @return
+     * @return: Gets Year From List Item
      */
     public String getYear(String dataString) {
         return dataString.substring(0, dataString.indexOf(','));
@@ -107,7 +107,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the City from List Item
      * @param dataString
-     * @return
+     * @return: Gets City From List Item
      */
     public String getCity(String dataString) {
         int beginIndex = dataString.indexOf(",");
@@ -119,7 +119,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Country from List Item
      * @param dataString
-     * @return
+     * @return: Gets Country From List Item
      */
     public String getCountry(String dataString) {
         //Uses globally defined variable cityEndIndex saved before as starting point
@@ -132,7 +132,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Population from List Item
      * @param dataString
-     * @return
+     * @return: Gets Population From List Item
      */
     public String getPopulationByCity(String dataString) {
         //Uses globally defined variable countryEndIndex saved before as starting point
@@ -145,7 +145,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Region from List Item
      * @param dataString
-     * @return
+     * @return: Gets Region From List Item
      */
     public String getRegion(String dataString) {
         //Uses globally defined variable populationEndIndex saved before as starting point
@@ -158,7 +158,7 @@ public class ChartRacer {
      * Resume : Gets The Data relative to the Specified Year
      * @param fileData
      * @param year
-     * @return
+     * @return: Data Specific to 1 Year
      */
     public List<String> getSpecificYearData(List<String> fileData, String year) {
 
@@ -188,7 +188,7 @@ public class ChartRacer {
     /**
      * Resume : Method that returns a List with all the Years on a File
      * @param userChosenFile
-     * @return
+     * @return: List With All Years
      */
     public List<String> getAllYearsList(String userChosenFile) {
 
@@ -211,7 +211,7 @@ public class ChartRacer {
     /**
      * Resume : Remove Repeated Elements from List with TreeSet
      * @param allYearsList
-     * @return
+     * @return: List Without Repeated Elements
      */
     private List<String> removeRepeatedElements(List<String> allYearsList) {
 
@@ -228,7 +228,7 @@ public class ChartRacer {
     /**
      * Resume : Function that gets the quantity of years in a list using TreeSet to remove duplicates
      * @param dataList
-     * @return
+     * @return: Quantity of Years In List
      */
     public int getQtyYearsInList(List<String> dataList) {
         List<String> yearsList = new ArrayList<>();
@@ -244,31 +244,45 @@ public class ChartRacer {
         return 0;
     }
 
+    private Thread thread;
     /**
      * Resume : Function that gets the data to animate and draw all the graphics and uses a new Thread to JavaFx Thread be available to update View
      * @param yearDataChartRacer
      */
     public void getDataDrawAllGraphics(List<List<String>> yearDataChartRacer) {
         //Chanel Teams PO2 2019-2020 Video 4 about Threads of Professor João Paulo Barros
-        new Thread( () -> {
+        this.thread = new Thread( () -> {
             int counter = 0;
             List<String> yearBeforeList = new ArrayList<>();
             for (int i = 0; i < yearDataChartRacer.size(); i++) {
                 if(counter < NUM_BARS) {
 
                     this.isThreadAlive = true;
-                    this.view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.isThreadAlive);
+                    this.view.drawAllGraphics(orderByPopulation(yearDataChartRacer.get(i), Integer.parseInt(getYear(yearDataChartRacer.get(i).get(counter)))), this.thread);
                     this.isThreadAlive = false;
                 } else if(counter == NUM_BARS){
                     counter = 0;
                 }
                 counter++;
             }
-        }).start();
+        });
+        this.thread.start();
     }
 
+    /**
+     * Resume: Function that returns a boolean accordingly with threadStatus
+     * @return isThreadAlive
+     */
     public boolean getThreadStatus(){
         return this.isThreadAlive;
+    }
+
+    /**
+     * Resume: Function that Sets Thread Status
+     * @param b
+     */
+    public void setThreadStatus(boolean b) {
+        this.isThreadAlive = b;
     }
 
     /**
@@ -293,7 +307,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Average Number of Lines
      * @param stringDataList
-     * @return
+     * @return: averageNumLines
      */
     private int getDataSetAverageLines(List<String> stringDataList) {
         int counter = 0;
@@ -308,7 +322,7 @@ public class ChartRacer {
     /**
      * Resume : Function that gets the Column Quantity
      * @param stringDataList
-     * @return
+     * @return: columnQty
      */
     private int getColumnsQty(List<String> stringDataList) {
         int counter = 0;
@@ -322,7 +336,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Max Population Number
      * @param stringDataList
-     * @return
+     * @return: maxValue
      */
     private int maximumPopulationValue(List<String> stringDataList) {
         int maxValue = 0;
@@ -342,7 +356,7 @@ public class ChartRacer {
     /**
      * Resume : Function that Gets the Min Population Number
      * @param stringDataList
-     * @return
+     * @return: minValue
      */
     private int minimumPopulationValue(List<String> stringDataList) {
         int minValue = Integer.MAX_VALUE;

@@ -28,7 +28,7 @@ public class ColorsSkins extends GraphicalSkins{
 
     /**
      * Resume: Function that Generates Skin to this Skin
-     * @return
+     * @return: List of List of Nodes With Skin
      */
     @Override
     public List<List<Node>> generateSkin() {
@@ -40,17 +40,17 @@ public class ColorsSkins extends GraphicalSkins{
      * @param xChartBar
      * @param yChartBar
      * @param population
-     * @return
+     * @return: List of Nodes With Skin
      */
     public List<Node> createColoredBar(int xChartBar, int yChartBar, int population) {
 
-        List<Node> squaresList = new ArrayList<>();
+        List<Node> coloredList = new ArrayList<>();
 
         RectangleChartRacer coloredBar = new RectangleChartRacer(xChartBar, yChartBar, population, height);
         coloredBar.setFill(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-        coloredBar.setStrokeWidth(STROKE_WIDTH);
-        squaresList.add(coloredBar);
+        coloredBar.setStrokeWidth(/*STROKE_WIDTH*/2);
+        coloredList.add(coloredBar);
 
-        return squaresList;
+        return coloredList;
     }
 }

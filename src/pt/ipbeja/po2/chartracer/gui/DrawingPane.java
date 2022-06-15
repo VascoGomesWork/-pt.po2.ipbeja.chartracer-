@@ -97,7 +97,7 @@ public class DrawingPane extends Pane {
      * @param applySquaresSkin
      * @param cyclesCounter
      * @param yearBeforeList
-     * @return
+     * @return: Pane to be Rendered
      */
     public Pane drawGraphic(List<String> specificYearDataList, boolean checkFunctionAllYears, boolean applyLinesSkin, Stage primaryStage, boolean applySquaresSkin, int cyclesCounter, List<String> oldColorList, List<String> yearBeforeList) {
         int xChartBar = 90;
@@ -205,7 +205,7 @@ public class DrawingPane extends Pane {
     }
 
     /**
-     * Resume : Function that Draws the Graphics
+     * Resume : Function that Draws the Graphics with Polymorphism
      * @param graphicalSkins
      */
     private void drawGraphicWithSkin(GraphicalSkins graphicalSkins) {
@@ -214,6 +214,7 @@ public class DrawingPane extends Pane {
             for (int j = 0; j < graphicalSkins.generateSkin().get(i).size(); j++) {
                 this.getChildren().add(graphicalSkins.generateSkin().get(i).get(j));
             }
+            this.rectangle.setStrokeWidth(4.0);
         }
     }
 
@@ -258,7 +259,7 @@ public class DrawingPane extends Pane {
 
     /**
      * Resume : Function that Generates Random RGB Number Between 0 and 255
-     * @return
+     * @return: Generated Rand RGB NUmber
      */
     private int generateRandRGBNumber(){
         return (int) ((Math.random() * (255)) + 0);
@@ -266,7 +267,7 @@ public class DrawingPane extends Pane {
 
     /**
      * Resume : Function that Generates a Random Color and returns a String of that Color
-     * @return
+     * @return: Random Color
      */
     public String generateRandomColor() {
         int r = generateRandRGBNumber();
@@ -278,7 +279,7 @@ public class DrawingPane extends Pane {
     /**
      * Resume : Function that Converts a Double to an Integer
      * @param doubleToConvertToInteger
-     * @return
+     * @return: Integer Part of a Double
      */
     private int getIntegerPart(double doubleToConvertToInteger){
         String numToString = doubleToConvertToInteger+"";
@@ -288,8 +289,8 @@ public class DrawingPane extends Pane {
     /**
      * Resume : Gets the With of the Bar Through the Population in the List
      * @param populationByCity
-     * //@param primaryStage
-     * @return
+     * @param primaryStage
+     * @return: Bar Width Population
      */
     private int getBarWidthPopulation(String populationByCity, Stage primaryStage) {
         //Make Graphic Fit in any Window Size
@@ -298,6 +299,7 @@ public class DrawingPane extends Pane {
 
     /**
      * Resume : Function that animates an image
+     * @return: Animated Image
      */
     public Node animateImage(Stage primaryStage) {
         ImageView imageView = setUpImageView();
@@ -329,7 +331,7 @@ public class DrawingPane extends Pane {
 
     /**
      * Resume Function that Sets Up an Image View
-     * @return
+     * @return: ImageView
      */
     private ImageView setUpImageView() {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("chart_png_mod.png")));
