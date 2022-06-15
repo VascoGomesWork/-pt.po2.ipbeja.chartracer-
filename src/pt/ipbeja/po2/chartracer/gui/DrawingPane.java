@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import pt.ipbeja.po2.chartracer.model.ChartRacer;
+import pt.ipbeja.po2.chartracer.model.ChartRacerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class DrawingPane extends Pane {
     private final int imageViewHeight = 100;
     private List<String> yearBeforeList = new ArrayList<>();
     private List<String> oldColorList = new ArrayList<>();
-    private ChartRacer chartRacer = new ChartRacer();
+    private ChartRacerModel chartRacerModel = new ChartRacerModel();
     private int counter = 0;
     private boolean applySkin = false;
     private int cyclesCounter = 0;
@@ -75,11 +75,11 @@ public class DrawingPane extends Pane {
         List<String> barChartRacerDataList = new ArrayList<>();
 
         //Gets Data Necessary
-        this.chartRacer.getYear(specificYearDataList.get(i));
-        String city = this.chartRacer.getCity(specificYearDataList.get(i));
-        this.chartRacer.getCountry(specificYearDataList.get(i));
-        String population = this.chartRacer.getPopulationByCity(specificYearDataList.get(i));
-        this.chartRacer.getRegion(specificYearDataList.get(i));
+        this.chartRacerModel.getYear(specificYearDataList.get(i));
+        String city = this.chartRacerModel.getCity(specificYearDataList.get(i));
+        this.chartRacerModel.getCountry(specificYearDataList.get(i));
+        String population = this.chartRacerModel.getPopulationByCity(specificYearDataList.get(i));
+        this.chartRacerModel.getRegion(specificYearDataList.get(i));
 
         //Adds City and Population to ArrayList
         barChartRacerDataList.add(city);
@@ -114,7 +114,7 @@ public class DrawingPane extends Pane {
             for (int i = 0; i < specificYearDataList.size(); i++) {
 
                 //Sets Up Text About the Chart
-                this.beginText = new TextChartRacer(this.xAxis, this.yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + this.chartRacer.getYear(specificYearDataList.get(i)));
+                this.beginText = new TextChartRacer(this.xAxis, this.yAxis, "Graphic that Represents the Demographic Population in Various Cities of the World in the Year " + this.chartRacerModel.getYear(specificYearDataList.get(i)));
                 this.getChildren().add(this.beginText);
 
                 //Sets Up Lines to make the Graphic
@@ -244,9 +244,9 @@ public class DrawingPane extends Pane {
      * @param size
      */
     private void checkBarColor(List<String> specificYearDataList, int i, RectangleChartRacer rectangle, int size) {
-        this.chartRacer.getYear(specificYearDataList.get(i));
+        this.chartRacerModel.getYear(specificYearDataList.get(i));
         //Checks if Years Before List has the element if it has atributes it the same color, case not generates a new color
-        if (this.yearBeforeList.subList(0, size).contains(this.chartRacer.getCity(specificYearDataList.get(i)))) {
+        if (this.yearBeforeList.subList(0, size).contains(this.chartRacerModel.getCity(specificYearDataList.get(i)))) {
             String oldColor = this.oldColorList.get(i);
             rectangle.setColor(oldColor);
         } else {

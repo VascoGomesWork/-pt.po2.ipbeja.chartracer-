@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import pt.ipbeja.po2.chartracer.model.ChartRacer;
+import pt.ipbeja.po2.chartracer.model.ChartRacerModel;
 import pt.ipbeja.po2.chartracer.model.View;
 
 import java.io.File;
@@ -38,7 +38,7 @@ public class ChartRacerBoard extends Pane implements View {
     private int cyclesCounter = 0;
     private DrawingPane drawingPane = new DrawingPane(xAxis,yAxis, cyclesCounter);
     //Sets up the View by passing "this" that extends from GridPane
-    private ChartRacer chartRacer = new ChartRacer(this);
+    private ChartRacerModel chartRacerModel = new ChartRacerModel(this);
     private TextChartRacer textChartRacerChooseYear;
     private boolean applyLinesSkin = false;
     private boolean applyColorsSkin = false;
@@ -67,7 +67,7 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void askYearFile(String userChosenFile) {
         //Gets the File that the user Choose and Shows the Years Inside It for the User to Choose it
-        List<String> allYearsList = this.chartRacer.getAllYearsList(userChosenFile);
+        List<String> allYearsList = this.chartRacerModel.getAllYearsList(userChosenFile);
 
         //Creates a Combobox with the Observable List Created from the Years List
         ComboBox<String> yearsComboBox = new ComboBox<>(convertListToObservableList(allYearsList));
@@ -271,7 +271,7 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void menuBarColorsGraphic(ChartRacerMenuBar chartRacerMenuBar) {
         //Checks if JavaFX Thread is Still Running if it ain't executes the code inside If statement
-        if(!this.chartRacer.getThreadStatus()){
+        if(!this.chartRacerModel.getThreadStatus()){
             if(chartRacerMenuBar.menuGraphicColorsSkin.isSelected() && !chartRacerMenuBar.menuGraphicLinesSkin.isSelected()){
                 this.applyColorsSkin = true;
             } else{
@@ -289,7 +289,7 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void menuBarLinesGraphic(ChartRacerMenuBar chartRacerMenuBar) {
         //Checks if JavaFX Thread is Still Running if it ain't executes the code inside If statement
-        if(!this.chartRacer.getThreadStatus()){
+        if(!this.chartRacerModel.getThreadStatus()){
             if(chartRacerMenuBar.menuGraphicLinesSkin.isSelected() && !chartRacerMenuBar.menuGraphicColorsSkin.isSelected()) {
                 this.applyLinesSkin = true;
             } else{
@@ -310,6 +310,8 @@ public class ChartRacerBoard extends Pane implements View {
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ButtonType.html
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are You Sure You Want to Exit?", ButtonType.YES, ButtonType.NO);
+        alert.setTitle("Exit");
+        alert.setHeaderText("Exit");
         Optional<ButtonType> btnResult = alert.showAndWait();
 
         //If Button Has Been Clicked Ends the Program
@@ -342,7 +344,7 @@ public class ChartRacerBoard extends Pane implements View {
         //Loops through all the Years and Draws the Graphic with animations
         String userFile = askUserFile(primaryStage);
         checksGenerateStatisticsFileActive(userFile);
-        drawAllYears(this.chartRacer.readFile(userFile), userFile);
+        drawAllYears(this.chartRacerModel.readFile(userFile), userFile);
     }
 
     /**
@@ -353,7 +355,7 @@ public class ChartRacerBoard extends Pane implements View {
         //If Generates Statistics Files Boolean Variable is True Then Executes Code Inside If
         if(this.generateStatisticFile){
             //Generates Statistics File
-            this.chartRacer.generateStatisticFile(userFile);
+            this.chartRacerModel.generateStatisticFile(userFile);
         }
     }
 
@@ -363,7 +365,7 @@ public class ChartRacerBoard extends Pane implements View {
      */
     private void menuBarDraw1Year(Stage primaryStage) {
         //Checks if JavaFx Thread is Running and if it is Raises an Alert
-        if(!this.chartRacer.getThreadStatus()) {
+        if(!this.chartRacerModel.getThreadStatus()) {
             //Clears Drawing Pane
             clear();
             //Calls the Function to Choose a File
@@ -401,7 +403,7 @@ public class ChartRacerBoard extends Pane implements View {
         //Checks if Thread is Null and if is alive if those conditions are true stops the thread
         if(this.thread != null && this.thread.isAlive()){
             this.thread.stop();
-            this.chartRacer.setThreadStatus(false);
+            this.chartRacerModel.setThreadStatus(false);
         }
 
         this.hBox.getChildren().clear();
@@ -424,7 +426,7 @@ public class ChartRacerBoard extends Pane implements View {
         this.hBox.getChildren().clear();
 
         //Gets the Data Relative to the Graphic and Draws it
-        this.chartRacer.getDataToDrawGraphic(this.chartRacer.getSpecificYearData(this.chartRacer.readFile(file), year));
+        this.chartRacerModel.getDataToDrawGraphic(this.chartRacerModel.getSpecificYearData(this.chartRacerModel.readFile(file), year));
     }
 
     /**
@@ -483,8 +485,8 @@ public class ChartRacerBoard extends Pane implements View {
     private void fulfillOldYearList(List<String> specificYearDataList) {
         //Adds Elements to yearBeforeList and oldColorList
         for (int i = 0; i < this.NUM_MONTHS; i++) {
-            this.chartRacer.getYear(specificYearDataList.get(i));
-            this.yearBeforeListBoard.add(this.chartRacer.getCity(specificYearDataList.get(i)));
+            this.chartRacerModel.getYear(specificYearDataList.get(i));
+            this.yearBeforeListBoard.add(this.chartRacerModel.getCity(specificYearDataList.get(i)));
         }
         if(this.counter > 0){
             yearBeforeListBoard.subList(0, this.NUM_MONTHS).clear();
@@ -510,16 +512,16 @@ public class ChartRacerBoard extends Pane implements View {
 
         List<List<String>> yearDataChartRacer = new ArrayList<>();
         int yearsCounter = 0;
-        int qtyYearsInList = this.chartRacer.getQtyYearsInList(allYearsList);
+        int qtyYearsInList = this.chartRacerModel.getQtyYearsInList(allYearsList);
         if(allYearsList != null) {
             for (int i = 0; i < allYearsList.size(); i++) {
                 //Check Witch Year the iteration is
                 if (yearsCounter < qtyYearsInList) {
-                    yearDataChartRacer.add(this.chartRacer.getSpecificYearData(allYearsList, this.chartRacer.getAllYearsList(userFile).get(yearsCounter)));
+                    yearDataChartRacer.add(this.chartRacerModel.getSpecificYearData(allYearsList, this.chartRacerModel.getAllYearsList(userFile).get(yearsCounter)));
                 }
                 yearsCounter++;
             }
-            this.chartRacer.getDataDrawAllGraphics(yearDataChartRacer);
+            this.chartRacerModel.getDataDrawAllGraphics(yearDataChartRacer);
         }
     }
 }

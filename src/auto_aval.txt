@@ -10,6 +10,7 @@ Requisito NE2 -> 2.5 valores
 Requisito NE3 -> 2.0 valores
 Requisito Adicional 1 -> Dark Theme
 Requisito Adicional 2 -> Mudança da Cord do Texto em Dark Theme
+Requisito Adicional 3 -> Animação da Imagem com Translate Transition
 
 Total -> 18 valores
 

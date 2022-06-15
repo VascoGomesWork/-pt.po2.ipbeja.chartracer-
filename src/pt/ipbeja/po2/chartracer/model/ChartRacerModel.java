@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @author Vasco Gomes 19921
  * @date 09/05/2022
  */
-public class ChartRacer {
+public class ChartRacerModel {
 
     private int cityEndIndex;
     private int countryEndIndex;
@@ -26,14 +26,14 @@ public class ChartRacer {
      * Resume : Constructor that Sets Up the View
      * @param view
      */
-    public ChartRacer(View view) {
+    public ChartRacerModel(View view) {
         this.view = view;
     }
 
     /**
      * Resume : Dummy Constructor for Tests Purposes
      */
-    public ChartRacer() {}
+    public ChartRacerModel() {}
 
     /**
      * Resume : Method to Read Cities Data from the File

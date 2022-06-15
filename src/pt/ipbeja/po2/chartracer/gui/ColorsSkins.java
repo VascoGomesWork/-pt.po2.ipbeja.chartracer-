@@ -48,7 +48,6 @@ public class ColorsSkins extends GraphicalSkins{
 
         RectangleChartRacer coloredBar = new RectangleChartRacer(xChartBar, yChartBar, population, height);
         coloredBar.setFill(Color.rgb(generateRandRGBNumber(), generateRandRGBNumber(), generateRandRGBNumber()));
-        coloredBar.setStrokeWidth(/*STROKE_WIDTH*/2);
         coloredList.add(coloredBar);
 
         return coloredList;
